@@ -84,7 +84,7 @@ GM.Config.droppocketarrest              = false
 -- droppocketdeath - Enable/disable whether people drop the stuff in their pockets when they die.
 GM.Config.droppocketdeath               = true
 -- dropweapondeath - Enable/disable whether people drop their current weapon when they die.
-GM.Config.dropweapondeath               = true
+GM.Config.dropweapondeath               = false
 -- Whether players can drop the weapons they spawn with.
 GM.Config.dropspawnedweapons            = true
 -- dynamicvoice - Enable/disable whether only people in the same room as you can hear your mic.
@@ -680,7 +680,6 @@ GM.Config.vendingMachineRequireLicense = {
     ["tacrp_p250"] = true,
     ["tacrp_p2000"] = true,
     ["tacrp_pdw"] = true,
-    ["tacrp_riot_shield"] = false,
     ["tacrp_rpg7"] = true,
     ["tacrp_sg551"] = true,
     ["tacrp_skorpion"] = true,
@@ -738,7 +737,6 @@ GM.Config.vendingMachineGuns = {
     ["tacrp_p250"] = 350,
     ["tacrp_p2000"] = 300,
     ["tacrp_pdw"] = 3250,
-    ["tacrp_riot_shield"] = 500,
     ["tacrp_rpg7"] = 30000,
     ["tacrp_sg551"] = 2000,
     ["tacrp_skorpion"] = 600,

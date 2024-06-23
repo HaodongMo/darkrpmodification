@@ -245,7 +245,7 @@ end)
 // arrest on kill by police
 hook.Add("PlayerDeath", "tacrp_police_arrest", function(victim, inflictor, attacker)
     if (!victim:isCP() and attacker:isCP()) or victim:isWanted() then
-        victim:arrest(300, attacker)
+        victim:arrest(60, attacker)
     else
         if victim:Team() != GAMEMODE.DefaultTeam then
             victim:teamBan(victim:Team(), 300)
@@ -288,7 +288,7 @@ end
 
 // drop up to $5000 on death
 hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker)
-    if attacker:isCP() then return end
+    if !IsValid(attacker) or attacker:isCP() then return end
 
     local money = math.ceil(victim:getDarkRPVar("money") * 0.15)
 

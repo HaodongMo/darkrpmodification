@@ -294,10 +294,10 @@ hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker
     local money = victim:getDarkRPVar("money")
 
     if money > 5000 then
-        victim:addMoney(-5000)
         money = 5000
     end
 
+    victim:addMoney(-money)
     DarkRP.createMoneyBag(victim:GetPos() + Vector(0, 0, 10), money)
 end)
 

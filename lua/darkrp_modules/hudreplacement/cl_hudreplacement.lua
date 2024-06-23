@@ -374,7 +374,7 @@ local function hudPaint()
     if ent.interactionHint or customUse then
         text = "[" .. TacRP.GetBindKey("+use") .. "] " .. (ent.interactionHint or customUse.message or "")
 
-        if LocalPlayer():KeyPressed(IN_USE) then
+        if customUse and LocalPlayer():KeyPressed(IN_USE) then
             if customUse.callback then
                 net.Start("arcrp_customuse")
                 net.WriteEntity(ent)

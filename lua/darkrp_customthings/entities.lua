@@ -17,14 +17,14 @@ https://darkrp.miraheze.org/wiki/DarkRP:CustomEntityFields
 Add entities under the following line:
 ---------------------------------------------------------------------------]]
 
-// DarkRP.createEntity("Gun lab", {
-//     ent = "arcrp_gunlab",
-//     model = "models/props_c17/TrapPropeller_Engine.mdl",
-//     price = 15000,
-//     max = 1,
-//     cmd = "buygunlab",
-//     allowed = TEAM_CRAFTSMAN
-// })
+DarkRP.createEntity("Gun lab", {
+    ent = "arcrp_gunlab",
+    model = "models/props_c17/TrapPropeller_Engine.mdl",
+    price = 150000,
+    max = 1,
+    cmd = "buygunlab",
+    allowed = TEAM_CRAFTSMAN
+})
 
 DarkRP.createEntity("Explosives lab", {
     ent = "arcrp_bomblab",
@@ -35,10 +35,10 @@ DarkRP.createEntity("Explosives lab", {
     allowed = TEAM_CRAFTSMAN
 })
 
-DarkRP.createEntity("Bitcoin Miner", {
-    ent = "arcrp_bitcoin_miner",
-    model = "models/props_c17/consolebox05a.mdl",
-    price = 5000,
-    max = 1,
-    cmd = "buyminer"
-})
+// DarkRP.createEntity("Bitcoin Miner", {
+//     ent = "arcrp_bitcoin_miner",
+//     model = "models/props_c17/consolebox05a.mdl",
+//     price = 5000,
+//     max = 1,
+//     cmd = "buyminer"
+// })

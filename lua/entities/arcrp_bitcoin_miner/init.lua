@@ -5,11 +5,11 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
-ENT.SeizeReward = 950
+ENT.bountyAmount = 0
 
 local PrintMore
 function ENT:Initialize()
-    self:SetModel("models/props_c17/consolebox01a.mdl")
+    self:SetModel("models/props_c17/consolebox05a.mdl")
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)
@@ -24,6 +24,8 @@ function ENT:Initialize()
     self.sound = CreateSound(self, Sound("ambient/levels/labs/equipment_printer_loop1.wav"))
     self.sound:SetSoundLevel(52)
     self.sound:PlayEx(1, 100)
+
+    self.bountyAmount = 4000
 end
 
 function ENT:OnTakeDamage(dmg)
@@ -49,6 +51,11 @@ function ENT:Destruct()
     effectdata:SetScale(1)
     util.Effect("Explosion", effectdata)
     DarkRP.notify(self:Getowning_ent(), 1, 4, DarkRP.getPhrase("money_printer_exploded"))
+
+    if IsValid(attacker) and attacker:IsPlayer() then
+        attacker:addMoney(self.bountyAmount)
+        DarkRP.notify(attacker, 0, 3, "You received a bounty of " .. DarkRP.formatMoney(self.bountyAmount) .. "!")
+    end
 end
 
 function ENT:BurstIntoFlames()
@@ -104,7 +111,9 @@ function ENT:CreateMoneybag()
         amount = 250
     end
 
-    DarkRP.createMoneyBag(Vector(MoneyPos.x + 15, MoneyPos.y, MoneyPos.z + 15), amount)
+    -- DarkRP.createMoneyBag(Vector(MoneyPos.x + 15, MoneyPos.y, MoneyPos.z + 15), amount)
+    self:Getowning_ent():addMoney(amount)
+    DarkRP.notify(self:Getowning_ent(), 0, 3, "Your Bitcoin miner made " .. DarkRP.formatMoney(amount) .. "!")
     self.sparking = false
     timer.Simple(math.random(100, 350), function() PrintMore(self) end)
 end

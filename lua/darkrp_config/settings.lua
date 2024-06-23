@@ -18,7 +18,7 @@ Set to true or false.
 -- voice3D - Enable/disable 3DVoice is enabled.
 GM.Config.voice3D                       = true
 -- AdminsCopWeapons - Enable/disable admins spawning with cop weapons.
-GM.Config.AdminsCopWeapons              = true
+GM.Config.AdminsCopWeapons              = false
 -- adminBypassJobCustomCheck - Enable/disable whether an admin can force set a job with whenever customCheck returns false.
 GM.Config.adminBypassJobRestrictions    = true
 -- Acts/Taunts - Enable/disable Taunts (e.g. act salute)
@@ -84,15 +84,15 @@ GM.Config.droppocketarrest              = false
 -- droppocketdeath - Enable/disable whether people drop the stuff in their pockets when they die.
 GM.Config.droppocketdeath               = true
 -- dropweapondeath - Enable/disable whether people drop their current weapon when they die.
-GM.Config.dropweapondeath               = false
+GM.Config.dropweapondeath               = true
 -- Whether players can drop the weapons they spawn with.
-GM.Config.dropspawnedweapons            = false
+GM.Config.dropspawnedweapons            = true
 -- dynamicvoice - Enable/disable whether only people in the same room as you can hear your mic.
 GM.Config.dynamicvoice                  = true
 -- earthquakes - Enable/disable earthquakes.
 GM.Config.earthquakes                   = false
 -- enablebuypistol - Turn /buy on of off.
-GM.Config.enablebuypistol               = true
+GM.Config.enablebuypistol               = false
 -- enforceplayermodel - Whether or not to force players to use their role-defined character models.
 GM.Config.enforceplayermodel            = true
 -- globalshow - Whether or not to display player info above players' heads in-game.
@@ -106,17 +106,17 @@ GM.Config.letters                       = true
 -- license - Enable/disable People need a license to be able to pick up guns.
 GM.Config.license                       = false
 -- lockdown - Enable/Disable initiating lockdowns for mayors.
-GM.Config.lockdown                      = true
+GM.Config.lockdown                      = false
 -- lockpickfading - Enable/disable the lockpicking of fading doors.
 GM.Config.lockpickfading                = true
 -- logging - Enable/disable logging everything that happens.
 GM.Config.logging                       = true
 -- lottery - Enable/disable creating lotteries for mayors.
-GM.Config.lottery                       = true
+GM.Config.lottery                       = false
 -- showname - Whether or not to display a player's name above their head in-game.
 GM.Config.showname                      = true
 -- showhealth - Whether or not to display a player's health above their head in-game.
-GM.Config.showhealth                    = true
+GM.Config.showhealth                    = false
 -- needwantedforarrest - Enable/disable Cops can only arrest wanted people.
 GM.Config.needwantedforarrest           = false
 -- noguns - Enabling this feature bans Guns and Gun Dealers.
@@ -156,7 +156,7 @@ GM.Config.shouldResetLaws               = false
 -- strictsuicide - Whether or not players should spawn where they suicided.
 GM.Config.strictsuicide                 = false
 -- telefromjail - Enable/disable teleporting from jail.
-GM.Config.telefromjail                  = true
+GM.Config.telefromjail                  = false
 -- teletojail - Enable/disable teleporting to jail.
 GM.Config.teletojail                    = true
 -- unlockdoorsonstart - Enable/Disable unlocking all doors on map start.
@@ -166,7 +166,7 @@ GM.Config.voiceradius                   = true
 -- tax - Whether players pay taxes on their wallets.
 GM.Config.wallettax                     = false
 -- wantedrespawn - Whether players remain wanted on respawn.
-GM.Config.wantedrespawn                 = false
+GM.Config.wantedrespawn                 = true
 -- wantedsuicide - Enable/Disable suiciding while you are wanted by the police.
 GM.Config.wantedsuicide                 = false
 -- realisticfalldamage - Enable/Disable dynamic fall damage. Setting mp_falldamage to 1 will over-ride this.
@@ -236,7 +236,7 @@ GM.Config.maxvehicles                   = 5
 GM.Config.microwavefoodcost             = 30
 -- gunlabguncost - Sets the initial price of a gun from a gunlab. Note that the
 -- gunlab owner can change this price.
-GM.Config.gunlabguncost                 = 200
+GM.Config.gunlabguncost                 = 1000
 -- druglabdrugcost - Sets the initial price of drugs from a drugs lab. Note that
 -- the drugs lab owner can change this price.
 GM.Config.druglabdrugcost               = 100
@@ -245,19 +245,19 @@ GM.Config.minlotterycost                = 30
 -- Money packets will get removed if they don't get picked up after a while. Set to 0 to disable.
 GM.Config.moneyRemoveTime               = 600
 -- mprintamount - Value of the money printed by the money printer.
-GM.Config.mprintamount                  = 250
+GM.Config.mprintamount                  = 1000
 -- normalsalary - Sets the starting salary for newly joined players.
-GM.Config.normalsalary                  = 45
+GM.Config.normalsalary                  = 500
 -- npckillpay - Sets the money given for each NPC kill.
 GM.Config.npckillpay                    = 10
 -- paydelay - Sets how long it takes before people get salary.
 GM.Config.paydelay                      = 160
 -- pocketitems - Sets the amount of objects the pocket can carry.
-GM.Config.pocketitems                   = 10
+GM.Config.pocketitems                   = 5
 -- pricecap - The maximum price of items (using /price).
-GM.Config.pricecap                      = 500
+GM.Config.pricecap                      = 100000
 -- pricemin - The minimum price of items (using /price).
-GM.Config.pricemin                      = 50
+GM.Config.pricemin                      = 0
 -- propcost - How much prop spawning should cost (prop paying must be enabled for this to have an effect).
 GM.Config.propcost                      = 10
 -- quakechance - Chance of an earthquake happening.
@@ -538,3 +538,301 @@ Hungermod module
 GM.Config.hungerspeed = 2
 -- starverate <Amount> - How much health that is taken away every second the player is starving  (3 is the default).
 GM.Config.starverate = 3
+
+
+--[[---------------------------------------------------------------------------
+Arctic's Custom Config
+---------------------------------------------------------------------------]]
+
+-- Maximum number of spawned guns that you can have at once
+GM.Config.maxguns = 16
+-- Weapons and their corresponding weighted chance to be created
+GM.Config.gunlabWeapons = {
+    ["tacrp_ak47"] = 5,
+    ["tacrp_amd65"] = 5,
+    ["tacrp_as50"] = 1,
+    ["tacrp_aug"] = 5,
+    ["tacrp_bekas"] = 30,
+    ["tacrp_c4_detonator"] = 10,
+    ["tacrp_civ_g36k"] = 15,
+    ["tacrp_civ_mp5"] = 15,
+    ["tacrp_civ_p90"] = 15,
+    ["tacrp_dsa58"] = 2,
+    ["tacrp_ex_ak47"] = 10,
+    ["tacrp_ex_glock"] = 20,
+    ["tacrp_ex_hecate"] = 1,
+    ["tacrp_ex_hk45c"] = 15,
+    ["tacrp_ex_m4a1"] = 5,
+    ["tacrp_ex_m1911"] = 30,
+    ["tacrp_ex_mac10"] = 30,
+    ["tacrp_ex_mp9"] = 10,
+    ["tacrp_ex_stinger"] = 1,
+    ["tacrp_ex_ump45"] = 10,
+    ["tacrp_ex_usp"] = 15,
+    ["tacrp_fp6"] = 20,
+    ["tacrp_g36k"] = 5,
+    ["tacrp_gsr1911"] = 30,
+    ["tacrp_hk417"] = 2,
+    ["tacrp_k1a"] = 10,
+    ["tacrp_knife"] = 30,
+    ["tacrp_knife2"] = 30,
+    ["tacrp_ks23"] = 5,
+    ["tacrp_m1"] = 15,
+    ["tacrp_m4"] = 5,
+    ["tacrp_m4star10"] = 6,
+    ["tacrp_m14"] = 5,
+    ["tacrp_m320"] = 1,
+    ["tacrp_medkit"] = 20,
+    ["tacrp_mg4"] = 1,
+    ["tacrp_mp5"] = 10,
+    ["tacrp_mp7"] = 10,
+    ["tacrp_mr96"] = 15,
+    ["tacrp_mtx_dual"] = 5,
+    ["tacrp_p90"] = 10,
+    ["tacrp_p250"] = 30,
+    ["tacrp_p2000"] = 30,
+    ["tacrp_pdw"] = 5,
+    ["tacrp_riot_shield"] = 20,
+    ["tacrp_rpg7"] = 1,
+    ["tacrp_sg551"] = 5,
+    ["tacrp_skorpion"] = 30,
+    ["tacrp_sphinx"] = 15,
+    ["tacrp_spr"] = 5,
+    ["tacrp_superv"] = 5,
+    ["tacrp_tgs12"] = 20,
+    ["tacrp_uratio"] = 5,
+    ["tacrp_uzi"] = 30,
+    ["tacrp_vertec"] = 30,
+    ["tacrp_xd45"] = 15,
+}
+
+-- Get cumulative probabilities for gunlab weapons
+GM.Config.gunlabWeaponsCumulative = {}
+
+local totalWeight = 0
+for weapon, weight in pairs(GM.Config.gunlabWeapons) do
+    totalWeight = totalWeight + weight
+    GM.Config.gunlabWeaponsCumulative[totalWeight] = weapon
+end
+GM.Config.gunlabWeaponsTotalWeight = totalWeight
+
+local weaponKeys = {}
+for cumWeight, weapon in pairs(GM.Config.gunlabWeaponsCumulative) do
+    table.insert(weaponKeys, cumWeight)
+end
+table.sort(weaponKeys)
+
+GM.Config.gunlabWeaponsCumulativeKeys = weaponKeys
+
+GM.Config.bomblabbombcost = 500
+GM.Config.bomblabWeapons = {
+    "tacrp_ammo_gas",
+    "tacrp_ammo_c4",
+    "tacrp_ammo_charge",
+    "tacrp_ammo_flashbang",
+    "tacrp_ammo_frag",
+    "tacrp_ammo_heal",
+    "tacrp_ammo_heal",
+    "tacrp_ammo_fire"
+}
+
+GM.Config.vendingMachineRequireLicense = {
+    ["tacrp_ak47"] = true,
+    ["tacrp_amd65"] = true,
+    ["tacrp_as50"] = true,
+    ["tacrp_aug"] = true,
+    ["tacrp_bekas"] = true,
+    ["tacrp_c4_detonator"] = false,
+    ["tacrp_civ_g36k"] = true,
+    ["tacrp_civ_mp5"] = true,
+    ["tacrp_civ_p90"] = true,
+    ["tacrp_dsa58"] = true,
+    ["tacrp_ex_ak47"] = true,
+    ["tacrp_ex_glock"] = true,
+    ["tacrp_ex_hecate"] = true,
+    ["tacrp_ex_hk45c"] = true,
+    ["tacrp_ex_m4a1"] = true,
+    ["tacrp_ex_m1911"] = true,
+    ["tacrp_ex_mac10"] = true,
+    ["tacrp_ex_mp9"] =  true,
+    ["tacrp_ex_stinger"] = true,
+    ["tacrp_ex_ump45"] = true,
+    ["tacrp_ex_usp"] = true,
+    ["tacrp_fp6"] = true,
+    ["tacrp_g36k"] = true,
+    ["tacrp_gsr1911"] = true,
+    ["tacrp_hk417"] = true,
+    ["tacrp_k1a"] = true,
+    ["tacrp_knife"] = false,
+    ["tacrp_knife2"] = false,
+    ["tacrp_ks23"] = true,
+    ["tacrp_m1"] = true,
+    ["tacrp_m4"] = true,
+    ["tacrp_m4star10"] = true,
+    ["tacrp_m14"] = true,
+    ["tacrp_m320"] = true,
+    ["tacrp_mg4"] = true,
+    ["tacrp_mp5"] = true,
+    ["tacrp_mp7"] = true,
+    ["tacrp_mr96"] = true,
+    ["tacrp_mtx_dual"] = true,
+    ["tacrp_p90"] = true,
+    ["tacrp_p250"] = true,
+    ["tacrp_p2000"] = true,
+    ["tacrp_pdw"] = true,
+    ["tacrp_riot_shield"] = false,
+    ["tacrp_rpg7"] = true,
+    ["tacrp_sg551"] = true,
+    ["tacrp_skorpion"] = true,
+    ["tacrp_sphinx"] = true,
+    ["tacrp_spr"] = true,
+    ["tacrp_superv"] = true,
+    ["tacrp_tgs12"] = true,
+    ["tacrp_uratio"] = true,
+    ["tacrp_uzi"] = true,
+    ["tacrp_vertec"] = true,
+    ["tacrp_xd45"] = true,
+}
+
+GM.Config.vendingMachineGuns = {
+    ["tacrp_ak47"] = 1200,
+    ["tacrp_amd65"] = 2000,
+    ["tacrp_as50"] = 29500,
+    ["tacrp_aug"] = 2200,
+    ["tacrp_bekas"] = 400,
+    ["tacrp_c4_detonator"] = 200,
+    ["tacrp_civ_g36k"] = 900,
+    ["tacrp_civ_mp5"] = 650,
+    ["tacrp_civ_p90"] = 800,
+    ["tacrp_dsa58"] = 3500,
+    ["tacrp_ex_ak47"] = 1700,
+    ["tacrp_ex_glock"] = 500,
+    ["tacrp_ex_hecate"] = 18000,
+    ["tacrp_ex_hk45c"] = 950,
+    ["tacrp_ex_m4a1"] = 2500,
+    ["tacrp_ex_m1911"] = 300,
+    ["tacrp_ex_mac10"] = 450,
+    ["tacrp_ex_mp9"] = 1100,
+    ["tacrp_ex_stinger"] = 45000,
+    ["tacrp_ex_ump45"] = 1000,
+    ["tacrp_ex_usp"] = 700,
+    ["tacrp_fp6"] = 750,
+    ["tacrp_g36k"] = 3100,
+    ["tacrp_gsr1911"] = 400,
+    ["tacrp_hk417"] = 4500,
+    ["tacrp_k1a"] = 1000,
+    ["tacrp_knife"] = 50,
+    ["tacrp_knife2"] = 50,
+    ["tacrp_ks23"] = 2000,
+    ["tacrp_m1"] = 800,
+    ["tacrp_m4"] = 2900,
+    ["tacrp_m4star10"] = 2200,
+    ["tacrp_m14"] = 3250,
+    ["tacrp_m320"] = 12000,
+    ["tacrp_mg4"] = 15000,
+    ["tacrp_mp5"] = 1200,
+    ["tacrp_mp7"] = 1600,
+    ["tacrp_mr96"] = 250,
+    ["tacrp_mtx_dual"] = 1000,
+    ["tacrp_p90"] = 2800,
+    ["tacrp_p250"] = 350,
+    ["tacrp_p2000"] = 300,
+    ["tacrp_pdw"] = 3250,
+    ["tacrp_riot_shield"] = 500,
+    ["tacrp_rpg7"] = 30000,
+    ["tacrp_sg551"] = 2000,
+    ["tacrp_skorpion"] = 600,
+    ["tacrp_sphinx"] = 500,
+    ["tacrp_spr"] = 2100,
+    ["tacrp_superv"] = 3000,
+    ["tacrp_tgs12"] = 1100,
+    ["tacrp_uratio"] = 3000,
+    ["tacrp_uzi"] = 800,
+    ["tacrp_vertec"] = 250,
+    ["tacrp_xd45"] = 500,
+    ["tacrp_m_bamaslama"] = 50,
+    ["tacrp_m_bat"] = 50,
+    ["tacrp_m_bayonet"] = 50,
+    ["tacrp_m_boina"] = 50,
+    ["tacrp_m_cleaver"] = 50,
+    ["tacrp_m_crowbar"] = 50,
+    ["tacrp_m_css"] = 50,
+    ["tacrp_m_fasthawk"] = 50,
+    ["tacrp_m_gerber"] = 50,
+    ["tacrp_m_glock"] = 50,
+    ["tacrp_m_hamma"] = 50,
+    ["tacrp_m_harpoon"] = 50,
+    ["tacrp_m_heathawk"] = 100000,
+    ["tacrp_m_incorp"] = 50,
+    ["tacrp_m_kitchen"] = 50,
+    ["tacrp_m_knife3"] = 50,
+    ["tacrp_m_kukri"] = 50,
+    ["tacrp_m_machete"] = 50,
+    ["tacrp_m_pan"] = 50,
+    ["tacrp_m_pipe"] = 50,
+    ["tacrp_m_rambo"] = 50,
+    ["tacrp_m_shovel"] = 50,
+    ["tacrp_m_tonfa"] = 50,
+    ["tacrp_m_tracker"] = 50,
+    ["tacrp_m_wiimote"] = 50,
+    ["tacrp_m_wrench"] = 50,
+}
+
+GM.Config.vendingMachineAmmo = {
+    {
+        name = "Pistol/SMG Ammo (x30)",
+        amount = 30,
+        cost = 300,
+        max = 360,
+        ammo = "pistol"
+    },
+    {
+        name = "Shotgun Ammo (x15)",
+        amount = 15,
+        cost = 200,
+        max = 80,
+        ammo = "buckshot"
+    },
+    {
+        name = "Carbine Ammo (x30)",
+        amount = 30,
+        cost = 450,
+        max = 240,
+        ammo = "smg1"
+    },
+    {
+        name = "Rifle Ammo (x30)",
+        amount = 30,
+        cost = 650,
+        max = 150,
+        ammo = "ar2"
+    },
+    {
+        name = "Magnum/Sniper Ammo (x10)",
+        amount = 10,
+        cost = 500,
+        max = 100,
+        ammo = "357"
+    },
+    {
+        name = "Rifle Grenades (x1)",
+        amount = 1,
+        cost = 300,
+        max = 12,
+        ammo = "smg1_grenade"
+    },
+    {
+        name = "Rocket Ammo (x1)",
+        amount = 1,
+        cost = 1500,
+        max = 4,
+        ammo = "rpg_round"
+    },
+    {
+        name = "Crossbow Bolts (x4)",
+        amount = 4,
+        cost = 100,
+        max = 32,
+        ammo = "xbowbolt"
+    }
+}

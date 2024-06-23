@@ -181,7 +181,7 @@ local my_language = {
     drugs = "drugs",
     Drugs = "Drugs",
     drug_lab = "Drug Lab",
-    gun_lab = "Gun Lab",
+    gun_lab = "Craft Random Weapon",
     any_lab = "any lab",
     gun = "gun",
     microwave = "Microwave",
@@ -566,6 +566,10 @@ local my_language = {
     Tick the weapons people should be able to get WITHOUT a license!
     ]],
     license_tab_other_weapons = "Other weapons:",
+
+    -- Arctic stuff
+    gunlablimit = "You have made too many weapons; please sell some before making more",
+    explosive_lab = "Create Random Explosive",
 }
 
 -- The language code is usually (but not always) a two-letter code. The default language is "en".

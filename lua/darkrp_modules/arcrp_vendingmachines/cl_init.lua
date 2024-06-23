@@ -1,6 +1,6 @@
 local bgframe = nil
 
-net.Receive("arcrp_openvendingmachine", function(len, ply)
+function ArcRP_OpenVendingMachine()
     if bgframe and IsValid(bgframe) then
         bgframe:Remove()
     end
@@ -169,4 +169,4 @@ net.Receive("arcrp_openvendingmachine", function(len, ply)
             net.SendToServer()
         end
     end
-end)
+end

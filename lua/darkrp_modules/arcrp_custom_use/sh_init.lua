@@ -13,5 +13,12 @@ function ArcRP_GetCustomUse(ent, ply)
                 message = "Unarrest"
             }
         end
+    elseif ent.isVendingMachine then
+        return {
+            callback = function(ent2, ply2)
+                ArcRP_OpenVendingMachine()
+            end,
+            message = "Use Gun's 4U"
+        }
     end
 end

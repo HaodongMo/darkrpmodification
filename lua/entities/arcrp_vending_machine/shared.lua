@@ -6,6 +6,4 @@ ENT.Spawnable = true
 
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
-ENT.interactionHint = "Use"
-
 ENT.isVendingMachine = true

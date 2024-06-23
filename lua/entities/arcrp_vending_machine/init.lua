@@ -23,8 +23,5 @@ function ENT:canUse(owner, activator)
 end
 
 function ENT:Use(activator, caller)
-    if not activator:IsPlayer() then return end
-
-    net.Start("arcrp_openvendingmachine")
-    net.Send(activator)
+    return
 end

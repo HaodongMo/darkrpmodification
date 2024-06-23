@@ -15,7 +15,7 @@ function ArcRP_GetCustomUse(ent, ply)
         end
     elseif ent.isVendingMachine then
         return {
-            callback = function(ent2, ply2)
+            cl_callback = function(ent2, ply2)
                 ArcRP_OpenVendingMachine()
             end,
             message = "Use Gun's 4U"

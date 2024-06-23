@@ -20,7 +20,7 @@ Add entities under the following line:
 DarkRP.createEntity("Gun lab", {
     ent = "arcrp_gunlab",
     model = "models/props_c17/TrapPropeller_Engine.mdl",
-    price = 150000,
+    price = 30000,
     max = 1,
     cmd = "buygunlab",
     allowed = TEAM_CRAFTSMAN

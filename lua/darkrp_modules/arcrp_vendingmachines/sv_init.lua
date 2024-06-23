@@ -43,7 +43,7 @@ net.Receive("arcrp_buyweapon", function(len, ply)
     local cost = GAMEMODE.Config.vendingMachineGuns[weapon]
 
     if cost != nil and ply:getDarkRPVar("money") >= cost then
-        if !GAMEMODE.Config.vendingMachineRequireLicense[weapon] or ply:getDarkRPVar("HasGunlicense") then
+        if GAMEMODE.Config.vendingMachineNoLicense or !GAMEMODE.Config.vendingMachineRequireLicense[weapon] or ply:getDarkRPVar("HasGunlicense") then
             local insphere = ents.FindInSphere(ply:GetPos(), 256)
             local has_vending_machine = false
 

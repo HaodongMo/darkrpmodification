@@ -116,7 +116,7 @@ function ArcRP_OpenVendingMachine()
     for i, data in ipairs(vendingWeapons) do
         local but = grid:Add( "DButton" )
         local weapon_class = weapons.Get(data.weapon)
-        local prohibited = GAMEMODE.Config.vendingMachineRequireLicense[data.weapon] and !LocalPlayer():getDarkRPVar("HasGunlicense")
+        local prohibited = !GAMEMODE.Config.vendingMachineNoLicense and GAMEMODE.Config.vendingMachineRequireLicense[data.weapon] and !LocalPlayer():getDarkRPVar("HasGunlicense")
         but:SetText("")
         but:SetSize( ScreenScale(55), ScreenScale(55) )
         but.name = weapon_class.AbbrevName or weapon_class.PrintName

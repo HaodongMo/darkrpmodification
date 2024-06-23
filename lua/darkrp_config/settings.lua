@@ -776,6 +776,8 @@ GM.Config.vendingMachineGuns = {
     ["tacrp_m_wrench"] = 50,
 }
 
+GM.Config.vendingMachineNoLicense = true
+
 GM.Config.vendingMachineAmmo = {
     {
         name = "Pistol/SMG Ammo (x30)",

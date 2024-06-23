@@ -1,6 +1,6 @@
 ENT.Base = "arcrp_lab_base"
 ENT.PrintName = "Explosives Lab"
-ENT.craftTime = 1
+ENT.craftTime = 5
 
 ENT.interactionHint = "Craft random explosive"
 

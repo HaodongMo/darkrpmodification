@@ -276,7 +276,6 @@ hook.Add("canVote", "tacrp_police_vote", function(ply, vote)
 
     if allow_vote_roles then
         local ply_role = ply:Team()
-        PrintTable(GAMEMODE.AllowVoteRoles)
         return GAMEMODE.AllowVoteRoles[role][ply_role] or false
     end
 end)
@@ -291,7 +290,7 @@ end
 hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker)
     if attacker:isCP() then return end
 
-    local money = victim:getDarkRPVar("money")
+    local money = math.ceil(victim:getDarkRPVar("money") * 0.15)
 
     if money > 5000 then
         money = 5000

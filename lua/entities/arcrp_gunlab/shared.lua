@@ -1,6 +1,6 @@
 ENT.Base = "arcrp_lab_base"
 ENT.PrintName = "Gun Lab"
-ENT.craftTime = 1
+ENT.craftTime = 10
 
 ENT.interactionHint = "Craft random weapon"
 

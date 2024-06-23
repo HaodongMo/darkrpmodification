@@ -158,7 +158,7 @@ GM.Config.strictsuicide                 = false
 -- telefromjail - Enable/disable teleporting from jail.
 GM.Config.telefromjail                  = false
 -- teletojail - Enable/disable teleporting to jail.
-GM.Config.teletojail                    = true
+GM.Config.teletojail                    = true 
 -- unlockdoorsonstart - Enable/Disable unlocking all doors on map start.
 GM.Config.unlockdoorsonstart            = false
 -- voiceradius - Enable/disable local voice chat.
@@ -716,7 +716,7 @@ GM.Config.vendingMachineGuns = {
     ["tacrp_ex_stinger"] = 45000,
     ["tacrp_ex_ump45"] = 1000,
     ["tacrp_ex_usp"] = 700,
-    ["tacrp_fp6"] = 750,
+    ["tacrp_fp6"] = 1750,
     ["tacrp_g36k"] = 3100,
     ["tacrp_gsr1911"] = 400,
     ["tacrp_hk417"] = 4500,

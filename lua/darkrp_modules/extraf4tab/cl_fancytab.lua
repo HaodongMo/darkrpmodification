@@ -12,7 +12,9 @@ local function createF4MenuTab()
         color: white;
         font-family: sans-serif;
     }
-</style><h1 id="the-law">The Law</h1>
+</style>
+
+<h1 id="the-law">The Law</h1>
 <h2 id="-0-metagame">§0 : Metagame</h2>
 <ol>
 <li><p>Using software external to the intended limits of the game to gain
@@ -216,6 +218,8 @@ individual.</p>
 </li>
 <li><p>It is not a crime to possess ammunition.</p>
 </li>
+<li><p>Discharging a weapon in public or at another person is a crime.</p>
+</li>
 </ol>
 <h2 id="-5-miscellaneous">§5 : Miscellaneous</h2>
 <ol>
@@ -234,7 +238,6 @@ contraband Bitcoin Miners.</p>
 Accessory to the crime, and is punishable.</p>
 </li>
 </ol>
-
 
 ]] )
 

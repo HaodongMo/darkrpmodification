@@ -186,6 +186,8 @@
 
 5.  It is not a crime to possess ammunition.
 
+6.  Discharging a weapon in public or at another person is a crime.
+
 ## §5 : Miscellaneous
 
 1.  It is considered the crime of Murder for Hire to solicit another

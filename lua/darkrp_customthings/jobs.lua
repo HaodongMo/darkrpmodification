@@ -146,14 +146,14 @@ TEAM_LOCKSMITH = DarkRP.createJob("Locksmith", {
     color = Color(200, 25, 25, 255),
     model = {"models/player/leet.mdl"},
     description =
-[[Your lockpick and crowbar can be used to break into buildings.]],
+[[Your lockpick can be used to break into buildings.]],
     command = "locksmith",
     salary = GAMEMODE.Config.normalsalary,
     admin = 0,
     category = "Citizens",
     max = 2,
     sortOrder = 101,
-    weapons = {"lockpick", "tacrp_m_crowbar"},
+    weapons = {"lockpick"},
 })
 
 TEAM_GUNSMITH = DarkRP.createJob("Gunsmith", {

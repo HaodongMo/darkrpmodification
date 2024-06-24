@@ -52,18 +52,18 @@ hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker
 
     if victim:GetNWBool("Insurance", false) then
         victim:SetNWBool("Insurance", false)
-        DarkRP.notify(activator, 3, 10, "Your insurance expired and prevented a money loss of " .. DarkRP.formatMoney(money) .. ".")
+        DarkRP.notify(victim, 3, 10, "Your insurance expired and prevented a money loss of " .. DarkRP.formatMoney(money) .. ".")
     elseif money > 0 then
         victim:addMoney(-money)
         DarkRP.createMoneyBag(victim:GetPos() + Vector(0, 0, 10), money)
-        DarkRP.notify(activator, 3, 10, "You lost " .. DarkRP.formatMoney(money) .. " on death." .. (money > 0.5 * max and " Maybe consider getting insurance next time..." or ""))
+        DarkRP.notify(victim, 3, 10, "You lost " .. DarkRP.formatMoney(money) .. " on death." .. (money > 0.5 * max and " Maybe consider getting insurance next time..." or ""))
     end
 
     // Tax returns are void
     local tax_return = "TaxReturn_" .. victim:SteamID64()
     if timer.Exists(tax_return) then
         timer.Remove(tax_return)
-        DarkRP.notify(activator, 1, 10, "Your tax return forms are void due to your death!")
+        DarkRP.notify(victim, 1, 10, "Your tax return forms were voided due to your death!")
     end
 end)
 

@@ -27,11 +27,14 @@ end
 ENT.ScavengeLoot_Guns = {
     "tacrp_ex_m1911",
     "tacrp_ex_glock",
+    "tacrp_ex_vertec",
+    "tacrp_ex_m1911",
+    "tacrp_ex_glock",
+    "tacrp_ex_vertec",
     "tacrp_gsr1911",
-    "tacrp_mr96",
+    "tacrp_p2000",
     "tacrp_ex_usp",
     "tacrp_ex_mac10",
-    "tacrp_uzi",
     "tacrp_skorpion",
     "tacrp_bekas",
     "tacrp_tgs12",
@@ -65,6 +68,29 @@ ENT.ScavengeLoot_Melees = {
     "tacrp_m_wiimote",
     "tacrp_m_wrench",
 }
+ENT.ScavengeLoot_Items = {
+    "tacrp_ammo_flashbang",
+    "tacrp_ammo_flashbang",
+    "tacrp_ammo_flashbang",
+    "tacrp_ammo_smoke",
+    "tacrp_ammo_smoke",
+    "tacrp_ammo_smoke",
+    "tacrp_ammo_gas",
+    "tacrp_ammo_gas",
+    "tacrp_ammo_heal",
+}
+
+ENT.ScavengeLoot_LiveGrenades = {
+    "tacrp_proj_nade_flashbang",
+    "tacrp_proj_nade_flashbang",
+    "tacrp_proj_nade_flashbang",
+    "tacrp_proj_nade_flashbang",
+    "tacrp_proj_nade_smoke",
+    "tacrp_proj_nade_smoke",
+    "tacrp_proj_nade_gas",
+    "tacrp_proj_nade_heal",
+    "tacrp_proj_nade_frag",
+}
 
 local descriptors = {
     "a slightly battered",
@@ -92,6 +118,11 @@ local descriptors = {
     "a dusty",
     "a dust-covered",
     "a tainted",
+    "a dangerous-looking",
+    "a boring",
+    "a mundane",
+    "an unassuming",
+    "a typical",
 }
 
 local dispose_blacklist = {
@@ -99,8 +130,8 @@ local dispose_blacklist = {
     ["tacrp_riot_shield"] = true,
 }
 
-ENT.SpawnOffset = Vector(0, 0, 64)
-ENT.ScavengeDelay = 60
+ENT.SpawnOffset = Vector(0, 0, 32)
+ENT.ScavengeDelay = 120
 
 function ENT:Use(activator, caller)
     local wep = activator:GetActiveWeapon()
@@ -144,15 +175,18 @@ function ENT:Use(activator, caller)
         if self.NextScavengeTime < CurTime() then
             // SCAVENGE!!!! :torle:
 
-            local roll = math.random(0, 100)
+            local roll = math.random(1, 100)
 
-            if roll <= 13 then
+            if roll <= 20 then
                 // roll random melee
                 local randowep = table.Random(self.ScavengeLoot_Melees)
 
                 if roll <= 3 then
                     // roll random gun
                     randowep = table.Random(self.ScavengeLoot_Guns)
+                elseif roll <= 9 then
+                    // item
+                    randowep = table.Random(self.ScavengeLoot_Items)
                 end
 
                 local newwep = ents.Create(randowep)
@@ -177,7 +211,7 @@ function ENT:Use(activator, caller)
                 newwep:Spawn()
 
                 DarkRP.notify(activator, 0, 5, "You found " .. descriptors[math.random(1, #descriptors)] .. " " .. newwep.PrintName .. "!")
-            elseif roll <= 33 then
+            elseif roll <= 40 then
                 local amount = math.ceil(math.random(5, 30))
                 activator:addMoney(amount)
                 DarkRP.notify(activator, 0, 5, "You found " .. DarkRP.formatMoney(amount) .. "!")
@@ -185,11 +219,27 @@ function ENT:Use(activator, caller)
                 local amount = math.ceil(math.random(1, 5))
                 activator:addMoney(amount)
                 DarkRP.notify(activator, 0, 5, "You found " .. DarkRP.formatMoney(amount) .. ".")
+            elseif roll == 100 then
+                -- hot potato
+                local newwep = ents.Create(table.Random(self.ScavengeLoot_LiveGrenades))
+                if !IsValid(newwep) then print("Invalid entity: " .. randowep) return end
+                local newpos = self:GetPos()
+                newpos = newpos + self:GetForward() * self.SpawnOffset.x
+                newpos = newpos + self:GetRight() * self.SpawnOffset.y
+                newpos = newpos + self:GetUp() * self.SpawnOffset.z
+                newwep:SetPos(newpos)
+                newwep.nodupe = true
+                newwep.spawnedBy = activator
+                newwep.Delay = math.Rand(3, 5) -- more time to react
+                newwep:Spawn()
+                newwep:GetPhysicsObject():ApplyTorqueCenter(VectorRand() * 360)
+                newwep:GetPhysicsObject():ApplyForceCenter(VectorRand() * 100 + (activator:EyePos() - newpos):GetNormalized() * 300 + Vector(0, 0, math.Rand(100, 300)))
+                DarkRP.notify(activator, 1, 5, "You found a live grenade?!")
             else
                 DarkRP.notify(activator, 1, 5, "You didn't find anything...")
             end
 
-            self.NextScavengeTime = CurTime() + self.ScavengeDelay
+            self.NextScavengeTime = CurTime() + self.ScavengeDelay * math.Rand(1, 1.5)
         else
             DarkRP.notify(activator, 1, 4, "There is nothing to scavenge at the moment...")
         end

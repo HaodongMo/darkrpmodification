@@ -176,7 +176,8 @@ TEAM_LAWYER = DarkRP.createJob("Lawyer", {
     description =
 [[You are well versed in legal stuff that nobody else cares about.
 
-Buy insurance for others to prevent money loss on death.
+File tax returns to help your clients get money back from the IRS.
+Sell insurance that prevent money loss on death.
 Free your clients from prison (with or without the police's consent).]],
     command = "lawyer",
     salary = GAMEMODE.Config.normalsalary,
@@ -336,6 +337,13 @@ hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker
         victim:addMoney(-money)
         DarkRP.createMoneyBag(victim:GetPos() + Vector(0, 0, 10), money)
         DarkRP.notify(activator, 3, 10, "You lost " .. DarkRP.formatMoney(money) .. " on death." .. (money > 0.5 * max and " Maybe consider getting insurance next time..." or ""))
+    end
+
+    // Tax returns are void
+    local tax_return = "TaxReturn_" .. victim:SteamID64()
+    if timer.Exists(tax_return) then
+        timer.Remove(tax_return)
+        DarkRP.notify(activator, 1, 10, "Your tax return forms are void due to your death!")
     end
 end)
 

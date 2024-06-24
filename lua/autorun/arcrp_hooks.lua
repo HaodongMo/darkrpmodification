@@ -80,14 +80,13 @@ hook.Add("canUnarrest", "tacrp_police_unarrest", function(unarrester, unarrestee
 end)
 
 // arrest on kill by police
-hook.Add("PlayerDeath", "tacrp_police_arrest", function(victim, inflictor, attacker)
-    if inflictor:GetClass() == "tacrp_m_tonfa" and (!victim:isCP() and attacker:isCP()) or victim:isWanted() then
-        victim:arrest(180, attacker)
-    else
-        if victim:Team() != GAMEMODE.DefaultTeam then
-            victim:teamBan(victim:Team(), 300)
-            victim:changeTeam(GAMEMODE.DefaultTeam, true)
-        end
+hook.Add("PostPlayerDeath", "tacrp_police_arrest", function(victim)
+    if victim:isWanted() and !victim:isArrested() then
+        victim:arrest(300, attacker)
+    end
+    if victim:Team() != GAMEMODE.DefaultTeam then
+        victim:teamBan(victim:Team(), 300)
+        victim:changeTeam(GAMEMODE.DefaultTeam, true)
     end
 end)
 

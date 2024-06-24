@@ -111,7 +111,7 @@ local function hudPaintHealth()
     local jobtext = LocalPlayer():getDarkRPVar("job") or ""
     local ts, th = surfaceGetTextSize(jobtext)
     if ts >= w * 0.4 then
-        surfaceSetFont("TacRP_HD44780A00_5x8_4")
+        surfaceSetFont("TacRP_HD44780A00_5x8_5")
         ts, th = surfaceGetTextSize(jobtext)
     end
     surfaceSetTextPos(x + w - TacRP.SS(3) - ts, y + TacRP.SS(18) - th)
@@ -177,9 +177,11 @@ local function hudPaintHealth()
     local stamina_perc = LocalPlayer():IMDE_GetStamina() / LocalPlayer():IMDE_GetMaxStamina()
     local balance_perc = LocalPlayer():IMDE_GetBalance() / LocalPlayer():IMDE_GetMaxBalance()
 
-    surfaceSetTextPos(x + TacRP.SS(7), hpb_y2)
     surfaceSetFont("TacRP_HD44780A00_5x8_6")
+    local ew, eh = surfaceGetTextSize("E")
 
+    surfaceSetTextPos(x + TacRP.SS(7), hpb_y2 + hpb_h2 / 2 - eh / 2)
+    surfaceSetTextColor(col)
     surfaceDrawText("E")
 
     local hpb_can = math.min(math.ceil(hpb_segments * stamina_perc), hpb_segments)
@@ -361,7 +363,7 @@ local function hudPaintAmmo()
         surfaceSetFont("TacRP_HD44780A00_5x8_10")
         surfaceDrawText(clips)
     else
-        if !ammotype then
+        if !ammotype or ammotype == -1 or ammotype == "" then
             clips = ""
         elseif wpn.ArcticTacRP and ((getValue(wpn, "PrimaryGrenade") and TacRP.IsGrenadeInfiniteAmmo(getValue(wpn, "PrimaryGrenade"))) or (!getValue(wpn, "PrimaryGrenade") and wpn:GetInfiniteAmmo())) then
             clips = "INF"

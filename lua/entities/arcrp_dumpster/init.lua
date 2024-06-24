@@ -176,17 +176,17 @@ function ENT:Use(activator, caller)
                 end
                 newwep:Spawn()
 
-                DarkRP.notify(activator, 0, 4, "You found " .. descriptors[math.random(1, #descriptors)] .. " " .. newwep.PrintName .. "!")
+                DarkRP.notify(activator, 0, 5, "You found " .. descriptors[math.random(1, #descriptors)] .. " " .. newwep.PrintName .. "!")
             elseif roll <= 33 then
                 local amount = math.ceil(math.random(5, 30))
                 activator:addMoney(amount)
-                DarkRP.notify(activator, 0, 4, "You found " .. DarkRP.formatMoney(amount) .. "!")
+                DarkRP.notify(activator, 0, 5, "You found " .. DarkRP.formatMoney(amount) .. "!")
             elseif roll <= 70 then
                 local amount = math.ceil(math.random(1, 5))
                 activator:addMoney(amount)
-                DarkRP.notify(activator, 0, 4, "You found " .. DarkRP.formatMoney(amount) .. ".")
+                DarkRP.notify(activator, 0, 5, "You found " .. DarkRP.formatMoney(amount) .. ".")
             else
-                DarkRP.notify(activator, 0, 4, "You didn't find anything...")
+                DarkRP.notify(activator, 1, 5, "You didn't find anything...")
             end
 
             self.NextScavengeTime = CurTime() + self.ScavengeDelay
@@ -195,5 +195,24 @@ function ENT:Use(activator, caller)
         end
 
         self:EmitSound("doors/door_metal_rusty_move1.wav", 85, math.Rand(98, 102))
+    end
+end
+
+function ENT:PhysicsCollide(coldata, collider)
+    local ent = coldata.HitEntity
+    if IsValid(ent) and ent:GetNWBool("IMDE_IsRagdoll") and ent.IsDeathRagdoll and not IsValid(ent:GetOwner()) then
+
+        local money = math.random(5, 25)
+
+        if IsValid(ent.Dragger) and ent.Dragger:Alive()
+                and IsValid(ent.Dragger:GetActiveWeapon()) and ent.Dragger:GetActiveWeapon():GetClass() == "arcrp_hands"
+                and ent.Dragger:GetActiveWeapon().DraggingEnt == ent then
+            ent.Dragger:addMoney(money)
+            DarkRP.notify(ent.Dragger, 0, 5, "Thank you for keeping the streets clean! You received " .. DarkRP.formatMoney(money) .. " for disposing a body.")
+        else
+            DarkRP.createMoneyBag(ent:WorldSpaceCenter() + Vector(0, 0, 10), money)
+        end
+        SafeRemoveEntity(ent)
+        self:EmitSound("doors/door_metal_thin_close2.wav", 85, math.Rand(98, 102))
     end
 end

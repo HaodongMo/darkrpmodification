@@ -69,11 +69,15 @@ function SWEP:StartDragging(ent, pos, bone)
     self.DraggingEnt = ent
     self.DraggingEntBone = bone
     self.DraggingEntPos = pos
+    ent.Dragger = self:GetOwner()
     self:SetHoldType("fist")
 end
 
 function SWEP:StopDragging()
     self:SetDragging(false)
+    if IsValid(self.DraggingEnt) then
+        self.DraggingEnt.Dragger = nil
+    end
     self.DraggingEnt = nil
     self:SetHoldType("normal")
 end
@@ -227,7 +231,11 @@ end
 
 function SWEP:Think()
     if SERVER and self:GetDragging() then
-        self:ApplyForce()
+        if not IsValid(self:GetDraggingEnt()) then
+            self:StopDragging()
+        else
+            self:ApplyForce()
+        end
     end
 end
 

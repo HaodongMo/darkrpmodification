@@ -7,7 +7,9 @@ function ArcRP_GetCustomUse(ent, ply)
             return {
                 callback = function(ent2, ply2)
                     if ent2:isArrested() and !ply2:isArrested() and ply:getJobTable().unarrest then
+                        GAMEMODE.Config.telefromjail = false
                         ent2:unArrest(ply2)
+                        GAMEMODE.Config.telefromjail = true
                     end
                 end,
                 message = "Unarrest"

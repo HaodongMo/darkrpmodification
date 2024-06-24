@@ -35,7 +35,15 @@ DarkRP.createEntity("Explosives lab", {
     allowed = TEAM_CRAFTSMAN
 })
 
-DarkRP.createEntity("Life Insurance", {
+DarkRP.createEntity("The Instrument", {
+    ent = "weapon_the_instrument",
+    model = "models/props_c17/tv_monitor01.mdl",
+    price = 125,
+    max = 1,
+    cmd = "buytheinstrument",
+})
+
+DarkRP.createEntity("Insurance", {
     ent = "arcrp_insurance",
     model = "models/props_lab/clipboard.mdl",
     price = 100,

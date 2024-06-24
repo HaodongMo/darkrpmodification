@@ -91,8 +91,11 @@ local function hudPaintHealth()
     surfaceSetColor(col)
     surfaceDrawText(nametext)
 
-    local salarytext = DarkRP.formatMoney(LocalPlayer():getDarkRPVar("salary")) or ""
-    local wallettext = (DarkRP.formatMoney(LocalPlayer():getDarkRPVar("money")) or "") .. "(+" .. salarytext .. ")"
+    local salary = LocalPlayer():getDarkRPVar("salary")
+    if GetGlobalFloat("SalarySuppressionEndTime", 0) > CurTime() then salary = 0 end
+
+    local salarytext = DarkRP.formatMoney(salary) or ""
+    local wallettext = (DarkRP.formatMoney(LocalPlayer():getDarkRPVar("money")) or "") .. " (+" .. salarytext .. ")"
 
     surfaceSetFont("TacRP_HD44780A00_5x8_6")
     surfaceSetTextPos(x + TacRP.SS(3), y + TacRP.SS(12))

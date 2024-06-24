@@ -28,7 +28,7 @@ function ENT:Touch(entity)
         SafeRemoveEntity(entity)
 
         DarkRP.notifyAll(0, 5, "The bank has been robbed! There is no money to pay your salary!")
-        GAMEMODE.SalarySuppressionEndTime = CurTime() + 300
+        SetGlobalFloat("SalarySuppressionEndTime", CurTime() + 300)
 
         self.Money = 0
         for _, ply in ipairs(player.GetAll()) do

@@ -303,12 +303,11 @@ hook.Add("TacRP_CanCustomize", "tacrp_rpcustomize", function(ply, wep, att, slot
     local cat = istable(atttbl.Category) and atttbl.Category[1] or atttbl.Category
 
     // Melee special and technique not allowed for now
-    if (cat == "melee_spec" or cat == "melee_boost") and !ply:getJobTable().martialArtist then
-        return false, "Requires Martial Artist"
-    end
-
-    // Free attachments don't require gunsmith
-    if (!atttbl.Free and cat != "melee_tech") and !ply:getJobTable().gunsmith then
+    if (cat == "melee_spec" or cat == "melee_boost") then
+        if !ply:getJobTable().martialArtist then
+            return false, "Requires Martial Artist"
+        end
+    elseif (!atttbl.Free and cat != "melee_tech") and !ply:getJobTable().gunsmith then
         return false, "Requires Gunsmith"
     end
 

@@ -156,7 +156,7 @@ GM.Config.shouldResetLaws               = false
 -- strictsuicide - Whether or not players should spawn where they suicided.
 GM.Config.strictsuicide                 = false
 -- telefromjail - Enable/disable teleporting from jail.
-GM.Config.telefromjail                  = false
+GM.Config.telefromjail                  = true
 -- teletojail - Enable/disable teleporting to jail.
 GM.Config.teletojail                    = true 
 -- unlockdoorsonstart - Enable/Disable unlocking all doors on map start.

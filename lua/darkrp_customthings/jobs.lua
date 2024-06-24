@@ -363,3 +363,11 @@ end)
 hook.Add("canUnarrest", "tacrp_police_unarrest", function(unarrester, unarrestee)
     return unarrester:getJobTable().unarrest
 end)
+
+GM.SalarySuppressionEndTime = 0
+
+hook.Add("playerGetSalary", "arcrp_salary_bankrobbery", function(ply, amount)
+    if GAMEMODE.SalarySuppressionEndTime > CurTime() then
+        return false, "There is no money to pay you!", 0
+    end
+end)

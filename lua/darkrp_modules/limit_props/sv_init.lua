@@ -1,5 +1,5 @@
-local maxs = 1024
-local maxvol = 512 * 512 * 512
+local maxs = 512
+local maxvol = 256 * 256 * 256
 
 hook.Add("PlayerSpawnedProp", "ARCRP_LimitProps", function(ply, model, ent)
     if !IsValid(ent) then return end

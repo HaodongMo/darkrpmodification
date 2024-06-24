@@ -46,6 +46,7 @@ local lastrow = 0
 
 local col = Color(255, 255, 255)
 local col_hi = Color(255, 150, 0)
+local col_bal = Color(255, 200, 100)
 local col_hi2 = Color(255, 230, 200)
 local col_dark = Color(255, 255, 255, 20)
 
@@ -64,15 +65,19 @@ local surfaceDrawLine = surface.DrawLine
 
 local function hudPaintHealth()
     local w = TacRP.SS(128)
-    local h = TacRP.SS(32)
+    local h = TacRP.SS(40)
     local x = TacRP.SS(8)
     local y = ScrH() - h - TacRP.SS(8)
 
     local hpb_x = x + TacRP.SS(14)
-    local hpb_y = y + h - TacRP.SS(10)
+    local hpb_y = y + h - TacRP.SS(18)
     local hpb_w = TacRP.SS(2)
     local hpb_h = TacRP.SS(8)
+    local hpb_h2 = TacRP.SS(6)
+
     local hpb_segments = 36
+
+    local hpb_y2 = y + h - TacRP.SS(8)
 
     local armor = LocalPlayer():Armor()
 
@@ -103,8 +108,15 @@ local function hudPaintHealth()
 
     -- on the right hand side
     local jobtext = LocalPlayer():getDarkRPVar("job") or ""
-    surfaceSetTextPos(x + w - TacRP.SS(3) - surfaceGetTextSize(jobtext), y + TacRP.SS(12))
+    local ts, th = surfaceGetTextSize(jobtext)
+    if ts >= w * 0.4 then
+        surfaceSetFont("TacRP_HD44780A00_5x8_4")
+        ts, th = surfaceGetTextSize(jobtext)
+    end
+    surfaceSetTextPos(x + w - TacRP.SS(3) - ts, y + TacRP.SS(18) - th)
     surfaceDrawText(jobtext)
+
+    -- Health / Armor
 
     local perc = LocalPlayer():Health() / LocalPlayer():GetMaxHealth()
     local arm_perc = math.Clamp(armor / 100, 0, 1)
@@ -114,7 +126,6 @@ local function hudPaintHealth()
 
     if perc <= 0.2 then
         surfaceSetTextColor(col_hi)
-
         if math.sin(CurTime() * 7) > 0.5 then
             surfaceSetTextColor(col)
         end
@@ -159,6 +170,30 @@ local function hudPaintHealth()
 
     surfaceSetDrawColor(col)
     surfaceDrawLine(x + TacRP.SS(2), hpb_y - TacRP.SS(2), x + w - TacRP.SS(2), hpb_y - TacRP.SS(2))
+
+    -- Balance / Stamina
+    local stamina_perc = LocalPlayer():IMDE_GetStamina() / LocalPlayer():IMDE_GetMaxStamina()
+    local balance_perc = LocalPlayer():IMDE_GetBalance() / LocalPlayer():IMDE_GetMaxBalance()
+
+    surfaceSetTextPos(x + TacRP.SS(7), hpb_y2)
+    surfaceSetFont("TacRP_HD44780A00_5x8_6")
+
+    surfaceDrawText("E")
+
+    local hpb_can = math.min(math.ceil(hpb_segments * stamina_perc), hpb_segments)
+
+    for i = 1, hpb_segments do
+        if i / hpb_segments <= balance_perc then
+            surfaceSetDrawColor(col_bal)
+        else
+            surfaceSetDrawColor(col)
+        end
+        if hpb_can >= i then
+            surfaceDrawRect(hpb_x + (i * (hpb_w + TacRP.SS(1))), hpb_y2, hpb_w, hpb_h2)
+        else
+            surfaceDrawOutlinedRect(hpb_x + (i * (hpb_w + TacRP.SS(1))), hpb_y2, hpb_w, hpb_h2)
+        end
+    end
 
     lasthp = LocalPlayer():Health()
 end

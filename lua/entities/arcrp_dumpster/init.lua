@@ -66,6 +66,39 @@ ENT.ScavengeLoot_Melees = {
     "tacrp_m_wrench",
 }
 
+local descriptors = {
+    "a slightly battered",
+    "a worn",
+    "a smelly",
+    "a stained",
+    "a wet",
+    "a sticky",
+    "a slimy",
+    "a moist",
+    "a fine-looking",
+    "a beaten",
+    "a nasty-looking",
+    "a blood stained",
+    "a funny smelling",
+    "a somewhat functional",
+    "an okay looking",
+    "a decent",
+    "a weird-looking",
+    "a barely functional",
+    "a rusty",
+    "an average",
+    "a snot-ridden",
+    "a fishy smelling",
+    "a dusty",
+    "a dust-covered",
+    "a tainted",
+}
+
+local dispose_blacklist = {
+    ["tacrp_medkit"] = true,
+    ["tacrp_riot_shield"] = true,
+}
+
 ENT.SpawnOffset = Vector(0, 0, 64)
 ENT.ScavengeDelay = 60
 
@@ -73,8 +106,37 @@ function ENT:Use(activator, caller)
     local wep = activator:GetActiveWeapon()
 
     if IsValid(wep) and weapons.IsBasedOn(wep:GetClass(), "tacrp_base") then
+
+        local canDrop = hook.Call("canDropWeapon", GAMEMODE, activator, wep)
+        if !canDrop or dispose_blacklist[wep:GetClass()] then
+            DarkRP.notify(activator, 1, 4, "This item cannot be disposed.")
+            return
+        end
+
+        local money = 0
+        if wep:GetValue("PrimaryMelee") or wep:GetValue("PrimaryGrenade") then
+            money = math.random(5, 25)
+        elseif wep.Attachments then
+            local has_surplus = false
+            for k, v in pairs(wep.Attachments or {}) do
+                if v.Installed == "bolt_surplus" then
+                    has_surplus = true
+                    break
+                end
+            end
+            if !has_surplus then
+                money = math.random(10, 75)
+            else
+                money = math.random(5, 25)
+            end
+        end
         activator:StripWeapon(wep:GetClass())
-        DarkRP.notify(activator, 1, 4, "Thank you for keeping the streets clean!")
+        if money > 0 then
+            DarkRP.notify(activator, 0, 4, "Thank you for keeping the streets clean! You received a " .. DarkRP.formatMoney(money) .. " cash refund.")
+            activator:addMoney(money)
+        else
+            DarkRP.notify(activator, 0, 4, "Thank you for keeping the streets clean! Your disposal item was not eligible for a cash refund.")
+        end
     else
 
         if self.NextScavengeTime < CurTime() then
@@ -82,11 +144,11 @@ function ENT:Use(activator, caller)
 
             local roll = math.random(0, 100)
 
-            if roll < 20 then
+            if roll <= 13 then
                 // roll random melee
                 local randowep = table.Random(self.ScavengeLoot_Melees)
 
-                if roll < 5 then
+                if roll <= 3 then
                     // roll random gun
                     randowep = table.Random(self.ScavengeLoot_Guns)
                 end
@@ -100,15 +162,26 @@ function ENT:Use(activator, caller)
                 newwep:SetPos(newpos)
                 newwep.nodupe = true
                 newwep.spawnedBy = activator
+
+                if newwep.ArcticTacRP and newwep.Attachments then
+                    for k, v in pairs(newwep.Attachments) do
+                        if v.Category == "bolt_automatic" or v.Category == "bolt_manual"
+                                or (istable(v.Category) and (table.HasValue(v.Category, "bolt_automatic") or table.HasValue(v.Category, "bolt_manual"))) then
+                            v.Installed = "bolt_surplus"
+                            break
+                        end
+                    end
+                end
                 newwep:Spawn()
 
-                DarkRP.notify(activator, 0, 4, "You found a(n) " .. newwep.PrintName .. "!")
-            else
-                // moners
-                local amount = math.random(5, 100)
+                DarkRP.notify(activator, 0, 4, "You found " .. descriptors[math.random(1, #descriptors)] .. " " .. newwep.PrintName .. "!")
+            elseif roll <= 43 then
+                local amount = math.ceil(math.random(1, 25))
 
                 activator:addMoney(amount)
                 DarkRP.notify(activator, 0, 4, "You found " .. DarkRP.formatMoney(amount) .. "!")
+            else
+                DarkRP.notify(activator, 0, 4, "You didn't find anything...")
             end
 
             self.NextScavengeTime = CurTime() + self.ScavengeDelay

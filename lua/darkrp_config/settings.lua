@@ -86,7 +86,7 @@ GM.Config.droppocketdeath               = true
 -- dropweapondeath - Enable/disable whether people drop their current weapon when they die.
 GM.Config.dropweapondeath               = false
 -- Whether players can drop the weapons they spawn with.
-GM.Config.dropspawnedweapons            = true
+GM.Config.dropspawnedweapons            = false
 -- dynamicvoice - Enable/disable whether only people in the same room as you can hear your mic.
 GM.Config.dynamicvoice                  = true
 -- earthquakes - Enable/disable earthquakes.
@@ -124,7 +124,7 @@ GM.Config.noguns                        = false
 -- norespawn - Enable/Disable that people don't have to respawn when they change job.
 GM.Config.norespawn                     = true
 -- keepPickedUp - Enable/Disable keeping picked up weapons when switching jobs.
-GM.Config.keepPickedUp                  = false
+GM.Config.keepPickedUp                  = true
 -- instantjob - Enable/Disable instantly respawning when norespawn is false
 GM.Config.instantjob                    = false
 -- npcarrest - Enable/disable arresting npc's.
@@ -699,11 +699,15 @@ GM.Config.vendingMachineGuns = {
 
     ["tacrp_ex_m1911"] = 300,
     ["tacrp_ex_glock"] = 320,
-    ["tacrp_vertec"] = 320,
+    ["tacrp_p250"] = 350,
 
     ["tacrp_civ_mp5"] = 440,
     ["tacrp_m1"] = 500,
     ["tacrp_bekas"] = 580,
+
+    ["tacrp_ar15"] = 1120,
+    ["tacrp_spr"] = 1950,
+    ["tacrp_m14"] = 2800,
 }
 
 GM.Config.vendingMachineNoLicense = true

@@ -2,6 +2,9 @@
 F4 menu tab modification module.
 ---------------------------------------------------------------------------]]
 
+if true then return end
+-- I AM THE LAW!!!!
+
 local tabName = "The Law"
 
 local function createF4MenuTab()

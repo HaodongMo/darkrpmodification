@@ -710,58 +710,58 @@ GM.Config.vendingMachineNoLicense = true
 
 GM.Config.vendingMachineAmmo = {
     {
-        name = "Pistol/SMG Ammo (x30)",
-        amount = 30,
-        cost = 300,
+        name = "Pistol/SMG Ammo (x24)",
+        amount = 24,
+        cost = 25,
         max = 360,
         ammo = "pistol"
     },
     {
-        name = "Shotgun Ammo (x15)",
-        amount = 15,
-        cost = 200,
-        max = 80,
+        name = "Shotgun Ammo (x8)",
+        amount = 8,
+        cost = 30,
+        max = 40,
         ammo = "buckshot"
     },
     {
         name = "Carbine Ammo (x30)",
         amount = 30,
-        cost = 450,
+        cost = 40,
         max = 240,
         ammo = "smg1"
     },
     {
         name = "Rifle Ammo (x30)",
         amount = 30,
-        cost = 650,
+        cost = 50,
         max = 150,
         ammo = "ar2"
     },
     {
-        name = "Magnum/Sniper Ammo (x10)",
-        amount = 10,
-        cost = 500,
-        max = 100,
+        name = "Magnum/Sniper Ammo (x6)",
+        amount = 6,
+        cost = 30,
+        max = 36,
         ammo = "357"
     },
     {
         name = "Rifle Grenades (x1)",
         amount = 1,
-        cost = 300,
+        cost = 50,
         max = 12,
         ammo = "smg1_grenade"
     },
     {
         name = "Rocket Ammo (x1)",
         amount = 1,
-        cost = 1500,
+        cost = 80,
         max = 4,
         ammo = "rpg_round"
     },
     {
         name = "Crossbow Bolts (x4)",
         amount = 4,
-        cost = 100,
+        cost = 15,
         max = 32,
         ammo = "xbowbolt"
     }

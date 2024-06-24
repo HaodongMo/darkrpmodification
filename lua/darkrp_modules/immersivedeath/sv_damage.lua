@@ -12,7 +12,7 @@ hook.Add("EntityTakeDamage", "IMDE_Damage", function(ent, dmginfo)
         util.Decal("Blood", p + d * 4, p - d * 32, ent)
         util.Decal("Blood", p, p + d * 64, ent)
 
-        if dmginfo:IsDamageType(DMG_CRUSH) then
+        if dmginfo:IsDamageType(DMG_CRUSH) or dmginfo:IsDamageType(DMG_NERVEGAS) then
             return
         end
 
@@ -54,12 +54,12 @@ hook.Add("EntityTakeDamage", "IMDE_Damage", function(ent, dmginfo)
     end
 
     if stam_mult > 0 then
-        ent:IMDE_SetStamina(math.max(ent:IMDE_GetStamina() - dmginfo:GetDamage() * stam_mult, 0))
+        ent:IMDE_SetStamina(math.max(ent:IMDE_GetStamina() - dmginfo:GetDamage() * stam_mult, dmginfo:IsDamageType(DMG_NERVEGAS) and 5 or 0))
         ent.IMDE_LastStaminaDamage = CurTime()
     end
 
     if bal_mult > 0 then
-        ent:IMDE_SetBalance(math.max(ent:IMDE_GetBalance() - dmginfo:GetDamage() * bal_mult, 0))
+        ent:IMDE_SetBalance(math.max(ent:IMDE_GetBalance() - dmginfo:GetDamage() * bal_mult, dmginfo:IsDamageType(DMG_NERVEGAS) and 5 or 0))
     end
 
     local f, p = dmginfo:GetDamageForce(), dmginfo:GetDamagePosition()

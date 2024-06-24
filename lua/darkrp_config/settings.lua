@@ -695,7 +695,8 @@ GM.Config.vendingMachineRequireLicense = {
 
 GM.Config.vendingMachineGuns = {
     ["tacrp_knife"] = 50,
-    ["tacrp_c4_detonator"] = 100,
+    ["tacrp_m_kukri"] = 70,
+    ["tacrp_c4_detonator"] = 120,
 
     ["tacrp_ex_m1911"] = 300,
     ["tacrp_ex_glock"] = 320,

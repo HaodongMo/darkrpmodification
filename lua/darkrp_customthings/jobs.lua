@@ -23,7 +23,7 @@ TEAM_POLICE_ROOKIE = DarkRP.createJob("Rookie", {
 [[The lowest rung of law enforcement.
 
 Has few real powers, and no gun.
-Anyone taken down by police will be jailed.
+Use the police baton to knock criminals out, and then beat them until they comply.
 
 Ask a Sergeant or the Sheriff for a promotion.]],
     command = "police_rookie",
@@ -86,8 +86,9 @@ Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses
     ammo = {
         ["pistol"] = 60,
         ["buckshot"] = 32,
+        ["smg1_grenade"] = 3,
     },
-    weapons = {"tacrp_vertec", "tacrp_fp6", "tacrp_m_tonfa"},
+    weapons = {"tacrp_vertec", "tacrp_fp6", "tacrp_m_tonfa" , "tacrp_civ_m320"},
     hasLicense = true,
     giveLicense = true,
     warrant = true,
@@ -122,7 +123,7 @@ Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses
     ammo = {
         ["357"] = 60,
     },
-    weapons = {"tacrp_mr96", "tacrp_m_tonfa"},
+    weapons = {"tacrp_mr96", "tacrp_m_tonfa", "tacrp_civ_m320"},
     warrant = true,
     ban_max_time = 60,
     unarrest = true,
@@ -262,8 +263,8 @@ end)
 
 // arrest on kill by police
 hook.Add("PlayerDeath", "tacrp_police_arrest", function(victim, inflictor, attacker)
-    if (!victim:isCP() and attacker:isCP()) or victim:isWanted() then
-        victim:arrest(60, attacker)
+    if inflictor:GetClass() == "tacrp_m_tonfa" and (!victim:isCP() and attacker:isCP()) or victim:isWanted() then
+        victim:arrest(180, attacker)
     else
         if victim:Team() != GAMEMODE.DefaultTeam then
             victim:teamBan(victim:Team(), 300)

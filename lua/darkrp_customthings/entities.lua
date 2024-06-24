@@ -23,7 +23,7 @@ DarkRP.createEntity("Gun lab", {
     price = 1000,
     max = 1,
     cmd = "buygunlab",
-    allowed = TEAM_CRAFTSMAN
+    allowed = TEAM_GUNSMITH
 })
 
 DarkRP.createEntity("Explosives lab", {

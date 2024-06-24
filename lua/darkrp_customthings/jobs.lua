@@ -15,6 +15,28 @@ https://darkrp.miraheze.org/wiki/DarkRP:CustomJobFields
 
 Add your custom jobs under the following line:
 ---------------------------------------------------------------------------]]
+local function cploadout(ply, armor)
+    if (armor or 0) > 0 then ply:SetArmor(armor) end
+    for _, class in pairs(ply:getJobTable().weapons) do
+        local wep = ply:GetWeapon(class)
+        if not IsValid(wep) then continue end
+        local installed = false
+        for i, v in pairs(wep.Attachments or {}) do
+            if v.Installed then continue end
+            if v.Category == "melee_boost" then
+                wep.Attachments[i].Installed = "melee_boost_shock"
+                installed = true
+                break
+            elseif v.Category == "perk" or (istable(v.Category) and table.HasValue(v.Category, "perk")) then
+                wep.Attachments[i].Installed = "perk_shock"
+                installed = true
+                break
+            end
+        end
+        if installed then timer.Simple(0.5, function() if IsValid(wep) then wep:NetworkWeapon() end end) end
+    end
+end
+
 
 TEAM_POLICE_ROOKIE = DarkRP.createJob("Rookie", {
     color = Color(150, 150, 255, 255),
@@ -34,6 +56,9 @@ Ask a Sergeant or the Sheriff for a promotion.]],
     sortOrder = 100,
     weapons = {"tacrp_m_tonfa"},
     unarrest = false,
+    PlayerLoadout = function(ply)
+        cploadout(ply, 0)
+    end,
 })
 
 TEAM_POLICE_DEPUTY = DarkRP.createJob("Deputy", {
@@ -62,8 +87,7 @@ Report to a Sergeant or the Sheriff to have prisoners sentenced.]],
     sortOrder = 101,
     unarrest = true,
     PlayerLoadout = function(ply)
-        ply:SetArmor(50)
-        return true
+        cploadout(ply, 50)
     end,
 })
 
@@ -89,8 +113,10 @@ Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses
     sortOrder = 102,
     ammo = {
         ["pistol"] = 60,
-        ["buckshot"] = 32,
+        ["buckshot"] = 16,
         ["smg1_grenade"] = 3,
+        ["ti_gas"] = 1,
+        ["ti_flashbang"] = 1,
     },
     weapons = {"tacrp_vertec", "tacrp_fp6", "tacrp_m_tonfa" , "tacrp_civ_m320"},
     hasLicense = true,
@@ -99,8 +125,7 @@ Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses
     ban_max_time = 20,
     unarrest = true,
     PlayerLoadout = function(ply)
-        ply:SetArmor(50)
-        return true
+        cploadout(ply, 50)
     end,
 })
 
@@ -129,15 +154,18 @@ Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses
     RequiresVote = function(ply, job) return (#team.GetPlayers(TEAM_POLICE_SHERIFF) + #team.GetPlayers(TEAM_POLICE_SERGEANT)) > 0 end,
     sortOrder = 103,
     ammo = {
-        ["357"] = 60,
+        ["357"] = 36,
+        ["smg1_grenade"] = 3,
+        ["ti_gas"] = 2,
+        ["ti_flashbang"] = 2,
+        ["ti_breach"] = 1,
     },
     weapons = {"tacrp_mr96", "tacrp_m_tonfa", "tacrp_civ_m320"},
     warrant = true,
     ban_max_time = 60,
     unarrest = true,
     PlayerLoadout = function(ply)
-        ply:SetArmor(50)
-        return true
+        cploadout(ply, 100)
     end,
 })
 
@@ -317,13 +345,14 @@ hook.Add("TacRP_CanCustomize", "tacrp_rpcustomize", function(ply, wep, att, slot
     local cat = istable(atttbl.Category) and atttbl.Category[1] or atttbl.Category
 
     if (cat == "melee_spec" or cat == "melee_boost") then
-        if !ply:getJobTable().martialArtist then
+        if !ply:getJobTable().martialArtist and !(att == "melee_boost_shock" and ply:isCP()) then
             return false, "Requires Martial Artist"
         end
     else
         local notreq = atttbl.Free
                 or cat == "melee_tech"
                 or cat == "ammo_40mm_civ"
+                or (att == "perk_shock" and ply:isCP())
         if !notreq and !ply:getJobTable().gunsmith then
             return false, "Requires Gunsmith"
         end

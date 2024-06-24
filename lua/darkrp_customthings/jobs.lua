@@ -260,7 +260,7 @@ TEAM_MARTIAL_ARTIST = DarkRP.createJob("Martial Artist", {
     color = Color(255, 125, 175, 255),
     model = {"models/player/alyx.mdl"},
     description =
-[[You can unlock powerful special abilities and boosts on melee weapons for yourself or others.]],
+[[You can equip special ability and boosts on melee weapons for yourself or others.]],
     command = "martial_artist",
     salary = GAMEMODE.Config.normalsalary,
     admin = 0,

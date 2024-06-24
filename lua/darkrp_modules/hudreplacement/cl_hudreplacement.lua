@@ -47,6 +47,7 @@ local lastrow = 0
 local col = Color(255, 255, 255)
 local col_hi = Color(255, 150, 0)
 local col_bal = Color(255, 200, 100)
+local col_amr = Color(200, 200, 255)
 local col_hi2 = Color(255, 230, 200)
 local col_dark = Color(255, 255, 255, 20)
 
@@ -155,6 +156,7 @@ local function hudPaintHealth()
     end
 
     if armor > 0 then
+        surfaceSetDrawColor(col_amr)
         local arm_can = math.ceil(hpb_segments * arm_perc)
 
         arm_can = math.min(arm_can, hpb_segments)

@@ -22,5 +22,16 @@ function ArcRP_GetCustomUse(ent, ply)
             end,
             message = "Use Gun's 4U"
         }
+    elseif ent.isGunDumpster then
+        local wep = ply:GetActiveWeapon()
+        if IsValid(wep) and weapons.IsBasedOn(wep:GetClass(), "tacrp_base") then
+            return {
+                message = "Dispose of Weapon"
+            }
+        else
+            return {
+                message = "Scavenge"
+            }
+        end
     end
 end

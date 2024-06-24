@@ -319,7 +319,7 @@ end)
 hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker)
     if !IsValid(attacker) or attacker:isCP() then return end
 
-    local cur = victim:getDarkRPVar("money")
+    local cur = victim:getDarkRPVar("money") or 0
 
     // amount that will never be dropped
     local safe_min = 250

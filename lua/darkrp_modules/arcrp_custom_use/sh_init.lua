@@ -3,10 +3,10 @@
 
 function ArcRP_GetCustomUse(ent, ply)
     if ent:IsPlayer() then
-        if ent:isArrested() and !ply:isArrested() then
+        if ent:isArrested() and !ply:isArrested() and ply:getJobTable().unarrest then
             return {
                 callback = function(ent2, ply2)
-                    if ent2:isArrested() and !ply2:isArrested() then
+                    if ent2:isArrested() and !ply2:isArrested() and ply:getJobTable().unarrest then
                         ent2:unArrest(ply2)
                     end
                 end,

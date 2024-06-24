@@ -160,7 +160,7 @@ TEAM_GUNSMITH = DarkRP.createJob("Gunsmith", {
     color = Color(25, 25, 200, 255),
     model = {"models/player/eli.mdl"},
     description =
-[[You are able to modify weapons.]],
+[[You are able to modify weapons for yourself or others.]],
     command = "gunsmith",
     salary = GAMEMODE.Config.normalsalary,
     admin = 0,
@@ -174,15 +174,17 @@ TEAM_LAWYER = DarkRP.createJob("Lawyer", {
     color = Color(100, 100, 100, 255),
     model = {"models/player/gman_high.mdl"},
     description =
-[[Advocate for your clients.
+[[You are well versed in legal stuff that nobody else cares about.
 
-Police MUST hear you out before sentencing a prisoner.]],
+Buy insurance for others to prevent money loss on death.
+Free your clients from prison (with or without the police's consent).]],
     command = "lawyer",
-    salary = GAMEMODE.Config.normalsalary * 2,
+    salary = GAMEMODE.Config.normalsalary,
     admin = 0,
     category = "Citizens",
-    max = 3,
+    max = 1,
     sortOrder = 103,
+    unarrest = true,
 })
 
 TEAM_CRAFTSMAN = DarkRP.createJob("Craftsman", {
@@ -211,6 +213,21 @@ TEAM_COURIER = DarkRP.createJob("Courier", {
     max = 3,
     sortOrder = 105,
 })
+
+TEAM_MARTIAL_ARTIST = DarkRP.createJob("Martial Artist", {
+    color = Color(255, 125, 175, 255),
+    model = {"models/player/alyx.mdl"},
+    description =
+[[You can unlock powerful special abilities and boosts on melee weapons for yourself or others.]],
+    command = "martial_artist",
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    category = "Citizens",
+    max = 1,
+    sortOrder = 106,
+    martialArtist = true,
+})
+
 
 --[[---------------------------------------------------------------------------
 Define which team joining players spawn into and what team you change to if demoted
@@ -286,8 +303,8 @@ hook.Add("TacRP_CanCustomize", "tacrp_rpcustomize", function(ply, wep, att, slot
     local cat = istable(atttbl.Category) and atttbl.Category[1] or atttbl.Category
 
     // Melee special and technique not allowed for now
-    if cat == "melee_spec" or cat == "melee_boost" then
-        return false, "Disabled"
+    if (cat == "melee_spec" or cat == "melee_boost") and !ply:GetJobTable().martialArtist then
+        return false, "Requires Martial Artist"
     end
 
     // Free attachments don't require gunsmith
@@ -305,17 +322,21 @@ hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker
     local cur = victim:getDarkRPVar("money")
 
     // amount that will never be dropped
-    local safe_min = 500
+    local safe_min = 250
     // fraction of wallet above minimum to drop
-    local frac = 0.15
+    local frac = 0.2
     // maximum amount to drop
-    local max = 500
+    local max = 1000
 
     local money = math.min(max, math.ceil(math.max(cur - safe_min) * frac))
 
-    if money > 0 then
+    if victim:GetNWBool("Insurance", false) then
+        victim:SetNWBool("Insurance", false)
+        DarkRP.notify(activator, 3, 10, "Your insurance expired and prevented a money loss of " .. DarkRP.formatMoney(money) .. ".")
+    elseif money > 0 then
         victim:addMoney(-money)
         DarkRP.createMoneyBag(victim:GetPos() + Vector(0, 0, 10), money)
+        DarkRP.notify(activator, 3, 10, "You lost " .. DarkRP.formatMoney(money) .. " on death." .. (money > 0.5 * max and " Maybe consider getting insurance next time..." or ""))
     end
 end)
 

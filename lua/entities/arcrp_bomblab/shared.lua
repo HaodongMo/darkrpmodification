@@ -8,7 +8,7 @@ function ENT:initVars()
     self.model = "models/props_c17/TrapPropeller_Engine.mdl"
     self.initialPrice = GAMEMODE.Config.bomblabbombcost
     self.labPhrase = DarkRP.getPhrase("explosive_lab")
-    self.bountyAmount = 16000
+    self.bountyAmount = 800 * 0.9
 
     self:SetMaterial("phoenix_storms/wire/pcb_red")
 end

@@ -298,18 +298,25 @@ hook.Add("TacRP_CanCustomize", "tacrp_rpcustomize", function(ply, wep, att, slot
     return true
 end)
 
-// drop up to $5000 on death
+// drop moolah on death
 hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker)
     if !IsValid(attacker) or attacker:isCP() then return end
 
-    local money = math.ceil(victim:getDarkRPVar("money") * 0.15)
+    local cur = victim:getDarkRPVar("money")
 
-    if money > 5000 then
-        money = 5000
+    // amount that will never be dropped
+    local safe_min = 500
+    // fraction of wallet above minimum to drop
+    local frac = 0.15
+    // maximum amount to drop
+    local max = 500
+
+    local money = math.min(max, math.ceil(math.max(cur - safe_min) * frac))
+
+    if money > 0 then
+        victim:addMoney(-money)
+        DarkRP.createMoneyBag(victim:GetPos() + Vector(0, 0, 10), money)
     end
-
-    victim:addMoney(-money)
-    DarkRP.createMoneyBag(victim:GetPos() + Vector(0, 0, 10), money)
 end)
 
 hook.Add("canGiveLicense", "tacrp_police_license", function(giver, target)

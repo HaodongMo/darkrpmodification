@@ -9,7 +9,7 @@ function ENT:initVars()
     self.initialPrice = GAMEMODE.Config.gunlabguncost
     self.labPhrase = DarkRP.getPhrase("gun_lab")
     self.itemPhrase = DarkRP.getPhrase("gun")
-    self.bountyAmount = 9500
+    self.bountyAmount = 1000 * 0.9
 
     self:SetMaterial("phoenix_storms/wire/pcb_green")
 end

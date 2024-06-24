@@ -245,9 +245,9 @@ GM.Config.minlotterycost                = 30
 -- Money packets will get removed if they don't get picked up after a while. Set to 0 to disable.
 GM.Config.moneyRemoveTime               = 600
 -- mprintamount - Value of the money printed by the money printer.
-GM.Config.mprintamount                  = 1000
+GM.Config.mprintamount                  = 250
 -- normalsalary - Sets the starting salary for newly joined players.
-GM.Config.normalsalary                  = 500
+GM.Config.normalsalary                  = 50
 -- npckillpay - Sets the money given for each NPC kill.
 GM.Config.npckillpay                    = 10
 -- paydelay - Sets how long it takes before people get salary.
@@ -301,7 +301,7 @@ GM.Config.falldamagedamper              = 15
 -- falldamageamount - The base damage taken from falling for static fall damage. Default is 10.
 GM.Config.falldamageamount              = 10
 -- printeroverheatchance - The likelyhood of a printer overheating. The higher this number, the less likely (minimum 3, default 22).
-GM.Config.printeroverheatchance         = 22
+GM.Config.printeroverheatchance         = 30
 -- printerreward - Reward for destroying a money printer.
 GM.Config.printerreward                 = 950
 
@@ -694,86 +694,16 @@ GM.Config.vendingMachineRequireLicense = {
 }
 
 GM.Config.vendingMachineGuns = {
-    ["tacrp_ak47"] = 1200,
-    ["tacrp_amd65"] = 2000,
-    ["tacrp_as50"] = 29500,
-    ["tacrp_aug"] = 2200,
-    ["tacrp_bekas"] = 400,
-    ["tacrp_c4_detonator"] = 200,
-    ["tacrp_civ_g36k"] = 900,
-    ["tacrp_civ_mp5"] = 650,
-    ["tacrp_civ_p90"] = 800,
-    ["tacrp_dsa58"] = 3500,
-    ["tacrp_ex_ak47"] = 1700,
-    ["tacrp_ex_glock"] = 500,
-    ["tacrp_ex_hecate"] = 18000,
-    ["tacrp_ex_hk45c"] = 950,
-    ["tacrp_ex_m4a1"] = 2500,
-    ["tacrp_ex_m1911"] = 300,
-    ["tacrp_ex_mac10"] = 450,
-    ["tacrp_ex_mp9"] = 1100,
-    ["tacrp_ex_stinger"] = 45000,
-    ["tacrp_ex_ump45"] = 1000,
-    ["tacrp_ex_usp"] = 700,
-    ["tacrp_fp6"] = 1750,
-    ["tacrp_g36k"] = 3100,
-    ["tacrp_gsr1911"] = 400,
-    ["tacrp_hk417"] = 4500,
-    ["tacrp_k1a"] = 1000,
     ["tacrp_knife"] = 50,
-    ["tacrp_knife2"] = 50,
-    ["tacrp_ks23"] = 2000,
-    ["tacrp_m1"] = 800,
-    ["tacrp_m4"] = 2900,
-    ["tacrp_m4star10"] = 2200,
-    ["tacrp_m14"] = 3250,
-    ["tacrp_m320"] = 12000,
-    ["tacrp_mg4"] = 15000,
-    ["tacrp_mp5"] = 1200,
-    ["tacrp_mp7"] = 1600,
-    ["tacrp_mr96"] = 250,
-    ["tacrp_mtx_dual"] = 1000,
-    ["tacrp_p90"] = 2800,
-    ["tacrp_p250"] = 350,
-    ["tacrp_p2000"] = 300,
-    ["tacrp_pdw"] = 3250,
-    ["tacrp_rpg7"] = 30000,
-    ["tacrp_sg551"] = 2000,
-    ["tacrp_skorpion"] = 600,
-    ["tacrp_sphinx"] = 500,
-    ["tacrp_spr"] = 2100,
-    ["tacrp_superv"] = 3000,
-    ["tacrp_tgs12"] = 1100,
-    ["tacrp_uratio"] = 3000,
-    ["tacrp_uzi"] = 800,
-    ["tacrp_vertec"] = 250,
-    ["tacrp_xd45"] = 500,
-    ["tacrp_m_bamaslama"] = 50,
-    ["tacrp_m_bat"] = 50,
-    ["tacrp_m_bayonet"] = 50,
-    ["tacrp_m_boina"] = 50,
-    ["tacrp_m_cleaver"] = 50,
-    ["tacrp_m_crowbar"] = 50,
-    ["tacrp_m_css"] = 50,
-    ["tacrp_m_fasthawk"] = 50,
-    ["tacrp_m_gerber"] = 50,
-    ["tacrp_m_glock"] = 50,
-    ["tacrp_m_hamma"] = 50,
-    ["tacrp_m_harpoon"] = 50,
-    ["tacrp_m_heathawk"] = 100000,
-    ["tacrp_m_incorp"] = 50,
-    ["tacrp_m_kitchen"] = 50,
-    ["tacrp_m_knife3"] = 50,
-    ["tacrp_m_kukri"] = 50,
-    ["tacrp_m_machete"] = 50,
-    ["tacrp_m_pan"] = 50,
-    ["tacrp_m_pipe"] = 50,
-    ["tacrp_m_rambo"] = 50,
-    ["tacrp_m_shovel"] = 50,
-    ["tacrp_m_tonfa"] = 50,
-    ["tacrp_m_tracker"] = 50,
-    ["tacrp_m_wiimote"] = 50,
-    ["tacrp_m_wrench"] = 50,
+    ["tacrp_c4_detonator"] = 100,
+
+    ["tacrp_ex_m1911"] = 300,
+    ["tacrp_ex_glock"] = 320,
+    ["tacrp_vertec"] = 320,
+
+    ["tacrp_civ_mp5"] = 440,
+    ["tacrp_m1"] = 500,
+    ["tacrp_bekas"] = 580,
 }
 
 GM.Config.vendingMachineNoLicense = true

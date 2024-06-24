@@ -16,7 +16,7 @@ hook.Add("PlayerSpawnedProp", "ARCRP_LimitProps", function(ply, model, ent)
 
     local physobj = ent:GetPhysicsObject()
 
-    if !IsValid(physobj) or util.IsValidModel(model) then
+    if !IsValid(physobj) or !util.IsValidModel(model) then
         SafeRemoveEntity(ent)
         DarkRP.notify(ply, 1, 3, "Prop is not valid!")
         GAMEMODE.PropLimitTable[model] = false

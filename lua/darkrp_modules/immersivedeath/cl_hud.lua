@@ -1,5 +1,3 @@
--- #NoSimplerr#
-
 local stam_last, stam, stam_max, stam_time, die_time, bal_last, bal, bal_max, bal_time
 local lerpspeed = 0.4
 local lerpspeed2 = 0.2
@@ -46,6 +44,7 @@ hook.Add("HUDPaint", "IMDE_Hud", function()
     end
 
     if LocalPlayer():IsAdmin() and GetConVar("imde_hud_debug"):GetBool() and IsValid(ptr.Entity) and ptr.Entity:IsPlayer() then
+        draw.SimpleText(math.Round(ptr.Entity:Health()), "DermaDefaultBold", ScrW() * 0.5, ScrH() / 2 + 96 - 14, Color(255, 120, 100), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
         draw.SimpleText(math.Round(ptr.Entity:IMDE_GetStamina(), 1), "DermaDefaultBold", ScrW() * 0.5, ScrH() / 2 + 96, Color(120, 200, 150), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
         draw.SimpleText(math.Round(ptr.Entity:IMDE_GetBalance(), 1), "DermaDefaultBold", ScrW() * 0.5, ScrH() / 2 + 96 + 14, Color(200, 180, 120), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
     end

@@ -137,6 +137,8 @@ function ENT:Use(activator, caller)
         else
             DarkRP.notify(activator, 0, 4, "Thank you for keeping the streets clean! Your disposal item was not eligible for a cash refund.")
         end
+        
+        self:EmitSound("doors/door_metal_thin_close2.wav", 85, math.Rand(98, 102))
     else
 
         if self.NextScavengeTime < CurTime() then
@@ -175,11 +177,14 @@ function ENT:Use(activator, caller)
                 newwep:Spawn()
 
                 DarkRP.notify(activator, 0, 4, "You found " .. descriptors[math.random(1, #descriptors)] .. " " .. newwep.PrintName .. "!")
-            elseif roll <= 43 then
-                local amount = math.ceil(math.random(1, 25))
-
+            elseif roll <= 33 then
+                local amount = math.ceil(math.random(5, 30))
                 activator:addMoney(amount)
                 DarkRP.notify(activator, 0, 4, "You found " .. DarkRP.formatMoney(amount) .. "!")
+            elseif roll <= 70 then
+                local amount = math.ceil(math.random(1, 5))
+                activator:addMoney(amount)
+                DarkRP.notify(activator, 0, 4, "You found " .. DarkRP.formatMoney(amount) .. ".")
             else
                 DarkRP.notify(activator, 0, 4, "You didn't find anything...")
             end
@@ -188,5 +193,7 @@ function ENT:Use(activator, caller)
         else
             DarkRP.notify(activator, 1, 4, "There is nothing to scavenge at the moment...")
         end
+
+        self:EmitSound("doors/door_metal_rusty_move1.wav", 85, math.Rand(98, 102))
     end
 end

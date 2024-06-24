@@ -1,5 +1,3 @@
--- #NoSimplerr#
-
 local PLAYER = FindMetaTable("Player")
 
 local dirs = {
@@ -168,6 +166,7 @@ hook.Add("PlayerDeath", "IMDE_Ragdoll", function(ply)
         ply:IMDE_Hide(false)
         ply:SetParent(NULL)
         ply:IMDE_GetRagdoll():SetOwner(nil)
+        SafeRemoveEntityDelayed(ply:IMDE_GetRagdoll(), 300)
         ply.IMDE_LastPosition = nil
     else
         ply:IMDE_Ragdoll(true)

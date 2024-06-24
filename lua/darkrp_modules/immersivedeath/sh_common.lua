@@ -1,4 +1,3 @@
--- #NoSimplerr#
 IMDE = IMDE or {}
 
 -- [DMG enum] = {stamina damage taken, health damage taken, balance damage taken}

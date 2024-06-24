@@ -1,5 +1,3 @@
--- #NoSimplerr#
-
 CreateConVar("imde_enabled", "1", FCVAR_ARCHIVE + FCVAR_REPLICATED, "", 0, 1)
 CreateConVar("imde_recover", "1", FCVAR_ARCHIVE + FCVAR_REPLICATED, "Rate of stamina recovery, higher is faster. Affected by balance.", 0)
 CreateConVar("imde_recover_down", "0.5", FCVAR_ARCHIVE + FCVAR_REPLICATED, "Rate of stamina recovery while down, higher is faster. Being down for longer increases recovery rate.", 0)

@@ -71,7 +71,7 @@ hook.Add("EntityTakeDamage", "IMDE_Damage", function(ent, dmginfo)
             ent:IMDE_MakeUnconscious(f, p)
         end
         return true -- this will cause PostEntityTakeDamage to not be called
-    elseif not down and dmginfo:GetDamage() > ent:Health() then
+    elseif (not down or ent.IMDE_LastStaminaDamage == CurTime()) and dmginfo:GetDamage() > ent:Health() then
         -- May survive a lethal hit depending on config
         local option = GetConVar("imde_oneshot_protection"):GetInt()
         if (option == 3 or dmginfo:GetDamage() < ent:GetMaxHealth()) and (

@@ -1,5 +1,3 @@
--- #NoSimplerr#
-
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:IMDE_GetMaxStamina()

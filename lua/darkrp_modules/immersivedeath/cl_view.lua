@@ -1,5 +1,3 @@
--- #NoSimplerr#
-
 hook.Add("CalcView", "IMDB_View", function(ply, origin, angles, fov, znear, zfar)
     local rag = ply:IMDE_GetRagdoll()
     if not IsValid(rag) or (not ply:IMDE_IsHidden() and ply:Alive()) then

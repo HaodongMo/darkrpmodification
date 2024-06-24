@@ -1,5 +1,3 @@
--- #NoSimplerr#
-
 util.AddNetworkString("imde_wake")
 util.AddNetworkString("imde_inspect")
 

@@ -61,6 +61,10 @@ Report to a Sergeant or the Sheriff to have prisoners sentenced.]],
     hasLicense = true,
     sortOrder = 101,
     unarrest = true,
+    PlayerLoadout = function(ply)
+        ply:SetArmor(50)
+        return true
+    end,
 })
 
 TEAM_POLICE_SERGEANT = DarkRP.createJob("Sergeant", {
@@ -94,6 +98,10 @@ Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses
     warrant = true,
     ban_max_time = 20,
     unarrest = true,
+    PlayerLoadout = function(ply)
+        ply:SetArmor(50)
+        return true
+    end,
 })
 
 TEAM_POLICE_SHERIFF = DarkRP.createJob("Sheriff", {
@@ -127,6 +135,10 @@ Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses
     warrant = true,
     ban_max_time = 60,
     unarrest = true,
+    PlayerLoadout = function(ply)
+        ply:SetArmor(50)
+        return true
+    end,
 })
 
 TEAM_MEDIC = DarkRP.createJob("Medic", {

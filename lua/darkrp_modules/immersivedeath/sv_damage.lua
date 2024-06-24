@@ -71,11 +71,16 @@ hook.Add("EntityTakeDamage", "IMDE_Damage", function(ent, dmginfo)
             ent:IMDE_MakeUnconscious(f, p)
         end
         return true -- this will cause PostEntityTakeDamage to not be called
-    elseif not down and dmginfo:GetDamage() > ent:Health() and dmginfo:GetDamage() < ent:GetMaxHealth()
-            and math.random() < math.Clamp(1 - (dmginfo:GetDamage() - ent:Health()) / ent:GetMaxHealth() * 2, 0, 1) then
-        -- chance to survive a typically lethal hit
-        ent:IMDE_SetStamina(0)
-        dmginfo:SetDamage(ent:Health() - 1)
+    elseif not down and dmginfo:GetDamage() > ent:Health() then
+        -- May survive a lethal hit depending on config
+        local option = GetConVar("imde_oneshot_protection"):GetInt()
+        if (option == 3 or dmginfo:GetDamage() < ent:GetMaxHealth()) and (
+                (option == 1 and math.random() < math.Clamp(1 - (dmginfo:GetDamage() - ent:Health()) / ent:GetMaxHealth() * 2, 0, 1))
+                or (option == 2 and ent:LastHitGroup() ~= HITGROUP_HEAD)
+                or option == 3) then
+            ent:IMDE_SetStamina(0)
+            dmginfo:SetDamage(ent:Health() - 1)
+        end
     end
 end)
 
@@ -106,11 +111,11 @@ hook.Add("Think", "IMDE_Stamina", function()
             if ply.IMDE_LastStaminaDamage + (down and 1 or 5) < CurTime() then
                 local add = GetConVar("imde_recover"):GetFloat()
                 if down then
-                    add = math.Clamp((CurTime() - ply:GetNWFloat("IMDE_LastRagdollTime", CurTime())) / 10 + 1, 1, 10)
+                    add = GetConVar("imde_recover_down"):GetFloat() * math.Clamp((CurTime() - ply:GetNWFloat("IMDE_LastRagdollTime", CurTime())) / 10 + 1, 1, 10)
                 elseif not ply:IsOnGround() then
                     add = 0
                 elseif ply:GetVelocity():Length() > 0 and ply:KeyDown(IN_SPEED) then
-                    add = GetConVar("imde_recover"):GetFloat() * 0.5
+                    add = add * 0.5
                 end
                 add = add * math.Clamp(ply:Health() / ply:GetMaxHealth() + 0.25, 0.25, 1) * (tickdelay / 0.5)
 
@@ -124,7 +129,7 @@ hook.Add("Think", "IMDE_Stamina", function()
                 if tgt < cur then
                     rate = 1
                 elseif ply.IMDE_LastStaminaDamage + 1 < CurTime() then
-                    rate = Lerp(((CurTime() - (ply.IMDE_LastStaminaDamage + 1)) / 5) ^ 1, 0, 0.5)
+                    rate = Lerp(((CurTime() - (ply.IMDE_LastStaminaDamage + 1)) / 5) ^ 1, 0, GetConVar("imde_recover_balance"):GetFloat())
                 end
 
                 if rate > 0 then

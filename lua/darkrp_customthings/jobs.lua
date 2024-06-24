@@ -280,11 +280,23 @@ hook.Add("canVote", "tacrp_police_vote", function(ply, vote)
     end
 end)
 
-function TacRP.CanCustomize(ply, wep, att, slot)
-    if wep:GetValue("PrimaryMelee") then return true end
+hook.Add("TacRP_CanCustomize", "tacrp_rpcustomize", function(ply, wep, att, slot)
+    local atttbl = TacRP.GetAttTable(att)
 
-    return ply:getJobTable().gunsmith or false
-end
+    local cat = istable(atttbl.Category) and atttbl.Category[1] or atttbl.Category
+
+    // Melee special and technique not allowed for now
+    if cat == "melee_spec" or cat == "melee_boost" then
+        return false, "Disabled"
+    end
+
+    // Free attachments don't require gunsmith
+    if (!atttbl.Free and cat != "melee_tech") and !ply:getJobTable().gunsmith then
+        return false, "Requires Gunsmith"
+    end
+
+    return true
+end)
 
 // drop up to $5000 on death
 hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker)

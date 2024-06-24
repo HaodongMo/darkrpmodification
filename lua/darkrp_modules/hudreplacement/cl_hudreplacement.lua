@@ -215,9 +215,14 @@ local function hudPaintAmmo()
             local row1_bullets = 0
             local row2_bullets = 0
             local rackrise = 0
-            local cs = wpn:GetCapacity()
+            local cs = wpn:GetMaxClip1()
             local c1 = wpn:Clip1()
-            local aps = getValue(wpn, "AmmoPerShot")
+            local aps = 1
+
+            if wpn.ArcticTacRP then
+                cs = wpn:GetCapacity()
+                aps = getValue(wpn, "AmmoPerShot")
+            end
 
             local row_size = 15
             if cs == 20 then
@@ -227,8 +232,8 @@ local function hudPaintAmmo()
             local row = math.ceil(c1 / row_size)
             local maxrow = math.ceil(cs / row_size)
 
-            local row2_size = math.min(row_size, wpn:GetCapacity())
-            local row1_size = math.Clamp(wpn:GetCapacity() - row2_size, 0, row_size)
+            local row2_size = math.min(row_size, cs)
+            local row1_size = math.Clamp(cs - row2_size, 0, row_size)
 
             if c1 > row_size * 2 then
                 if row == maxrow then
@@ -306,7 +311,7 @@ local function hudPaintAmmo()
             surfaceSetTextPos(x + w - TacRP.SS(31), y + TacRP.SS(16))
             surfaceSetFont("TacRP_HD44780A00_5x8_6")
             surfaceDrawText("+")
-            if (getValue(wpn, "PrimaryGrenade") and TacRP.IsGrenadeInfiniteAmmo(getValue(wpn, "PrimaryGrenade"))) or (!getValue(wpn, "PrimaryGrenade") and wpn:GetInfiniteAmmo()) then
+            if wpn.ArcticTacRP and ((getValue(wpn, "PrimaryGrenade") and TacRP.IsGrenadeInfiniteAmmo(getValue(wpn, "PrimaryGrenade"))) or (!getValue(wpn, "PrimaryGrenade") and wpn:GetInfiniteAmmo())) then
                 clips = "INF"
             end
         end

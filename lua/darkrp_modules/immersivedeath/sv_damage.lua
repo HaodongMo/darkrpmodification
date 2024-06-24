@@ -53,6 +53,7 @@ hook.Add("EntityTakeDamage", "IMDE_Damage", function(ent, dmginfo)
         ent:IMDE_SetStamina(math.min(ent:IMDE_GetStamina() + dmginfo:GetDamage() * 0.5, ent:IMDE_GetMaxStamina()))
     end
 
+    local prev_stamina_damage = ent.IMDE_LastStaminaDamage
     if stam_mult > 0 then
         ent:IMDE_SetStamina(math.max(ent:IMDE_GetStamina() - dmginfo:GetDamage() * stam_mult, dmginfo:IsDamageType(DMG_NERVEGAS) and 5 or 0))
         ent.IMDE_LastStaminaDamage = CurTime()
@@ -71,7 +72,7 @@ hook.Add("EntityTakeDamage", "IMDE_Damage", function(ent, dmginfo)
             ent:IMDE_MakeUnconscious(f, p)
         end
         return true -- this will cause PostEntityTakeDamage to not be called
-    elseif (not down or ent.IMDE_LastStaminaDamage == CurTime()) and dmginfo:GetDamage() > ent:Health() then
+    elseif (not down or prev_stamina_damage == CurTime()) and dmginfo:GetDamage() > ent:Health() then
         -- May survive a lethal hit depending on config
         local option = GetConVar("imde_oneshot_protection"):GetInt()
         if (option == 3 or dmginfo:GetDamage() < ent:GetMaxHealth()) and (

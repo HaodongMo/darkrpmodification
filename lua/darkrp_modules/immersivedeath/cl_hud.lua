@@ -43,10 +43,13 @@ hook.Add("HUDPaint", "IMDE_Hud", function()
         draw.SimpleTextOutlined(ptr.Entity:GetOwner():GetName(), "IMDE_8", ScrW() * 0.5, ScrH() / 2 + ScreenScale(8), color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM, 2, Color(0, 0, 0))
     end
 
-    if LocalPlayer():IsAdmin() and GetConVar("imde_hud_debug"):GetBool() and IsValid(ptr.Entity) and ptr.Entity:IsPlayer() then
-        draw.SimpleText(math.Round(ptr.Entity:Health()), "DermaDefaultBold", ScrW() * 0.5, ScrH() / 2 + 96 - 14, Color(255, 120, 100), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-        draw.SimpleText(math.Round(ptr.Entity:IMDE_GetStamina(), 1), "DermaDefaultBold", ScrW() * 0.5, ScrH() / 2 + 96, Color(120, 200, 150), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-        draw.SimpleText(math.Round(ptr.Entity:IMDE_GetBalance(), 1), "DermaDefaultBold", ScrW() * 0.5, ScrH() / 2 + 96 + 14, Color(200, 180, 120), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+    if LocalPlayer():IsAdmin() and GetConVar("imde_hud_debug"):GetBool() and IsValid(ptr.Entity) then
+        local ply = ptr.Entity:GetNWBool("IMDE_IsRagdoll", false) and ptr.Entity:GetOwner() or ptr.Entity
+        if ply:IsPlayer() then
+            draw.SimpleText(math.Round(ply:Health()), "DermaDefaultBold", ScrW() * 0.5, ScrH() / 2 + 96 - 14, Color(255, 120, 100), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText(math.Round(ply:IMDE_GetStamina(), 1), "DermaDefaultBold", ScrW() * 0.5, ScrH() / 2 + 96, Color(120, 200, 150), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+            draw.SimpleText(math.Round(ply:IMDE_GetBalance(), 1), "DermaDefaultBold", ScrW() * 0.5, ScrH() / 2 + 96 + 14, Color(200, 180, 120), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)    
+        end
     end
 
     if not GetConVar("cl_drawhud"):GetBool() or not GetConVar("imde_enabled"):GetBool() then

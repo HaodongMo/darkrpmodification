@@ -200,10 +200,10 @@ end
 
 function ENT:PhysicsCollide(coldata, collider)
     local ent = coldata.HitEntity
-    if IsValid(ent) and ent:GetNWBool("IMDE_IsRagdoll") and ent.IsDeathRagdoll and not IsValid(ent:GetOwner()) then
+    if IsValid(ent) and ent:GetNWBool("IMDE_IsRagdoll") and ent.IsDeathRagdoll and not IsValid(ent:GetOwner()) and !ent.Disposed then
+        ent.Disposed = true
 
         local money = math.random(5, 25)
-
         if IsValid(ent.Dragger) and ent.Dragger:Alive()
                 and IsValid(ent.Dragger:GetActiveWeapon()) and ent.Dragger:GetActiveWeapon():GetClass() == "arcrp_hands"
                 and ent.Dragger:GetActiveWeapon().DraggingEnt == ent then

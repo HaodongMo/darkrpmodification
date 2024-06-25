@@ -250,7 +250,7 @@ end)
 if SERVER then return end
 
 local function hack()
-    local pocket = {}
+    local pocket = pocket or {}
     local frame
 
     local function reload()

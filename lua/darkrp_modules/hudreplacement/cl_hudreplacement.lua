@@ -419,7 +419,8 @@ local function hudPaint()
     local text
 
     if customUse or ent.interactionHint then
-        text = "[" .. TacRP.GetBindKey("+use") .. "] " .. (((customUse or {}).message) or ent.interactionHint or "")
+        local hinttext = isfunction(ent.interactionHint) and ent.interactionHint() or ent.interactionHint
+        text = "[" .. TacRP.GetBindKey("+use") .. "] " .. (((customUse or {}).message) or hinttext or "")
 
         if customUse and LocalPlayer():KeyPressed(IN_USE) then
             if customUse.callback then
@@ -433,9 +434,13 @@ local function hudPaint()
             end
         end
     end
-
     if ent.contextHint then
-        text = ent.contextHint
+        if isfunction(ent.contextHint) then
+            text = ent.contextHint() or text
+        else
+            text = ent.contextHint
+
+        end
     end
 
     if text then

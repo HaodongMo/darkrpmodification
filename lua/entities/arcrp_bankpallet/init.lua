@@ -32,7 +32,7 @@ ENT.CanReturnTime = 0
 ENT.SpawnOffset = Vector(64, 0, 32)
 
 function ENT:Use(activator, caller)
-    if #player.GetAll() <= 2 then
+    if #player.GetAll() <= 3 then
         DarkRP.notify(activator, 1, 3, "There aren't enough players for a bank robbery!")
         return
     end
@@ -42,13 +42,13 @@ function ENT:Use(activator, caller)
         return
     end
 
-    DarkRP.notify(activator, 3, 10, "Take the briefcase to the underground money laundry to cash out!")
+    DarkRP.notify(activator, 3, 30, "Take the briefcase to the underground money laundry to cash out!")
     activator:wanted(activator, "Bank Robbery", 600)
 
     for _, ply in ipairs(player.GetAll()) do
         if !ply:isCP() then continue end
 
-        DarkRP.notify(ply, 3, 10, "The bank is being robbed by " .. activator:Nick() .. "! Stop him!")
+        DarkRP.notify(ply, 3, 30, "The bank is being robbed by " .. activator:Nick() .. "! Stop him!")
     end
 
     local briefcase = ents.Create("arcrp_bankbriefcase")
@@ -68,13 +68,13 @@ function ENT:Use(activator, caller)
 end
 
 function ENT:Touch(entity)
-    if self.CanReturnTime < CurTime() and entity.isBankBriefcase then
-        SafeRemoveEntity(entity)
+    -- if self.CanReturnTime < CurTime() and entity.isBankBriefcase then
+    --     SafeRemoveEntity(entity)
 
-        for _, ply in ipairs(player.GetAll()) do
-            if !ply:isCP() then continue end
+    --     for _, ply in ipairs(player.GetAll()) do
+    --         if !ply:isCP() then continue end
 
-            DarkRP.notify(ply, 3, 10, "The bank robbery has been ended!")
-        end
-    end
+    --         DarkRP.notify(ply, 3, 10, "The bank robbery has been ended!")
+    --     end
+    -- end
 end

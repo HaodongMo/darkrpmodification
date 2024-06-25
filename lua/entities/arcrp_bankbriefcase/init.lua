@@ -22,5 +22,10 @@ function ENT:canUse(owner, activator)
 end
 
 function ENT:Use(activator, caller)
-    return
+    if activator:isCP() then
+        for _, ply in ipairs(player.GetAll()) do
+            DarkRP.notify(ply, 0, 10, "The bank robbery has been ended by " .. activator:GetName() .. "!")
+            self:Remove()
+        end
+    end
 end

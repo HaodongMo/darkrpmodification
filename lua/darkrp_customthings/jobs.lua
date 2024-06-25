@@ -297,10 +297,12 @@ DarkRP.createCategory{
 
 GAMEMODE.AllowVoteRoles = {
     [TEAM_POLICE_DEPUTY] = {
+        [TEAM_POLICE_DEPUTY] = true,
         [TEAM_POLICE_SERGEANT] = true,
         [TEAM_POLICE_SHERIFF] = true,
     },
     [TEAM_POLICE_SERGEANT] = {
+        [TEAM_POLICE_SERGEANT] = true,
         [TEAM_POLICE_SHERIFF] = true,
     },
     [TEAM_POLICE_SHERIFF] = {

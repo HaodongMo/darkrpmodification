@@ -11,7 +11,13 @@ hook.Add("canVote", "tacrp_police_vote", function(ply, vote)
     end
 end)
 
-
+local police_atts = {
+    ["perk_shock"] = true,
+    ["melee_boost_shock"] = true,
+    ["ammo_40mm_gas"] = true,
+    ["ammo_40mm_smoke"] = true,
+    ["ammo_40mm_lvg"] = true,
+}
 
 hook.Add("TacRP_CanCustomize", "tacrp_rpcustomize", function(ply, wep, att, slot)
     local atttbl = TacRP.GetAttTable(att)
@@ -25,8 +31,7 @@ hook.Add("TacRP_CanCustomize", "tacrp_rpcustomize", function(ply, wep, att, slot
     else
         local notreq = atttbl.Free
                 or cat == "melee_tech"
-                or cat == "ammo_40mm_civ"
-                or (att == "perk_shock" and ply:isCP())
+                or (police_atts[att] and ply:isCP())
         if !notreq and !ply:getJobTable().gunsmith then
             return false, "Requires Gunsmith"
         end

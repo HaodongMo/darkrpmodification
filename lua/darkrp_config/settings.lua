@@ -236,7 +236,7 @@ GM.Config.maxvehicles                   = 5
 GM.Config.microwavefoodcost             = 30
 -- gunlabguncost - Sets the initial price of a gun from a gunlab. Note that the
 -- gunlab owner can change this price.
-GM.Config.gunlabguncost                 = 1000
+GM.Config.gunlabguncost                 = 300
 -- druglabdrugcost - Sets the initial price of drugs from a drugs lab. Note that
 -- the drugs lab owner can change this price.
 GM.Config.druglabdrugcost               = 100
@@ -625,7 +625,7 @@ table.sort(weaponKeys)
 
 GM.Config.gunlabWeaponsCumulativeKeys = weaponKeys
 
-GM.Config.bomblabbombcost = 500
+GM.Config.bomblabbombcost = 150
 GM.Config.bomblabWeapons = {
     "tacrp_ammo_gas",
     "tacrp_ammo_c4",
@@ -692,6 +692,10 @@ GM.Config.vendingMachineRequireLicense = {
     ["tacrp_uzi"] = true,
     ["tacrp_vertec"] = true,
     ["tacrp_xd45"] = true,
+    ["tacrp_ar15"] = true,
+    ["tacrp_knife"] = true,
+    ["tacrp_m_kukri"] = true,
+    ["tacrp_c4_detonator"] = true,
 }
 
 GM.Config.vendingMachineGuns = {
@@ -712,7 +716,7 @@ GM.Config.vendingMachineGuns = {
     ["tacrp_m14"] = 2800,
 }
 
-GM.Config.vendingMachineNoLicense = true
+GM.Config.vendingMachineNoLicense = false
 
 GM.Config.vendingMachineAmmo = {
     {

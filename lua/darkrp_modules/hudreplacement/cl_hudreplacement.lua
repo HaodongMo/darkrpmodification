@@ -531,11 +531,15 @@ hook.Add( "PlayerBindPress", "ArcRP_ContextMenu_Interact", function(ply, bind, p
     local max = #context
 
     if bind == "invnext" then
-        contextindex = contextindex + 1
-        block = true
+        if #context > 1 then
+            contextindex = contextindex + 1
+            block = true
+        end
     elseif bind == "invprev" then
-        contextindex = contextindex - 1
-        block = true
+        if #context > 1 then
+            contextindex = contextindex - 1
+            block = true
+        end
     elseif bind == "+use" then
         local contextitem = context[contextindex]
 

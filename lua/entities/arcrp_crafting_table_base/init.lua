@@ -88,6 +88,8 @@ function ENT:CheckRecipe()
         end
     end
 
+    print(output)
+
     self:SetRecipeOutput(output)
 end
 

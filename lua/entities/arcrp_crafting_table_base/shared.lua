@@ -37,14 +37,14 @@ function ENT:GetContextMenu(player)
 
     local tbl = {}
 
-    if self:GetRecipeOutput() then
-        local recipename = GAMEMODE.Config.craftingRecipes[self.CraftingRecipeType].name or "??"
+    if self:GetRecipeOutput() != 0 then
+        local recipename = GAMEMODE.Config.craftingRecipes[self.CraftingRecipeType][self:GetRecipeOutput()].name or "??"
         table.insert(tbl, {
             message = "Craft " .. recipename,
             callback = function(ent, ply)
                 if ent:GetPos():DistToSqr(ply:GetPos()) > 256 * 256 then return end
 
-                ent:EjectIngredients()
+                ent:Craft()
             end,
         })
     end

@@ -293,6 +293,21 @@ TEAM_COURIER = DarkRP.createJob("Courier", {
     weapons = {}
 })
 
+TEAM_SHOPKEEPER = DarkRP.createJob("Shopkeeper", {
+    color = Color(150, 255, 75, 255),
+    model = {"models/player/hostage/hostage_01.mdl"},
+    description =
+[[You sell shipments of crafting materials to other players.]],
+    command = "shopkeeper",
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    maxpocket = 5,
+    category = "Citizens",
+    max = 2,
+    sortOrder = 106,
+    weapons = {}
+})
+
 TEAM_MARTIAL_ARTIST = DarkRP.createJob("Martial Artist", {
     color = Color(255, 125, 175, 255),
     model = {"models/player/alyx.mdl"},
@@ -303,23 +318,8 @@ TEAM_MARTIAL_ARTIST = DarkRP.createJob("Martial Artist", {
     admin = 0,
     category = "Citizens",
     max = 1,
-    sortOrder = 106,
+    sortOrder = 107,
     martialArtist = true,
-    weapons = {}
-})
-
-TEAM_SHOPKEEPER = DarkRP.createJob("Shopkeeper", {
-    color = Color(150, 255, 75, 255),
-    model = {"models/player/hostage/hostage_03.mdl"},
-    description =
-[[You sell shipments of crafting materials to other players, like the Gunsmith and Craftsman.]],
-    command = "shopkeeper",
-    salary = GAMEMODE.Config.normalsalary,
-    admin = 0,
-    maxpocket = 5,
-    category = "Citizens",
-    max = 2,
-    sortOrder = 105,
     weapons = {}
 })
 

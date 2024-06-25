@@ -22,6 +22,8 @@ function ENT:Initialize()
     if phys:IsValid() then
         phys:Wake()
     end
+
+    self.damage = 500
 end
 
 ENT.SpawnOffset = Vector(0, -72, 16)
@@ -217,4 +219,30 @@ function ENT:EjectIngredients()
     end
 
     self.NextPickupTime = CurTime() + 5
+end
+
+
+function ENT:OnTakeDamage(dmg)
+    self:TakePhysicsDamage(dmg)
+
+    self.damage = self.damage - dmg:GetDamage()
+    if self.damage <= 0 and not self.Destructed then
+        self.Destructed = true
+        self:Destruct(dmg)
+        self:Remove()
+    end
+end
+
+function ENT:Destruct(dmg)
+    local vPoint = self:GetPos()
+    local attacker = dmg:GetAttacker()
+
+    util.ScreenShake(vPoint, 512, 255, 1.5, 200)
+
+    local effectdata = EffectData()
+    effectdata:SetStart(vPoint)
+    effectdata:SetOrigin(vPoint)
+    effectdata:SetScale(1)
+    util.Effect(self:WaterLevel() > 1 and "WaterSurfaceExplosion" or "Explosion", effectdata)
+    util.Decal("Scorch", vPoint, vPoint - Vector(0, 0, 25), self)
 end

@@ -39,7 +39,7 @@ function ENT:GetContextMenu(player)
     local tbl = {}
 
     if self:GetRecipeOutput() != 0 then
-        local recipename = GAMEMODE.Config.craftingRecipes[self.CraftingRecipeType][self:GetRecipeOutput()].name or "??"
+        local recipename = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()].name or "??"
         table.insert(tbl, {
             message = "Craft " .. recipename,
             callback = function(ent, ply)

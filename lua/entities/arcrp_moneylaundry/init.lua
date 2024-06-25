@@ -37,7 +37,7 @@ function ENT:Touch(entity)
     end
 end
 
-function ENT:Use(activator, caller)
+function ENT:GetMoney(activator, caller)
     if self.Money <= 0 then
         DarkRP.notify(activator, 1, 4, "No money in the laundry! Bring bank briefcases to launder them!")
     else

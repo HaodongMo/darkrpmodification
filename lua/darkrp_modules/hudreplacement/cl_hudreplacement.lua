@@ -173,29 +173,31 @@ local function hudPaintHealth()
     surfaceSetDrawColor(col)
     surfaceDrawLine(x + TacRP.SS(2), hpb_y - TacRP.SS(2), x + w - TacRP.SS(2), hpb_y - TacRP.SS(2))
 
-    -- Balance / Stamina
-    local stamina_perc = LocalPlayer():IMDE_GetStamina() / LocalPlayer():IMDE_GetMaxStamina()
-    local balance_perc = LocalPlayer():IMDE_GetBalance() / LocalPlayer():IMDE_GetMaxBalance()
+    if LocalPlayer().IMDE_GetBalance then
+        -- Balance / Stamina
+        local stamina_perc = LocalPlayer():IMDE_GetStamina() / LocalPlayer():IMDE_GetMaxStamina()
+        local balance_perc = LocalPlayer():IMDE_GetBalance() / LocalPlayer():IMDE_GetMaxBalance()
 
-    surfaceSetFont("TacRP_HD44780A00_5x8_6")
-    local ew, eh = surfaceGetTextSize("E")
+        surfaceSetFont("TacRP_HD44780A00_5x8_6")
+        local ew, eh = surfaceGetTextSize("E")
 
-    surfaceSetTextPos(x + TacRP.SS(7), hpb_y2 + hpb_h2 / 2 - eh / 2)
-    surfaceSetTextColor(col)
-    surfaceDrawText("E")
+        surfaceSetTextPos(x + TacRP.SS(7), hpb_y2 + hpb_h2 / 2 - eh / 2)
+        surfaceSetTextColor(col)
+        surfaceDrawText("E")
 
-    local hpb_can = math.min(math.ceil(hpb_segments * stamina_perc), hpb_segments)
+        local hpb_can = math.min(math.ceil(hpb_segments * stamina_perc), hpb_segments)
 
-    for i = 1, hpb_segments do
-        if i / hpb_segments <= balance_perc then
-            surfaceSetDrawColor(col_bal)
-        else
-            surfaceSetDrawColor(col)
-        end
-        if hpb_can >= i then
-            surfaceDrawRect(hpb_x + (i * (hpb_w + TacRP.SS(1))), hpb_y2, hpb_w, hpb_h2)
-        else
-            surfaceDrawOutlinedRect(hpb_x + (i * (hpb_w + TacRP.SS(1))), hpb_y2, hpb_w, hpb_h2)
+        for i = 1, hpb_segments do
+            if i / hpb_segments <= balance_perc then
+                surfaceSetDrawColor(col_bal)
+            else
+                surfaceSetDrawColor(col)
+            end
+            if hpb_can >= i then
+                surfaceDrawRect(hpb_x + (i * (hpb_w + TacRP.SS(1))), hpb_y2, hpb_w, hpb_h2)
+            else
+                surfaceDrawOutlinedRect(hpb_x + (i * (hpb_w + TacRP.SS(1))), hpb_y2, hpb_w, hpb_h2)
+            end
         end
     end
 
@@ -402,6 +404,7 @@ local function hudPaintAmmo()
     end
 end
 
+local contextindex = 1
 
 local function hudPaint()
     if !LocalPlayer():Alive() then return end
@@ -412,49 +415,120 @@ local function hudPaint()
     local tr = LocalPlayer():GetEyeTrace()
 
     local ent = tr.Entity
-    if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 96 * 96 then return end
-
-    local customUse = ArcRP_GetCustomUse(ent, LocalPlayer())
-
-    local text
-
-    if customUse or ent.interactionHint then
-        local hinttext = isfunction(ent.interactionHint) and ent.interactionHint() or ent.interactionHint
-        text = "[" .. TacRP.GetBindKey("+use") .. "] " .. (((customUse or {}).message) or hinttext or "")
-
-        if customUse and LocalPlayer():KeyPressed(IN_USE) then
-            if customUse.callback then
-                net.Start("arcrp_customuse")
-                net.WriteEntity(ent)
-                net.SendToServer()
-            end
-
-            if customUse.cl_callback then
-                customUse.cl_callback(ent, LocalPlayer())
-            end
-        end
-    end
-    if ent.contextHint then
-        if isfunction(ent.contextHint) then
-            text = ent.contextHint() or text
-        else
-            text = ent.contextHint
-
-        end
+    if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 96 * 96 then
+        contextindex = 1
+        return
     end
 
-    if text then
+    local context = ArcRP_GetCustomContextMenu(ent, LocalPlayer())
+    // local customUse = ArcRP_GetCustomUse(ent, LocalPlayer())
+
+    // local text
+
+    if !context then
+        contextindex = 1
+        return
+    end
+
+    // if customUse or ent.interactionHint then
+    //     local hinttext = isfunction(ent.interactionHint) and ent.interactionHint() or ent.interactionHint
+    //     text = "[" .. TacRP.GetBindKey("+use") .. "] " .. (((customUse or {}).message) or hinttext or "")
+
+    //     if customUse and LocalPlayer():KeyPressed(IN_USE) then
+    //         if customUse.callback then
+    //             net.Start("arcrp_customuse")
+    //             net.WriteEntity(ent)
+    //             net.SendToServer()
+    //         end
+
+    //         if customUse.cl_callback then
+    //             customUse.cl_callback(ent, LocalPlayer())
+    //         end
+    //     end
+    // end
+    // if ent.contextHint then
+    //     if isfunction(ent.contextHint) then
+    //         text = ent.contextHint() or text
+    //     else
+    //         text = ent.contextHint
+
+    //     end
+    // end
+
+    local yh = TacRP.SS(10)
+
+    for index, item in ipairs(context) do
+        local selected = index == contextindex
+
+        local text = "[" .. TacRP.GetBindKey("+use") .. "] " .. item.message
+
         local font = "TacRP_HD44780A00_5x8_4"
         surface.SetFont(font)
         local w, h = surface.GetTextSize(text)
         w = w + TacRP.SS(8)
         h = h + TacRP.SS(4)
 
-        surface.SetDrawColor(0, 0, 0, 200)
-        TacRP.DrawCorneredBox(ScrW() / 2 - w / 2, ScrH() / 2 + TacRP.SS(32), w, h)
+        local textcol = Color(255, 255, 255)
+        if selected then
+            surface.SetDrawColor(255, 255, 255, 200)
+            textcol = Color(0, 0, 0)
+        else
+            surface.SetDrawColor(0, 0, 0, 200)
+        end
 
-        draw.SimpleText(text, font, ScrW() / 2, ScrH() / 2 + TacRP.SS(32) + h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        TacRP.DrawCorneredBox(ScrW() / 2 - w / 2, ScrH() / 2 + TacRP.SS(32) + ((index - 1) * yh), w, h)
+        draw.SimpleText(text, font, ScrW() / 2, ScrH() / 2 + TacRP.SS(32) + h / 2 + ((index - 1) * yh), textcol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 end
 
 hook.Add("HUDPaint", "DarkRP_Mod_HUDPaint", hudPaint)
+
+hook.Add( "PlayerBindPress", "ArcRP_ContextMenu_Interact", function(ply, bind, pressed)
+    if !pressed then return end
+
+    local tr = LocalPlayer():GetEyeTrace()
+
+    local ent = tr.Entity
+    if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 96 * 96 then
+        return
+    end
+
+    local context = ArcRP_GetCustomContextMenu(ent, LocalPlayer())
+
+    if !context then return end
+
+    local block = nil
+
+    local min = 1
+    local max = #context
+
+    if bind == "invnext" then
+        contextindex = contextindex + 1
+        block = true
+    elseif bind == "invprev" then
+        contextindex = contextindex - 1
+        block = true
+    elseif bind == "+use" then
+        local contextitem = context[contextindex]
+
+        if contextitem then
+            if contextitem.callback then
+                print("Yeah")
+                net.Start("arcrp_customuse")
+                net.WriteUInt(contextindex, 8)
+                net.WriteEntity(ent)
+                net.SendToServer()
+            end
+
+            if contextitem.cl_callback then
+                contextitem.cl_callback(ent, LocalPlayer())
+            end
+        end
+
+        block = true
+    end
+
+    contextindex = math.Clamp(contextindex, min, max)
+
+    return block
+end)

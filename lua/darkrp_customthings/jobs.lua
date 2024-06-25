@@ -100,7 +100,6 @@ They are appointed by the Sheriff (Sheriff vote required if one exists).
 
 Can promote rookies to Deputy.
 Can issue arrest warrants (causing a player to always be jailed on death).
-Can issue up to 20m of ban time (after a trial).
 
 Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses.]],
     command = "police_sergeant",
@@ -137,7 +136,6 @@ TEAM_POLICE_SHERIFF = DarkRP.createJob("Sheriff", {
 
 Voted in by the sergeants.
 Can promote deputies to Sergeant.
-Can issue up to 1h of ban time (after a trial).
 
 Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses.]],
     command = "police_sheriff",
@@ -165,6 +163,41 @@ Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses
     ban_max_time = 60,
     unarrest = true,
     PlayerLoadout = function(ply)
+        cploadout(ply, 100)
+    end,
+})
+
+TEAM_POLICE_SUPERSOLDIER = DarkRP.createJob("Police Super Soldier", {
+    color = Color(100, 100, 100, 255),
+    model = {"models/player/soldier_stripped.mdl"},
+    description =
+[[Admin only.
+
+Experimental police super-soldier unit, for use when nothing else works.
+Your job is to restore order at all costs.]],
+    command = "police_robocop",
+    salary = 0,
+    admin = 1,
+    category = "Police",
+    max = 1,
+    hasLicense = true,
+    sortOrder = 103,
+    ammo = {
+        ["357"] = 60,
+        ["ar2"] = 1000,
+        ["pistol"] = 300,
+        ["smg1_grenade"] = 20,
+        ["ti_gas"] = 5,
+        ["ti_flashbang"] = 5,
+        ["ti_breach"] = 5,
+    },
+    weapons = {"tacrp_mtx_dual", "tacrp_mg4", "tacrp_m_tonfa", "tacrp_m320"},
+    warrant = true,
+    ban_max_time = 60,
+    unarrest = true,
+    PlayerLoadout = function(ply)
+        ply:SetMaxHealth(1000)
+        ply:SetHealth(1000)
         cploadout(ply, 100)
     end,
 })
@@ -209,6 +242,7 @@ TEAM_GUNSMITH = DarkRP.createJob("Gunsmith", {
     max = 2,
     sortOrder = 102,
     gunsmith = true,
+    weapons = {}
 })
 
 TEAM_LAWYER = DarkRP.createJob("Lawyer", {
@@ -227,6 +261,7 @@ Free your clients from prison (with or without the police's consent).]],
     max = 1,
     sortOrder = 103,
     unarrest = true,
+    weapons = {}
 })
 
 TEAM_CRAFTSMAN = DarkRP.createJob("Craftsman", {
@@ -240,6 +275,7 @@ TEAM_CRAFTSMAN = DarkRP.createJob("Craftsman", {
     category = "Citizens",
     max = 2,
     sortOrder = 104,
+    weapons = {}
 })
 
 TEAM_COURIER = DarkRP.createJob("Courier", {
@@ -254,6 +290,7 @@ TEAM_COURIER = DarkRP.createJob("Courier", {
     category = "Citizens",
     max = 3,
     sortOrder = 105,
+    weapons = {}
 })
 
 TEAM_MARTIAL_ARTIST = DarkRP.createJob("Martial Artist", {
@@ -268,6 +305,7 @@ TEAM_MARTIAL_ARTIST = DarkRP.createJob("Martial Artist", {
     max = 1,
     sortOrder = 106,
     martialArtist = true,
+    weapons = {}
 })
 
 

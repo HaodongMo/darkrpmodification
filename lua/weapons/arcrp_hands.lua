@@ -320,8 +320,8 @@ local function hack()
         if table.IsEmpty(pocket) then return end
         frame = vgui.Create("DFrame")
     
-        local count = GAMEMODE.Config.pocketitems or GM.Config.pocketitems
-        frame:SetSize(345, 32 + 64 * math.ceil(count / 5) + 3 * math.ceil(count / 5))
+        local count = LocalPlayer():getJobTable().maxpocket or GAMEMODE.Config.pocketitems
+        frame:SetSize(345, 32 + (67 * math.ceil(count / 5)))
         frame:SetTitle(DarkRP.getPhrase("drop_item"))
         frame.btnMaxim:SetVisible(false)
         frame.btnMinim:SetVisible(false)
@@ -350,7 +350,7 @@ local function hack()
     end
     net.Receive("DarkRP_Pocket", retrievePocket)
 end
-hook.Add("InitPostEntity", function()
+hook.Add("InitPostEntity", "arcrp_amog_8z_test_yo_shid", function()
     timer.Simple(1, function() hack() end)
 end)
 hack()

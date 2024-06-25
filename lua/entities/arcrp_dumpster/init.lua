@@ -17,7 +17,7 @@ function ENT:Initialize()
         phys:Wake()
     end
 
-    self.NextScavengeTime = 0
+    self:SetNextScavengeTime(0)
 end
 
 function ENT:canUse(owner, activator)
@@ -133,7 +133,7 @@ local dispose_blacklist = {
 ENT.SpawnOffset = Vector(0, 0, 32)
 ENT.ScavengeDelay = 120
 
-function ENT:Use(activator, caller)
+function ENT:DisposeWeapon(activator, caller)
     local wep = activator:GetActiveWeapon()
 
     if IsValid(wep) and weapons.IsBasedOn(wep:GetClass(), "tacrp_base") then
@@ -170,82 +170,83 @@ function ENT:Use(activator, caller)
         end
         
         self:EmitSound("doors/door_metal_thin_close2.wav", 85, math.Rand(98, 102))
-    else
+    end
+end
 
-        if self.NextScavengeTime < CurTime() then
-            // SCAVENGE!!!! :torle:
+function ENT:Scavenge(activator, caller)
+    if self:GetNextScavengeTime() < CurTime() then
+        // SCAVENGE!!!! :torle:
 
-            local roll = math.random(1, 100)
+        local roll = math.random(1, 100)
 
-            if roll <= 20 then
-                // roll random melee
-                local randowep = table.Random(self.ScavengeLoot_Melees)
+        if roll <= 20 then
+            // roll random melee
+            local randowep = table.Random(self.ScavengeLoot_Melees)
 
-                if roll <= 3 then
-                    // roll random gun
-                    randowep = table.Random(self.ScavengeLoot_Guns)
-                elseif roll <= 9 then
-                    // item
-                    randowep = table.Random(self.ScavengeLoot_Items)
-                end
-
-                local newwep = ents.Create(randowep)
-                if !IsValid(newwep) then print("Invalid entity: " .. randowep) return end
-                local newpos = self:GetPos()
-                newpos = newpos + self:GetForward() * self.SpawnOffset.x
-                newpos = newpos + self:GetRight() * self.SpawnOffset.y
-                newpos = newpos + self:GetUp() * self.SpawnOffset.z
-                newwep:SetPos(newpos)
-                newwep.nodupe = true
-                newwep.spawnedBy = activator
-
-                if newwep.ArcticTacRP and newwep.Attachments then
-                    for k, v in pairs(newwep.Attachments) do
-                        if v.Category == "bolt_automatic" or v.Category == "bolt_manual"
-                                or (istable(v.Category) and (table.HasValue(v.Category, "bolt_automatic") or table.HasValue(v.Category, "bolt_manual"))) then
-                            v.Installed = "bolt_surplus"
-                            break
-                        end
-                    end
-                end
-                newwep:Spawn()
-
-                DarkRP.notify(activator, 0, 5, "You found " .. descriptors[math.random(1, #descriptors)] .. " " .. newwep.PrintName .. "!")
-            elseif roll <= 40 then
-                local amount = math.ceil(math.random(5, 30))
-                activator:addMoney(amount)
-                DarkRP.notify(activator, 0, 5, "You found " .. DarkRP.formatMoney(amount) .. "!")
-            elseif roll <= 70 then
-                local amount = math.ceil(math.random(1, 5))
-                activator:addMoney(amount)
-                DarkRP.notify(activator, 0, 5, "You found " .. DarkRP.formatMoney(amount) .. ".")
-            elseif roll == 100 then
-                -- hot potato
-                local newwep = ents.Create(table.Random(self.ScavengeLoot_LiveGrenades))
-                if !IsValid(newwep) then print("Invalid entity: " .. randowep) return end
-                local newpos = self:GetPos()
-                newpos = newpos + self:GetForward() * self.SpawnOffset.x
-                newpos = newpos + self:GetRight() * self.SpawnOffset.y
-                newpos = newpos + self:GetUp() * self.SpawnOffset.z
-                newwep:SetPos(newpos)
-                newwep.nodupe = true
-                newwep.spawnedBy = activator
-                newwep.Delay = math.Rand(3, 5) -- more time to react
-                newwep:Spawn()
-                newwep:GetPhysicsObject():ApplyTorqueCenter(VectorRand() * 360)
-                newwep:GetPhysicsObject():ApplyForceCenter(VectorRand() * 100 + (activator:EyePos() - newpos):GetNormalized() * 300 + Vector(0, 0, math.Rand(100, 300)))
-                DarkRP.notify(activator, 1, 5, "You found a live grenade?!")
-            else
-                DarkRP.notify(activator, 1, 5, "You didn't find anything...")
+            if roll <= 3 then
+                // roll random gun
+                randowep = table.Random(self.ScavengeLoot_Guns)
+            elseif roll <= 9 then
+                // item
+                randowep = table.Random(self.ScavengeLoot_Items)
             end
 
-            self.NextScavengeTime = CurTime() + self.ScavengeDelay * math.Rand(1, 1.5)
+            local newwep = ents.Create(randowep)
+            if !IsValid(newwep) then print("Invalid entity: " .. randowep) return end
+            local newpos = self:GetPos()
+            newpos = newpos + self:GetForward() * self.SpawnOffset.x
+            newpos = newpos + self:GetRight() * self.SpawnOffset.y
+            newpos = newpos + self:GetUp() * self.SpawnOffset.z
+            newwep:SetPos(newpos)
+            newwep.nodupe = true
+            newwep.spawnedBy = activator
+
+            if newwep.ArcticTacRP and newwep.Attachments then
+                for k, v in pairs(newwep.Attachments) do
+                    if v.Category == "bolt_automatic" or v.Category == "bolt_manual"
+                            or (istable(v.Category) and (table.HasValue(v.Category, "bolt_automatic") or table.HasValue(v.Category, "bolt_manual"))) then
+                        v.Installed = "bolt_surplus"
+                        break
+                    end
+                end
+            end
+            newwep:Spawn()
+
+            DarkRP.notify(activator, 0, 5, "You found " .. descriptors[math.random(1, #descriptors)] .. " " .. newwep.PrintName .. "!")
+        elseif roll <= 40 then
+            local amount = math.ceil(math.random(5, 30))
+            activator:addMoney(amount)
+            DarkRP.notify(activator, 0, 5, "You found " .. DarkRP.formatMoney(amount) .. "!")
+        elseif roll <= 70 then
+            local amount = math.ceil(math.random(1, 5))
+            activator:addMoney(amount)
+            DarkRP.notify(activator, 0, 5, "You found " .. DarkRP.formatMoney(amount) .. ".")
+        elseif roll == 100 then
+            -- hot potato
+            local newwep = ents.Create(table.Random(self.ScavengeLoot_LiveGrenades))
+            if !IsValid(newwep) then print("Invalid entity: " .. randowep) return end
+            local newpos = self:GetPos()
+            newpos = newpos + self:GetForward() * self.SpawnOffset.x
+            newpos = newpos + self:GetRight() * self.SpawnOffset.y
+            newpos = newpos + self:GetUp() * self.SpawnOffset.z
+            newwep:SetPos(newpos)
+            newwep.nodupe = true
+            newwep.spawnedBy = activator
+            newwep.Delay = math.Rand(3, 5) -- more time to react
+            newwep:Spawn()
+            newwep:GetPhysicsObject():ApplyTorqueCenter(VectorRand() * 360)
+            newwep:GetPhysicsObject():ApplyForceCenter(VectorRand() * 100 + (activator:EyePos() - newpos):GetNormalized() * 300 + Vector(0, 0, math.Rand(100, 300)))
+            DarkRP.notify(activator, 1, 5, "You found a live grenade?!")
         else
-            DarkRP.notify(activator, 1, 4, "There is nothing to scavenge at the moment...")
+            DarkRP.notify(activator, 1, 5, "You didn't find anything...")
         end
 
-        self:EmitSound("doors/door_metal_rusty_move1.wav", 85, math.Rand(98, 102))
+        self:SetNextScavengeTime(CurTime() + self.ScavengeDelay * math.Rand(1, 1.5))
+    else
+        DarkRP.notify(activator, 1, 4, "There is nothing to scavenge at the moment...")
     end
+
+    self:EmitSound("doors/door_metal_rusty_move1.wav", 85, math.Rand(98, 102))
 end
 
 function ENT:PhysicsCollide(coldata, collider)

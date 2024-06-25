@@ -8,4 +8,20 @@ ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 ENT.isGunDumpster = true
 
-ENT.interactionHint = "Dispose of Weapon"
+function ENT:SetupDataTables()
+    self:NetworkVar("Float", 0, "NextScavengeTime")
+    self:SetNextScavengeTime(0)
+end
+
+function ENT:GetContextMenu(player)
+    return {
+        {
+            message = "Scavenge",
+            callback = self.Scavenge or true
+        },
+        {
+            message = "Dispose of Weapon",
+            callback = self.DisposeWeapon or true
+        }
+    }
+end

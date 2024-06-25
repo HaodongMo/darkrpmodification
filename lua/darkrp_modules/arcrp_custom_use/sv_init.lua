@@ -1,15 +1,18 @@
 util.AddNetworkString("arcrp_customuse")
 
 net.Receive("arcrp_customuse", function(len, ply)
+    local index = net.ReadUInt(8)
     local ent = net.ReadEntity()
 
     if !IsValid(ent) then return end
 
     if ent:GetPos():Distance(ply:GetPos()) > 256 then return end
 
-    local customuse = ArcRP_GetCustomUse(ent, ply)
+    local context = ArcRP_GetCustomContextMenu(ent, ply)
 
-    if !customuse then return end
+    if !context then return end
+    if !context[index] then return end
+    if !context[index].callback then return end
 
-    customuse.callback(ent, ply)
+    context[index].callback(ent, ply)
 end)

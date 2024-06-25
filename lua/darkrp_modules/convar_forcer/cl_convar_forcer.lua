@@ -1,6 +1,7 @@
 local RealGetConVar = GetConVar
 
 local ForcedConVars = {
+    ["imde_hud"] = "0"
 }
 
 local ProxyConVar = {

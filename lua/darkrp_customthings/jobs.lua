@@ -100,7 +100,6 @@ They are appointed by the Sheriff (Sheriff vote required if one exists).
 
 Can promote rookies to Deputy.
 Can issue arrest warrants (causing a player to always be jailed on death).
-Can issue up to 20m of ban time (after a trial).
 
 Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses.]],
     command = "police_sergeant",
@@ -137,7 +136,6 @@ TEAM_POLICE_SHERIFF = DarkRP.createJob("Sheriff", {
 
 Voted in by the sergeants.
 Can promote deputies to Sergeant.
-Can issue up to 1h of ban time (after a trial).
 
 Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses.]],
     command = "police_sheriff",

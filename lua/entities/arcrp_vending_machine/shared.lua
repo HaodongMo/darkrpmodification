@@ -4,7 +4,7 @@ ENT.PrintName = "Vending Machine"
 ENT.Author = "Arctic"
 ENT.Spawnable = true
 
-ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
+ENT.RenderGroup = RENDERGROUP_OPAQUE
 
 ENT.isVendingMachine = true
 

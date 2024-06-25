@@ -5,3 +5,5 @@ ENT.Spawnable = true
 
 ENT.craftingIngredient = "paper"
 ENT.Model = "models/props/cs_office/Paper_towels.mdl"
+
+ENT.isPaper = true

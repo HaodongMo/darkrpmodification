@@ -434,7 +434,7 @@ local function hudPaint()
     local tr = LocalPlayer():GetEyeTrace()
 
     local ent = tr.Entity
-    if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 96 * 96 then
+    if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 128 * 128 then
         contextindex = 1
         return
     end
@@ -540,7 +540,7 @@ hook.Add( "PlayerBindPress", "ArcRP_ContextMenu_Interact", function(ply, bind, p
     local tr = LocalPlayer():GetEyeTrace()
 
     local ent = tr.Entity
-    if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 96 * 96 then
+    if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 128 * 128 then
         return
     end
 

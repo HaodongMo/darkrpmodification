@@ -27,43 +27,36 @@ function ENT:Initialize()
     self.damage = 500
 end
 
-ENT.SpawnOffset = Vector(0, -72, 16)
+ENT.SpawnOffset = Vector(-12, -32, 22)
+ENT.OutputForce = Vector(0, -750, 750)
 ENT.NextPickupTime = 0
 
 function ENT:Touch(entity)
     if self.NextPickupTime > CurTime() then return end
+    if entity.isCraftingIngredient and !entity.USED then
 
-    if entity.isCraftingIngredient then
-        if IsValid(self:GetIngredient1()) and IsValid(self:GetIngredient2()) and IsValid(self:GetIngredient3()) then return end
-        if entity == self:GetIngredient1() then return end
-        if entity == self:GetIngredient2() then return end
-        if entity == self:GetIngredient3() then return end
+        local ing = entity.craftingIngredient
+        local id = ArcRP_Craft.Items[ing].ID
 
-        self:EmitSound("items/ammocrate_close.wav")
-
-        entity:SetNoDraw(true)
-        entity:SetMoveType(MOVETYPE_NONE)
-        entity:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
-        entity:ForcePlayerDrop()
-
-        self.NextPickupTime = CurTime() + 1
-
-        if !IsValid(self:GetIngredient1()) then
-            self:SetIngredient1(entity)
-            self:CheckRecipe()
-            return
+        local ind = nil
+        for i = 1, self.MaxIngredientTypes do
+            local ingid = self["GetIngredientID" .. i](self)
+            if ingid == id then
+                ind = i
+                self["SetIngredientCount" .. i](self, self["GetIngredientCount" .. i](self) + 1)
+                break
+            elseif ingid <= 0 then
+                ind = i
+                self["SetIngredientID" .. i](self, id)
+                self["SetIngredientCount" .. i](self, 1)
+                break
+            end
         end
-
-        if !IsValid(self:GetIngredient2()) then
-            self:SetIngredient2(entity)
+        if ind != nil then
+            entity.USED = true
+            entity:Remove()
+            self:EmitSound("items/ammocrate_close.wav")
             self:CheckRecipe()
-            return
-        end
-
-        if !IsValid(self:GetIngredient3()) then
-            self:SetIngredient3(entity)
-            self:CheckRecipe()
-            return
         end
     end
 end
@@ -77,20 +70,12 @@ function ENT:CheckRecipe()
 
     local ingredientcount = {}
 
-    local ingredient1 = self:GetIngredient1()
-    local ingredient2 = self:GetIngredient2()
-    local ingredient3 = self:GetIngredient3()
-
-    if IsValid(ingredient1) then
-        ingredientcount[ingredient1.craftingIngredient] = (ingredientcount[ingredient1.craftingIngredient] or 0) + 1
-    end
-
-    if IsValid(ingredient2) then
-        ingredientcount[ingredient2.craftingIngredient] = (ingredientcount[ingredient2.craftingIngredient] or 0) + 1
-    end
-
-    if IsValid(ingredient3) then
-        ingredientcount[ingredient3.craftingIngredient] = (ingredientcount[ingredient3.craftingIngredient] or 0) + 1
+    for i = 1, self.MaxIngredientTypes do
+        local ingid = self["GetIngredientID" .. i](self)
+        if ingid == 0 then break end
+        local ing = ArcRP_Craft.ItemsID[ingid]
+        local amt = self["GetIngredientCount" .. i](self)
+        ingredientcount[ing] = amt
     end
 
     for i, recipe in ipairs(ArcRP_Craft.Recipes[self.CraftingRecipeType]) do
@@ -147,79 +132,48 @@ function ENT:Craft(activator)
     newent.spawnedBy = self:Getowning_ent()
     newent:Spawn()
 
-    SafeRemoveEntity(self:GetIngredient1())
-    SafeRemoveEntity(self:GetIngredient2())
-    SafeRemoveEntity(self:GetIngredient3())
+    for i = 1, self.MaxIngredientTypes do
+        local ing = ArcRP_Craft.ItemsID[self["GetIngredientID" .. i](self)]
+        local newamt = self["GetIngredientCount" .. i](self) - (out.ingredients[ing] or 0)
+        self["SetIngredientCount" .. i](self, newamt)
+        if newamt <= 0 then
+            self["SetIngredientID" .. i](self, 0)
+        end
+    end
 
-    self:SetRecipeOutput(0)
-    self.NextPickupTime = CurTime() + 5
+    self:CheckRecipe()
+    self.NextPickupTime = CurTime() + 1
 end
 
 function ENT:EjectIngredients()
-    if IsValid(self:GetIngredient1()) then
-        local newpos = self:GetPos()
-        newpos = newpos + self:GetForward() * self.SpawnOffset.x
-        newpos = newpos + self:GetRight() * self.SpawnOffset.y
-        newpos = newpos + self:GetUp() * self.SpawnOffset.z
-
-        local ing1 = self:GetIngredient1()
-
-        ing1:SetMoveType(MOVETYPE_VPHYSICS)
-        ing1:SetPos(newpos)
-        ing1:SetNoDraw(false)
-        ing1:SetCollisionGroup(COLLISION_GROUP_WEAPON)
-
-        local phys = ing1:GetPhysicsObject()
-        if IsValid(phys) then
-            phys:Wake()
+    local delay = 0
+    for i = 1, self.MaxIngredientTypes do
+        local ingid = self["GetIngredientID" .. i](self)
+        if ingid <= 0 then continue end
+        local ing = ArcRP_Craft.ItemsID[ingid]
+        local amt = self["GetIngredientCount" .. i](self)
+        for j = 1, amt do
+            timer.Simple(delay, function()
+                if !IsValid(self) then return end
+                local ingent = ents.Create("arcrp_in_" .. ing)
+                local newpos = self:GetPos()
+                newpos = newpos + self:GetForward() * self.SpawnOffset.x
+                newpos = newpos + self:GetRight() * self.SpawnOffset.y
+                newpos = newpos + self:GetUp() * self.SpawnOffset.z
+                ingent:SetPos(newpos)
+                ingent:SetAngles(AngleRand())
+                ingent:Spawn()
+                ingent:GetPhysicsObject():ApplyForceCenter(self:GetForward() * self.OutputForce.x + self:GetRight() * self.OutputForce.y + self:GetUp() * self.OutputForce.z)
+                ingent:GetPhysicsObject():ApplyTorqueCenter(VectorRand() * 200)
+                self:EmitSound("physics/metal/metal_box_footstep" .. math.random(1, 4) .. ".wav", 75, math.min(105, 95 + delay * 10))
+            end)
+            delay = delay + 0.25
         end
-
-        self:SetIngredient1(NULL)
+        self["SetIngredientID" .. i](self, 0)
+        self["SetIngredientCount" .. i](self, 0)
     end
 
-    if IsValid(self:GetIngredient2()) then
-        local newpos = self:GetPos()
-        newpos = newpos + self:GetForward() * self.SpawnOffset.x
-        newpos = newpos + self:GetRight() * self.SpawnOffset.y
-        newpos = newpos + self:GetUp() * self.SpawnOffset.z
-
-        local ing2 = self:GetIngredient2()
-
-        ing2:SetMoveType(MOVETYPE_VPHYSICS)
-        ing2:SetPos(newpos)
-        ing2:SetNoDraw(false)
-        ing2:SetCollisionGroup(COLLISION_GROUP_WEAPON)
-
-        local phys = ing2:GetPhysicsObject()
-        if IsValid(phys) then
-            phys:Wake()
-        end
-
-        self:SetIngredient2(NULL)
-    end
-
-    if IsValid(self:GetIngredient3()) then
-        local newpos = self:GetPos()
-        newpos = newpos + self:GetForward() * self.SpawnOffset.x
-        newpos = newpos + self:GetRight() * self.SpawnOffset.y
-        newpos = newpos + self:GetUp() * self.SpawnOffset.z
-
-        local ing3 = self:GetIngredient3()
-
-        ing3:SetMoveType(MOVETYPE_VPHYSICS)
-        ing3:SetPos(newpos)
-        ing3:SetNoDraw(false)
-        ing3:SetCollisionGroup(COLLISION_GROUP_WEAPON)
-
-        local phys = ing3:GetPhysicsObject()
-        if IsValid(phys) then
-            phys:Wake()
-        end
-
-        self:SetIngredient3(NULL)
-    end
-
-    self.NextPickupTime = CurTime() + 5
+    self.NextPickupTime = CurTime() + delay + 1
 end
 
 

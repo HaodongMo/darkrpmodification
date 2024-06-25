@@ -98,6 +98,7 @@ ArcRP_Craft.Recipes = {
                 steel = 1,
                 screw = 1,
             },
+            time = 10,
             output = {
                 "arcrp_in_component"
             }
@@ -202,6 +203,7 @@ ArcRP_Craft.Recipes = {
                 steel = 1,
                 screw = 1,
             },
+            time = 10,
             output = {
                 "arcrp_in_component"
             }

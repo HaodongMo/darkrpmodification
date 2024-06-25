@@ -9,32 +9,38 @@ ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 ENT.Model = "models/props_wasteland/laundry_washer003.mdl"
 ENT.CraftingRecipeType = "guns"
 
-// ENT.contextHint = "Crafting Bench"
+ENT.MaxIngredientTypes = 5
 
 function ENT:contextHint()
-    local has_ingredients = IsValid(self:GetIngredient1()) or IsValid(self:GetIngredient2()) or IsValid(self:GetIngredient3())
+    local has_ingredients = self:HasIngredients()
 
     if !has_ingredients then
         return self.PrintName
     else
         local str = ""
 
-        str = str .. self:GetIngredient1().PrintName
-
-        if IsValid(self:GetIngredient2()) then
-            str = str .. ", " .. self:GetIngredient2().PrintName
-        end
-
-        if IsValid(self:GetIngredient3()) then
-            str = str .. ", " .. self:GetIngredient3().PrintName
+        for i = 1, self.MaxIngredientTypes do
+            local ingid = self["GetIngredientID" .. i](self)
+            if ingid <= 0 then break end
+            local ing = ArcRP_Craft.Items[ArcRP_Craft.ItemsID[ingid]]
+            local amt = self["GetIngredientCount" .. i](self)
+            if i > 1 then i = i .. ", " end
+            str = str .. ing.name .. "x" .. amt
         end
 
         return str
     end
 end
 
+function ENT:HasIngredients()
+    for i = 1, self.MaxIngredientTypes do
+        if self["GetIngredientID" .. i](self) > 0 and self["GetIngredientCount" .. i](self) > 0 then return true end
+    end
+    return false
+end
+
 function ENT:GetContextMenu(player)
-    local has_ingredients = IsValid(self:GetIngredient1()) or IsValid(self:GetIngredient2()) or IsValid(self:GetIngredient3())
+    local has_ingredients = self:HasIngredients()
 
     local tbl = {}
 
@@ -88,9 +94,14 @@ function ENT:GetContextMenu(player)
 end
 
 function ENT:SetupDataTables()
-    self:NetworkVar("Entity", 0, "Ingredient1")
-    self:NetworkVar("Entity", 1, "Ingredient2")
-    self:NetworkVar("Entity", 2, "Ingredient3")
-    self:NetworkVar("Entity", 3, "owning_ent")
+    self:NetworkVar("Entity", 0, "owning_ent")
     self:NetworkVar("Int", 0, "RecipeOutput")
+    self:NetworkVar("Bool", 0, "IsCrafting")
+    self:NetworkVar("Float", 0, "CraftingEndTime")
+
+    local start_index = 1
+    for i = 1, self.MaxIngredientTypes do
+        self:NetworkVar("Int", start_index + i * 2 - 1, "IngredientID" .. i)
+        self:NetworkVar("Int", start_index + i * 2 , "IngredientCount" .. i)
+    end
 end

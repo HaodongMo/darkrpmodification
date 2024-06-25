@@ -169,6 +169,41 @@ Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses
     end,
 })
 
+TEAM_POLICE_SUPERSOLDIER = DarkRP.createJob("Police Super Soldier", {
+    color = Color(100, 100, 100, 255),
+    model = {"models/player/soldier_stripped.mdl"},
+    description =
+[[Admin only.
+
+Experimental police super-soldier unit, for use when nothing else works.
+Your job is to restore order at all costs.]],
+    command = "police_robocop",
+    salary = 0,
+    admin = 1,
+    category = "Police",
+    max = 1,
+    hasLicense = true,
+    sortOrder = 103,
+    ammo = {
+        ["357"] = 60,
+        ["ar2"] = 1000,
+        ["pistol"] = 300,
+        ["smg1_grenade"] = 20,
+        ["ti_gas"] = 5,
+        ["ti_flashbang"] = 5,
+        ["ti_breach"] = 5,
+    },
+    weapons = {"tacrp_mtx_dual", "tacrp_mg4", "tacrp_m_tonfa", "tacrp_m320"},
+    warrant = true,
+    ban_max_time = 60,
+    unarrest = true,
+    PlayerLoadout = function(ply)
+        ply:SetMaxHealth(1000)
+        ply:SetHealth(1000)
+        cploadout(ply, 100)
+    end,
+})
+
 TEAM_MEDIC = DarkRP.createJob("Medic", {
     color = Color(200, 200, 200, 255),
     model = {"models/player/kleiner.mdl"},

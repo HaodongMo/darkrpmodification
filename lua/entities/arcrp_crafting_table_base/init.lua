@@ -133,10 +133,6 @@ function ENT:FinishCrafting()
         end
     end
 
-    for i = 1, self.MaxIngredientTypes do
-        print(self["GetIngredientID" .. i](self), self["GetIngredientCount" .. i](self))
-    end
-
     -- Do not leave gaps in the slots
     for i = 1, self.MaxIngredientTypes - 1 do
         if self["GetIngredientID" .. i](self) <= 0 or self["GetIngredientCount" .. i](self) <= 0 then

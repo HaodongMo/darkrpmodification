@@ -778,6 +778,129 @@ GM.Config.vendingMachineAmmo = {
 }
 
 GM.Config.craftingRecipes = {
+    bombs = {
+        {
+            name = "Component",
+            ingredients = {
+                gear = 1,
+                steel = 1,
+                nails = 1,
+            },
+            output = {
+                "arcrp_in_component"
+            }
+        },
+        {
+            name = "Explosive Filler",
+            ingredients = {
+                fuel = 1,
+                chemicals = 1,
+            },
+            output = {
+                "arcrp_in_explosive"
+            }
+        },
+        {
+            name = "Fuze",
+            ingredients = {
+                electronics = 1,
+                wood = 1,
+            },
+            output = {
+                "arcrp_in_fuze"
+            }
+        },
+        {
+            name = "Frag Grenade",
+            ingredients = {
+                fuze = 1,
+                explosive = 1,
+            },
+            output = {
+                "tacrp_ammo_frag"
+            }
+        },
+        {
+            name = "C4 Charge",
+            ingredients = {
+                electronics = 1,
+                explosive = 2,
+            },
+            output = {
+                "tacrp_ammo_c4"
+            }
+        },
+        {
+            name = "Breaching Charge",
+            ingredients = {
+                electronics = 1,
+                explosive = 1,
+            },
+            output = {
+                "tacrp_ammo_charge"
+            }
+        },
+        {
+            name = "Flashbang",
+            ingredients = {
+                fuze = 1,
+                paper = 1,
+            },
+            output = {
+                "tacrp_ammo_flashbang"
+            }
+        },
+        {
+            name = "Smoke Grenade",
+            ingredients = {
+                fuze = 1,
+                fuel = 1,
+            },
+            output = {
+                "tacrp_ammo_smoke"
+            }
+        },
+        {
+            name = "Thermite Grenade",
+            ingredients = {
+                fuze = 1,
+                nails = 1,
+                fuel = 1,
+            },
+            output = {
+                "tacrp_ammo_fire"
+            }
+        },
+        {
+            name = "Gas Grenade",
+            ingredients = {
+                fuze = 1,
+                chemicals = 1,
+            },
+            output = {
+                "tacrp_ammo_gas"
+            }
+        },
+        {
+            name = "Grenade Launcher",
+            ingredients = {
+                component = 2,
+                pipe = 1,
+            },
+            output = {
+                "tacrp_m320"
+            }
+        },
+        {
+            name = "Rocket Launcher",
+            ingredients = {
+                component = 3
+            },
+            output = {
+                "tacrp_rpg7"
+            }
+        }
+    },
     guns = {
         {
             name = "Component",
@@ -788,6 +911,15 @@ GM.Config.craftingRecipes = {
             },
             output = {
                 "arcrp_in_component"
+            }
+        },
+        {
+            name = "C4 Detonator",
+            ingredients = {
+                electronics = 1,
+            },
+            output = {
+                "tacrp_c4_detonator"
             }
         },
         {

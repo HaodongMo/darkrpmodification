@@ -2,10 +2,11 @@ ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
 ENT.PrintName = "Base Crafting Bench"
 ENT.Author = "Arctic"
-ENT.Spawnable = true
+ENT.Spawnable = false
 
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
+ENT.Model = "models/props_wasteland/laundry_washer003.mdl"
 ENT.CraftingRecipeType = "guns"
 
 // ENT.contextHint = "Crafting Bench"

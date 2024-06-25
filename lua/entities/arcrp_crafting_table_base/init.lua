@@ -4,7 +4,7 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 function ENT:Initialize()
-    self:SetModel("models/props_wasteland/laundry_washer003.mdl")
+    self:SetModel(self.Model)
     DarkRP.ValidatedPhysicsInit(self, SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)
@@ -71,7 +71,6 @@ end
 
 function ENT:CheckRecipe()
     local output = 0
-    local maxrecipelength = 0
 
     local ingredientcount = {}
 
@@ -165,7 +164,7 @@ function ENT:EjectIngredients()
         ing1:SetPos(newpos)
         ing1:SetNoDraw(false)
         ing1:SetMoveType(MOVETYPE_VPHYSICS)
-        ing1:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+        ing1:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 
         local phys = ing1:GetPhysicsObject()
         if IsValid(phys) then
@@ -186,7 +185,7 @@ function ENT:EjectIngredients()
         ing2:SetPos(newpos)
         ing2:SetNoDraw(false)
         ing2:SetMoveType(MOVETYPE_VPHYSICS)
-        ing2:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+        ing2:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 
         local phys = ing2:GetPhysicsObject()
         if IsValid(phys) then
@@ -207,7 +206,7 @@ function ENT:EjectIngredients()
         ing3:SetPos(newpos)
         ing3:SetNoDraw(false)
         ing3:SetMoveType(MOVETYPE_VPHYSICS)
-        ing3:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+        ing3:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 
         local phys = ing3:GetPhysicsObject()
         if IsValid(phys) then

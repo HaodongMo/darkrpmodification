@@ -17,13 +17,17 @@ if SERVER then
         self:SetMoveType(MOVETYPE_VPHYSICS)
         self:SetSolid(SOLID_VPHYSICS)
         self:DrawShadow(true)
-        self:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+        self:SetCollisionGroup(COLLISION_GROUP_WEAPON)
         self:SetUseType(SIMPLE_USE)
         self:PhysWake()
     end
 elseif CLIENT then
     function ENT:Initialize()
-        self.contextHint = self.PrintName .. " (Ingredient)"
+        // self.contextHint = self.PrintName .. " (Ingredient)"
+    end
+
+    function ENT:contextHint()
+        return self.PrintName .. " (Ingredient)"
     end
 
     function ENT:Draw()

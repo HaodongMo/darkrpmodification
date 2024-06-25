@@ -93,7 +93,7 @@ function ENT:CheckRecipe()
         ingredientcount[ingredient3.craftingIngredient] = (ingredientcount[ingredient3.craftingIngredient] or 0) + 1
     end
 
-    for i, recipe in ipairs(GAMEMODE.Config.craftingRecipes[self.CraftingRecipeType]) do
+    for i, recipe in ipairs(ArcRP_Craft.Recipes[self.CraftingRecipeType]) do
         local satisfied = true
         for ing, amt in pairs(recipe.ingredients) do
             if (ingredientcount[ing] or 0) < amt then
@@ -130,7 +130,7 @@ function ENT:Craft(activator)
         return
     end
 
-    local out = GAMEMODE.Config.craftingRecipes[self.CraftingRecipeType][self:GetRecipeOutput()]
+    local out = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()]
 
     local entname = table.Random(out.output)
 
@@ -208,7 +208,7 @@ function ENT:EjectIngredients()
 
         ing3:SetMoveType(MOVETYPE_VPHYSICS)
         ing3:SetPos(newpos)
-        ing3:SetNoDraw(false) 
+        ing3:SetNoDraw(false)
         ing3:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 
         local phys = ing3:GetPhysicsObject()

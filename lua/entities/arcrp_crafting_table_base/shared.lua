@@ -39,7 +39,7 @@ function ENT:GetContextMenu(player)
     local tbl = {}
 
     if self:GetRecipeOutput() != 0 then
-        local recipename = GAMEMODE.Config.craftingRecipes[self.CraftingRecipeType][self:GetRecipeOutput()].name or "??"
+        local recipename = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()].name or "??"
         table.insert(tbl, {
             message = "Craft " .. recipename,
             callback = function(ent, ply)
@@ -60,6 +60,29 @@ function ENT:GetContextMenu(player)
             end,
         })
     end
+
+    table.insert(tbl, {
+        message = "Next Recipe",
+        cl_callback = function(ent, ply)
+            local recipe_total = #ArcRP_Craft.Recipes[ent.CraftingRecipeType]
+            if ent.SelectedRecipeIndex + 1 > recipe_total then
+                ent.SelectedRecipeIndex = 1
+            else
+                ent.SelectedRecipeIndex = ent.SelectedRecipeIndex + 1
+            end
+        end,
+    })
+    table.insert(tbl, {
+        message = "Previous Recipe",
+        cl_callback = function(ent, ply)
+            if ent.SelectedRecipeIndex == 1 then
+                ent.SelectedRecipeIndex = #ArcRP_Craft.Recipes[ent.CraftingRecipeType]
+            else
+                ent.SelectedRecipeIndex = ent.SelectedRecipeIndex - 1
+            end
+        end,
+    })
+
 
     return tbl
 end

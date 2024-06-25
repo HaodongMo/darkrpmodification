@@ -54,7 +54,8 @@ function ENT:Connect(entity)
     table.insert(self.ConnectedEntities, entity)
     self:UpdateConnections()
 
-    entity.PowerCable = constraint.Rope(self, entity, 0, 0, Vector(0, 0, 8), Vector(0, 0, 0), 512, 0, 64, 2, "cable/cable2", false)
+    SafeRemoveEntity(entity.PowerCable)
+    entity.PowerCable = constraint.Rope(self, entity, 0, 0, Vector(-64, 0, 24), Vector(0, 0, 0), 512, 0, 64, 2, "cable/cable2", false)
 end
 
 function ENT:StartSound()

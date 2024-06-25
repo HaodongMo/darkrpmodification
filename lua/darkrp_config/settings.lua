@@ -851,16 +851,6 @@ GM.Config.craftingRecipes = {
             }
         },
         {
-            name = "Smoke Grenade",
-            ingredients = {
-                fuze = 1,
-                fuel = 1,
-            },
-            output = {
-                "tacrp_ammo_smoke"
-            }
-        },
-        {
             name = "Thermite Grenade",
             ingredients = {
                 fuze = 1,
@@ -869,6 +859,16 @@ GM.Config.craftingRecipes = {
             },
             output = {
                 "tacrp_ammo_fire"
+            }
+        },
+        {
+            name = "Smoke Grenade",
+            ingredients = {
+                fuze = 1,
+                fuel = 1,
+            },
+            output = {
+                "tacrp_ammo_smoke"
             }
         },
         {
@@ -895,6 +895,26 @@ GM.Config.craftingRecipes = {
             }
         },
         {
+            name = "Assault Rifle",
+            ingredients = {
+                component = 3
+            },
+            output = {
+                "tacrp_ex_ak47",
+                "tacrp_amd65",
+                "tacrp_ex_m4a1",
+                "tacrp_k1a",
+                "tacrp_m4",
+                "tacrp_ak47",
+                "tacrp_g36k",
+                "tacrp_sg551",
+                "tacrp_aug",
+                "tacrp_dsa58",
+                "tacrp_hk417",
+                "tacrp_mg4"
+            }
+        },
+        {
             name = "Grenade Launcher",
             ingredients = {
                 explosive = 1,
@@ -918,7 +938,8 @@ GM.Config.craftingRecipes = {
         {
             name = "Sniper Rifle",
             ingredients = {
-                component = 3,
+                component = 2,
+                electronics = 1
             },
             output = {
                 "tacrp_m14",
@@ -929,31 +950,10 @@ GM.Config.craftingRecipes = {
             }
         },
         {
-            name = "Assault Rifle",
+            name = "SMG",
             ingredients = {
                 component = 2,
                 pipe = 1,
-            },
-            output = {
-                "tacrp_ex_ak47",
-                "tacrp_amd65",
-                "tacrp_ex_m4a1",
-                "tacrp_k1a",
-                "tacrp_m4",
-                "tacrp_ak47",
-                "tacrp_g36k",
-                "tacrp_sg551",
-                "tacrp_aug",
-                "tacrp_dsa58",
-                "tacrp_hk417",
-                "tacrp_mg4"
-            }
-        },
-        {
-            name = "SMG",
-            ingredients = {
-                component = 1,
-                pipe = 2,
             },
             output = {
                 "tacrp_skorpion",
@@ -971,8 +971,7 @@ GM.Config.craftingRecipes = {
         {
             name = "Shotgun",
             ingredients = {
-                component = 1,
-                pipe = 1,
+                component = 2,
                 steel = 1,
             },
             output = {

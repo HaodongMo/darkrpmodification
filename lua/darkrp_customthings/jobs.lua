@@ -297,7 +297,7 @@ TEAM_SHOPKEEPER = DarkRP.createJob("Shopkeeper", {
     color = Color(150, 255, 75, 255),
     model = {"models/player/hostage/hostage_01.mdl"},
     description =
-[[You sell shipments of crafting materials to other players.]],
+[[You sell a variety of common goods.]],
     command = "shopkeeper",
     salary = GAMEMODE.Config.normalsalary,
     admin = 0,

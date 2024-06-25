@@ -34,11 +34,16 @@ local hideHUDElements = {
 
     -- hl2 ammo
     ["CHudAmmo"] = true,
+    ["CHudSecondaryAmmo"] = true
 }
 
 -- this is the code that actually disables the drawing.
 hook.Add("HUDShouldDraw", "HideDefaultDarkRPHud", function(name)
     if hideHUDElements[name] then return false end
+end)
+
+hook.Add("HUDDrawDoorData", "HideDrawDoorData", function(door)
+    return true
 end)
 
 local rackrisetime = 0
@@ -451,13 +456,17 @@ local function hudPaint()
     //     end
     // end
 
-    if ent.contextHint or ent.interactionHint then
-        local text
+    local interactionHint = ArcRP_GetCustomInteractionHint(ent, LocalPlayer())
 
-        if isfunction(ent.contextHint) then
-            text = ent:contextHint() or text
-        else
-            text = ent.contextHint
+    if ent.contextHint or ent.interactionHint or interactionHint then
+        local text = interactionHint or ""
+
+        if ent.contextHint then
+            if isfunction(ent.contextHint) then
+                text = ent:contextHint() or text
+            else
+                text = ent.contextHint
+            end
         end
 
         if ent.interactionHint then

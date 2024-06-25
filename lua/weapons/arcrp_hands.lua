@@ -3,7 +3,7 @@ AddCSLuaFile()
 SWEP.IconOverride = "materials/entities/weapon_fists.png"
 SWEP.PrintName = "ArcRP Hands"
 SWEP.Purpose = "Multi-functionality SWEP. You're in good hands now."
-SWEP.Instructions = "Left Click: Lock door / Pickup item / Drag body\nRight Click: Unlock door\nReload: Open pocket / Door menu\nReload + Walk: Animation menu"
+SWEP.Instructions = "Left Click: Pickup item / Drag body\nRight Click: Animation menu\nUnlock door\nReload: Open pocket"
 SWEP.Spawnable = true
 SWEP.UseHands = true
 
@@ -31,29 +31,6 @@ SWEP.DisableDuplicator = true
 SWEP.BounceWeaponIcon = false
 SWEP.m_bPlayPickupSound = false
 SWEP.HitDistance = 60
-
-local function lockUnlockAnimation(ply, snd)
-    ply:EmitSound("npc/metropolice/gear" .. math.random(1, 6) .. ".wav")
-    timer.Simple(0.9, function() if IsValid(ply) then ply:EmitSound(snd) end end)
-
-    umsg.Start("anim_keys")
-        umsg.Entity(ply)
-        umsg.String("usekeys")
-    umsg.End()
-
-    ply:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_GMOD_GESTURE_ITEM_PLACE, true)
-end
-
-local function doKnock(ply, sound)
-    ply:EmitSound(sound, 100, math.random(90, 110))
-
-    umsg.Start("anim_keys")
-        umsg.Entity(ply)
-        umsg.String("knocking")
-    umsg.End()
-
-    ply:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_HL2MP_GESTURE_RANGE_ATTACK_FIST, true)
-end
 
 function SWEP:SetupDataTables()
     self:NetworkVar("Bool", 0, "Dragging")
@@ -120,15 +97,6 @@ function SWEP:PrimaryAttack()
         local distsqr = tr.HitPos:DistToSqr(owner:EyePos())
         if self:CanDrag(ent) and distsqr <= 72 * 72 then
             self:StartDragging(ent, tr.HitPos, tr.PhysicsBone)
-        elseif SERVER and ent:isKeysOwnable() and ((ent:isDoor() and distsqr < 2000) or (ent:IsVehicle() and eyepos:DistToSqr(hitpos) < 4000)) then
-            if owner:canKeysLock(ent) then
-                ent:keysLock() -- Lock the door immediately so it won't annoy people
-                lockUnlockAnimation(owner, "doors/door_latch3.wav")
-            elseif ent:IsVehicle() then
-                DarkRP.notify(owner, 1, 3, DarkRP.getPhrase("do_not_own_ent"))
-            else
-                doKnock(owner, "physics/wood/wood_crate_impact_hard2.wav")
-            end
         elseif SERVER then
             local canPickup, message = hook.Call("canPocket", GAMEMODE, owner, ent)
             if not canPickup then
@@ -144,25 +112,8 @@ function SWEP:SecondaryAttack()
     self:SetNextPrimaryFire(CurTime() + 0.2)
     self:SetNextSecondaryFire(CurTime() + 0.2)
 
-    local owner = self:GetOwner()
-
     if self:GetDragging() then
         self:StopDragging()
-    else
-        local tr = owner:GetEyeTrace()
-        local ent = tr.Entity
-        if not IsValid(ent) then return end
-        local distsqr = tr.HitPos:DistToSqr(owner:EyePos())
-        if SERVER and ent:isKeysOwnable() and ((ent:isDoor() and distsqr < 2000) or (ent:IsVehicle() and eyepos:DistToSqr(hitpos) < 4000)) then
-            if owner:canKeysUnlock(ent) then
-                ent:keysUnLock()
-                lockUnlockAnimation(owner, "doors/door_latch3.wav")
-            elseif ent:IsVehicle() then
-                DarkRP.notify(owner, 1, 3, DarkRP.getPhrase("do_not_own_ent"))
-            else
-                doKnock(owner, "physics/wood/wood_crate_impact_hard2.wav")
-            end
-        end
     end
 end
 
@@ -171,21 +122,12 @@ function SWEP:Reload()
     if owner:KeyDown(IN_WALK) then
         if CLIENT and not DarkRP.disabledDefaults["modules"]["animations"] then RunConsoleCommand("_DarkRP_AnimationMenu") end
     else
-        local tr = owner:GetEyeTrace()
-        local ent = tr.Entity
-        if IsValid(ent) and (ent:isDoor() or ent:IsVehicle()) and owner:EyePos():DistToSqr(tr.HitPos) <= 40000 then
-            if SERVER then
-                umsg.Start("KeysMenu", self:GetOwner())
-                umsg.End()
-            end
-        else
-            if CLIENT then
-                DarkRP.openPocketMenu()
-            end
-            if SERVER and game.SinglePlayer() then
-                net.Start("DarkRP_PocketMenu")
-                net.Send(owner)
-            end
+        if CLIENT then
+            DarkRP.openPocketMenu()
+        end
+        if SERVER and game.SinglePlayer() then
+            net.Start("DarkRP_PocketMenu")
+            net.Send(owner)
         end
     end
 end

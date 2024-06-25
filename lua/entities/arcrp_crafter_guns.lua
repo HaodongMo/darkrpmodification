@@ -2,7 +2,7 @@ AddCSLuaFile()
 
 ENT.Type = "anim"
 ENT.Base = "arcrp_crafting_table_base"
-ENT.PrintName = "Gun Crafting Machine"
+ENT.PrintName = "Weapons Autolathe"
 ENT.Author = "Arctic"
 ENT.Spawnable = true
 

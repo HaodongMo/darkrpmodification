@@ -21,6 +21,7 @@ function ENT:Initialize()
 
     if phys:IsValid() then
         phys:Wake()
+        phys:SetMass(100) -- allow gravgun
     end
 
     self.damage = 500

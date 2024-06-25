@@ -42,12 +42,9 @@ TEAM_POLICE_ROOKIE = DarkRP.createJob("Rookie", {
     color = Color(150, 150, 255, 255),
     model = {"models/player/phoenix.mdl"},
     description =
-[[The lowest rung of law enforcement.
+[[The lowest rung of law enforcement. Has few real powers, and no gun.
 
-Has few real powers, and no gun.
-Use the police baton to knock criminals out, and then beat them until they comply.
-
-Ask a Sergeant or the Sheriff for a promotion.]],
+Use the police baton to knock criminals out, and then beat them until they comply.]],
     command = "police_rookie",
     salary = GAMEMODE.Config.normalsalary,
     admin = 0,
@@ -66,19 +63,16 @@ TEAM_POLICE_DEPUTY = DarkRP.createJob("Deputy", {
     model = {"models/player/riot.mdl"},
     description =
 [[Deputies are the backbone of the police force.
-Sergeants and the Sheriff will need to approve your promotion.
 
-Take down suspected criminals. You can also release prisoners from jail.
-
-Report to a Sergeant or the Sheriff to have prisoners sentenced.]],
+You are issued with a service pistol (and license) and have the authority to unarrest prisoners.]],
     command = "police_deputy",
-    salary = GAMEMODE.Config.normalsalary * 1.5,
+    salary = GAMEMODE.Config.normalsalary * 1.25,
     NeedToChangeFrom = TEAM_POLICE_ROOKIE,
     admin = 0,
     category = "Police",
     max = 8,
     vote = false,
-    RequiresVote = function(ply, job) return (#team.GetPlayers(TEAM_POLICE_SHERIFF) + #team.GetPlayers(TEAM_POLICE_SERGEANT)) > 0 end,
+    RequiresVote = function(ply, job) return (#team.GetPlayers(TEAM_POLICE_DEPUTY) + #team.GetPlayers(TEAM_POLICE_SHERIFF) + #team.GetPlayers(TEAM_POLICE_SERGEANT)) > 0 end,
     ammo = {
         ["pistol"] = 60,
         ["ti_flashbang"] = 1,
@@ -96,20 +90,18 @@ TEAM_POLICE_SERGEANT = DarkRP.createJob("Sergeant", {
     color = Color(25, 25, 170, 255),
     model = {"models/player/gasmask.mdl"},
     description =
-[[Sergeants are the trusted leaders of the police force.
-They are appointed by the Sheriff (Sheriff vote required if one exists).
+[[Sergeants are high-ranking members of the police force.
 
-Can promote rookies to Deputy.
-Can issue arrest warrants (causing a player to always be jailed on death).
+You are additionally issued with a shotgun and have the authority to grant and revoke gun licenses.
 
 Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses.]],
     command = "police_sergeant",
-    salary = GAMEMODE.Config.normalsalary * 2,
+    salary = GAMEMODE.Config.normalsalary * 1.5,
     NeedToChangeFrom = TEAM_POLICE_DEPUTY,
     admin = 0,
     category = "Police",
-    max = 4,
-    RequiresVote = function(ply, job) return (#team.GetPlayers(TEAM_POLICE_SHERIFF) + #team.GetPlayers(TEAM_POLICE_SERGEANT)) > 0 end,
+    max = 3,
+    RequiresVote = function(ply, job) return (#team.GetPlayers(TEAM_POLICE_DEPUTY) + #team.GetPlayers(TEAM_POLICE_SHERIFF) + #team.GetPlayers(TEAM_POLICE_SERGEANT)) > 1 end,
     sortOrder = 102,
     ammo = {
         ["pistol"] = 60,
@@ -141,7 +133,7 @@ Can promote deputies to Sergeant.
 
 Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses.]],
     command = "police_sheriff",
-    salary = GAMEMODE.Config.normalsalary * 3,
+    salary = GAMEMODE.Config.normalsalary * 2,
     NeedToChangeFrom = TEAM_POLICE_SERGEANT,
     admin = 0,
     category = "Police",
@@ -238,7 +230,10 @@ TEAM_GUNSMITH = DarkRP.createJob("Gunsmith", {
     color = Color(25, 155, 200, 255),
     model = {"models/player/eli.mdl"},
     description =
-[[You are able to modify weapons for yourself or others.]],
+[[You are an expert in creating and adjusting firearms.
+
+Buy a weapon autolathe and provide it ingredients to craft random weapons.
+Freely customize weapon attachments for yourself, or provide customization services to others.]],
     command = "gunsmith",
     salary = GAMEMODE.Config.normalsalary,
     admin = 0,
@@ -272,7 +267,9 @@ TEAM_CRAFTSMAN = DarkRP.createJob("Craftsman", {
     color = Color(255, 175, 0, 255),
     model = {"models/player/hostage/hostage_04.mdl"},
     description =
-[[You can buy factories to make random weapons and explosives.]],
+[[You are an expert in industrial production.
+
+Buy autolathes and provide it ingredients to craft weapons and explosives.]],
     command = "craftsman",
     salary = GAMEMODE.Config.normalsalary,
     admin = 0,

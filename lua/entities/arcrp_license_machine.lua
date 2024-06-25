@@ -83,10 +83,9 @@ if SERVER then
         local has = false
         local exclude = {}
         for _, v in pairs(player.GetAll()) do
-            if not v:getJobTable().giveLicense then
-                table.insert(exclude, v)
-            else
+            if v:getJobTable().giveLicense then
                 has = true
+                break
             end
         end
         if not has then
@@ -96,7 +95,7 @@ if SERVER then
         local vote = DarkRP.createVote(ply:GetName() .. " wants to apply for a gun license.\nReason: " .. str, "license_machine", ply, 60, function(voteinfo)
             ply:setDarkRPVar("HasGunlicense", true)
             DarkRP.notify(ply, 3, 8, "Your gun license application was approved!")
-        end, exclude, function()
+        end, nil, function()
             DarkRP.notify(ply, 1, 8, "Your gun license application was denied.")
         end)
         if vote then
@@ -142,3 +141,9 @@ elseif CLIENT then
                 end, nil, "Request (" .. DarkRP.formatMoney(ent.Cost) .. ")", "Cancel")
     end)
 end
+
+hook.Add("canVote", "tacrp_license_machine", function(ply, vote)
+    if vote.votetype == "license_machine" then
+        return ply:getJobTable().giveLicense or false
+    end
+end)

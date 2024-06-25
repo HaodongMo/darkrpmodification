@@ -20,6 +20,11 @@ if SERVER then
         self:SetCollisionGroup(COLLISION_GROUP_WEAPON)
         self:SetUseType(SIMPLE_USE)
         self:PhysWake()
+        self:GetPhysicsObject():SetMass(15)
+    end
+
+    function ENT:Use(ply)
+        ply:PickupObject(self)
     end
 elseif CLIENT then
     function ENT:Initialize()

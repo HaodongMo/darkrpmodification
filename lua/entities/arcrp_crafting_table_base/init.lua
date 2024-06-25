@@ -27,8 +27,8 @@ function ENT:Initialize()
     self.damage = 500
 end
 
-ENT.SpawnOffset = Vector(-12, -32, 22)
-ENT.OutputForce = Vector(0, -750, 750)
+ENT.SpawnOffset = Vector(-12, -40, 35)
+ENT.OutputForce = Vector(0, -400, 500)
 ENT.NextPickupTime = 0
 
 function ENT:Touch(entity)
@@ -42,6 +42,7 @@ function ENT:Touch(entity)
         for i = 1, self.MaxIngredientTypes do
             local ingid = self["GetIngredientID" .. i](self)
             if ingid == id then
+                if self.MaxIngredientCount <= self["GetIngredientCount" .. i](self) then return end
                 ind = i
                 self["SetIngredientCount" .. i](self, self["GetIngredientCount" .. i](self) + 1)
                 break
@@ -59,10 +60,6 @@ function ENT:Touch(entity)
             self:CheckRecipe()
         end
     end
-end
-
-function ENT:OnRemove()
-    self:EjectIngredients()
 end
 
 function ENT:CheckRecipe()
@@ -96,6 +93,61 @@ function ENT:CheckRecipe()
     self:SetRecipeOutput(output)
 end
 
+function ENT:FinishCrafting()
+    self:SetIsCrafting(false)
+    self:SetCraftingEndTime(0)
+
+    local out = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()]
+    local entname = table.Random(out.output)
+    local newent = ents.Create(entname)
+    if !IsValid(newent) then return end
+
+    local newpos = self:GetPos()
+    newpos = newpos + self:GetForward() * self.SpawnOffset.x
+    newpos = newpos + self:GetRight() * self.SpawnOffset.y
+    newpos = newpos + self:GetUp() * self.SpawnOffset.z
+    newent:SetPos(newpos)
+    newent.nodupe = true
+    newent.spawnedBy = self:Getowning_ent()
+    newent:Spawn()
+    newent:GetPhysicsObject():SetVelocityInstantaneous(self:GetForward() * self.OutputForce.x + self:GetRight() * self.OutputForce.y + self:GetUp() * self.OutputForce.z)
+    newent:GetPhysicsObject():ApplyTorqueCenter(VectorRand() * 200)
+
+    for i = 1, self.MaxIngredientTypes do
+        local ing = ArcRP_Craft.ItemsID[self["GetIngredientID" .. i](self)]
+        -- print(self["GetIngredientID" .. i](self), self["GetIngredientCount" .. i](self))
+        if !out.ingredients[ing] then continue end
+        local newamt = self["GetIngredientCount" .. i](self) - out.ingredients[ing]
+        self["SetIngredientCount" .. i](self, newamt)
+        if newamt <= 0 then
+            self["SetIngredientID" .. i](self, 0)
+        end
+    end
+
+    for i = 1, self.MaxIngredientTypes do
+        print(self["GetIngredientID" .. i](self), self["GetIngredientCount" .. i](self))
+    end
+
+    -- Do not leave gaps in the slots
+    for i = 1, self.MaxIngredientTypes - 1 do
+        if self["GetIngredientID" .. i](self) <= 0 or self["GetIngredientCount" .. i](self) <= 0 then
+            for j = i + 1, self.MaxIngredientTypes do
+                if self["GetIngredientID" .. j](self) > 0 and self["GetIngredientCount" .. i](self) > 0 then
+                    self["SetIngredientID" .. i](self, self["GetIngredientID" .. j](self))
+                    self["SetIngredientCount" .. i](self, self["GetIngredientCount" .. j](self))
+                    self["SetIngredientID" .. j](self, 0)
+                    self["SetIngredientCount" .. j](self, 0)
+                    break
+                end
+            end
+        end
+    end
+
+
+    self:CheckRecipe()
+    self.NextPickupTime = CurTime() + 1
+end
+
 function ENT:Craft(activator)
     if self:GetRecipeOutput() == 0 then return end
 
@@ -116,36 +168,16 @@ function ENT:Craft(activator)
     end
 
     local out = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()]
-
-    local entname = table.Random(out.output)
-
-    local newent = ents.Create(entname)
-
-    if !IsValid(newent) then return end
-
-    local newpos = self:GetPos()
-    newpos = newpos + self:GetForward() * self.SpawnOffset.x
-    newpos = newpos + self:GetRight() * self.SpawnOffset.y
-    newpos = newpos + self:GetUp() * self.SpawnOffset.z
-    newent:SetPos(newpos)
-    newent.nodupe = true
-    newent.spawnedBy = self:Getowning_ent()
-    newent:Spawn()
-
-    for i = 1, self.MaxIngredientTypes do
-        local ing = ArcRP_Craft.ItemsID[self["GetIngredientID" .. i](self)]
-        local newamt = self["GetIngredientCount" .. i](self) - (out.ingredients[ing] or 0)
-        self["SetIngredientCount" .. i](self, newamt)
-        if newamt <= 0 then
-            self["SetIngredientID" .. i](self, 0)
-        end
+    if (out.time or 0) == 0 then
+        self:FinishCrafting()
+    else
+        self:SetIsCrafting(true)
+        self:SetCraftingEndTime(CurTime() + out.time)
     end
-
-    self:CheckRecipe()
-    self.NextPickupTime = CurTime() + 1
 end
 
 function ENT:EjectIngredients()
+    if self:GetIsCrafting() then return end
     local delay = 0
     for i = 1, self.MaxIngredientTypes do
         local ingid = self["GetIngredientID" .. i](self)
@@ -174,6 +206,12 @@ function ENT:EjectIngredients()
     end
 
     self.NextPickupTime = CurTime() + delay + 1
+end
+
+function ENT:Think()
+    if self:GetIsCrafting() and self:GetCraftingEndTime() <= CurTime() then
+        self:FinishCrafting()
+    end
 end
 
 

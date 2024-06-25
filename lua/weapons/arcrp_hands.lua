@@ -343,12 +343,14 @@ local function hack()
     end
     net.Receive("DarkRP_PocketMenu", DarkRP.openPocketMenu)
 
-        
+
     local function retrievePocket()
         pocket = net.ReadTable()
         reload()
     end
     net.Receive("DarkRP_Pocket", retrievePocket)
 end
-hook.Add("InitPostEntity", hack)
+hook.Add("InitPostEntity", function()
+    timer.Simple(1, function() hack() end)
+end)
 hack()

@@ -11,7 +11,7 @@ ArcRP_Craft.Items = {
         description = "",
         model = "models/props_junk/garbage_plasticbottle002a.mdl",
     },
-    ["electronic"] = {
+    ["electronics"] = {
         name = "Electronics",
         description = "",
         model = "models/props_lab/reciever01d.mdl",

@@ -61,6 +61,29 @@ function ENT:GetContextMenu(player)
         })
     end
 
+    table.insert(tbl, {
+        message = "Next Recipe",
+        cl_callback = function(ent, ply)
+            local recipe_total = #ArcRP_Craft.Recipes[ent.CraftingRecipeType]
+            if ent.SelectedRecipeIndex + 1 > recipe_total then
+                ent.SelectedRecipeIndex = 1
+            else
+                ent.SelectedRecipeIndex = ent.SelectedRecipeIndex + 1
+            end
+        end,
+    })
+    table.insert(tbl, {
+        message = "Previous Recipe",
+        cl_callback = function(ent, ply)
+            if ent.SelectedRecipeIndex == 1 then
+                ent.SelectedRecipeIndex = #ArcRP_Craft.Recipes[ent.CraftingRecipeType]
+            else
+                ent.SelectedRecipeIndex = ent.SelectedRecipeIndex - 1
+            end
+        end,
+    })
+
+
     return tbl
 end
 

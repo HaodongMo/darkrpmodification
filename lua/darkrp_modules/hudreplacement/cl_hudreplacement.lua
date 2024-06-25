@@ -441,14 +441,14 @@ local function hudPaint()
         local text
 
         if isfunction(ent.contextHint) then
-            text = ent.contextHint() or text
+            text = ent:contextHint() or text
         else
             text = ent.contextHint
         end
 
         if ent.interactionHint then
             if isfunction(ent.interactionHint) then
-                text = ent.interactionHint() or text
+                text = ent:interactionHint() or text
             else
                 text = ent.interactionHint
             end

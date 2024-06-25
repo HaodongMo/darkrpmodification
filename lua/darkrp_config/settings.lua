@@ -86,7 +86,7 @@ GM.Config.droppocketdeath               = true
 -- dropweapondeath - Enable/disable whether people drop their current weapon when they die.
 GM.Config.dropweapondeath               = true
 -- Whether players can drop the weapons they spawn with.
-GM.Config.dropspawnedweapons            = false
+GM.Config.dropspawnedweapons            = true
 -- dynamicvoice - Enable/disable whether only people in the same room as you can hear your mic.
 GM.Config.dynamicvoice                  = true
 -- earthquakes - Enable/disable earthquakes.
@@ -776,3 +776,110 @@ GM.Config.vendingMachineAmmo = {
         ammo = "xbowbolt"
     }
 }
+
+GM.Config.craftingRecipes = {
+    guns = {
+        {
+            name = "Component",
+            ingredients = {
+                gear = 1,
+                steel = 1,
+                nails = 1,
+            },
+            output = {
+                "arcrp_in_component"
+            }
+        },
+        {
+            name = "Pistol",
+            ingredients = {
+                component = 1,
+                pipe = 1,
+            },
+            output = {
+                "tacrp_vertec",
+                "tacrp_ex_m1911",
+                "tacrp_ex_glock",
+                "tacrp_ex_hk45c",
+                "tacrp_p2000",
+                "tacrp_ex_usp",
+                "tacrp_gsr1911",
+                "tacrp_p250",
+                "tacrp_mr96",
+                "tacrp_mtx_dual",
+                "tacrp_sphinx",
+                "tacrp_xd45"
+            }
+        },
+        {
+            name = "SMG",
+            ingredients = {
+                component = 1,
+                pipe = 2,
+            },
+            output = {
+                "tacrp_skorpion",
+                "tacrp_ex_mac10",
+                "tacrp_uzi",
+                "tacrp_ex_mp9",
+                "tacrp_p90",
+                "tacrp_mp5",
+                "tacrp_mp7",
+                "tacrp_ex_ump45",
+                "tacrp_pdw",
+                "tacrp_superv"
+            }
+        },
+        {
+            name = "Shotgun",
+            ingredients = {
+                component = 1,
+                pipe = 1,
+                steel = 1,
+            },
+            output = {
+                "tacrp_m4star10",
+                "tacrp_fp6",
+                "tacrp_ks23",
+                "tacrp_bekas",
+                "tacrp_tgs12"
+            }
+        },
+        {
+            name = "Assault Rifle",
+            ingredients = {
+                component = 2,
+                pipe = 1,
+            },
+            output = {
+                "tacrp_ex_ak47",
+                "tacrp_amd65",
+                "tacrp_ex_m4a1",
+                "tacrp_k1a",
+                "tacrp_m4",
+                "tacrp_ak47",
+                "tacrp_g36k",
+                "tacrp_sg551",
+                "tacrp_aug",
+                "tacrp_dsa58",
+                "tacrp_hk417",
+                "tacrp_mg4"
+            }
+        },
+        {
+            name = "Sniper Rifle",
+            ingredients = {
+                component = 3,
+            },
+            output = {
+                "tacrp_m14",
+                "tacrp_ex_hecate",
+                "tacrp_as50",
+                "tacrp_uratio",
+                "tacrp_spr"
+            }
+        }
+    }
+}
+
+GM.Config.maxstuff = 32 -- maximum physics objects you can craft

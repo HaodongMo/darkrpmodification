@@ -44,7 +44,7 @@ function ENT:GetContextMenu(player)
             callback = function(ent, ply)
                 if ent:GetPos():DistToSqr(ply:GetPos()) > 256 * 256 then return end
 
-                ent:Craft()
+                ent:Craft(ply)
             end,
         })
     end

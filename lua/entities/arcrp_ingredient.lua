@@ -17,7 +17,7 @@ if SERVER then
         self:SetMoveType(MOVETYPE_VPHYSICS)
         self:SetSolid(SOLID_VPHYSICS)
         self:DrawShadow(true)
-        self:SetCollisionGroup(COLLISION_GROUP_WEAPON)
+        self:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
         self:SetUseType(SIMPLE_USE)
         self:PhysWake()
     end

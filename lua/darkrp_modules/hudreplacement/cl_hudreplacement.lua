@@ -545,7 +545,6 @@ hook.Add( "PlayerBindPress", "ArcRP_ContextMenu_Interact", function(ply, bind, p
 
         if contextitem then
             if contextitem.callback then
-                print("Yeah")
                 net.Start("arcrp_customuse")
                 net.WriteUInt(contextindex, 8)
                 net.WriteEntity(ent)

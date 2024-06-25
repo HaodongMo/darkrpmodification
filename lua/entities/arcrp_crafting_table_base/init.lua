@@ -20,11 +20,26 @@ function ENT:Initialize()
 end
 
 ENT.SpawnOffset = Vector(0, -64, 16)
+ENT.NextPickupTime = 0
+
 function ENT:Touch(entity)
+    if self.NextPickupTime > CurTime() then return end
+
     if entity.isCraftingIngredient then
         if !self:GetIngredient1() and !self:GetIngredient2() and !self:GetIngredient3() then return end
+        if entity == self:GetIngredient1() then return end
+        if entity == self:GetIngredient2() then return end
+        if entity == self:GetIngredient3() then return end
+
         self:EmitSound("items/ammocrate_close.wav")
-        entity:SetPos(Vector(0, 0, -10000))
+
+        entity:SetParent(self)
+        entity:SetNoDraw(true)
+        entity:SetMoveType(MOVETYPE_NONE)
+        entity:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+        entity:ForcePlayerDrop()
+
+        self.NextPickupTime = CurTime() + 1
 
         if !IsValid(self:GetIngredient1()) then
             self:SetIngredient1(entity)
@@ -53,6 +68,8 @@ function ENT:CheckRecipe()
     local ingredientcount = {}
 
     local ingredient1 = self:GetIngredient1()
+    local ingredient2 = self:GetIngredient2()
+    local ingredient3 = self:GetIngredient3()
 
     if IsValid(ingredient1) then
         ingredientcount[ingredient1.craftingIngredient] = (ingredientcount[ingredient1.craftingIngredient] or 0) + 1
@@ -88,12 +105,10 @@ function ENT:CheckRecipe()
         end
     end
 
-    print(output)
-
     self:SetRecipeOutput(output)
 end
 
-function ENT:Craft()
+function ENT:Craft(activator)
     if self:GetRecipeOutput() == 0 then return end
 
     local item_count = 0
@@ -124,14 +139,17 @@ function ENT:Craft()
     newpos = newpos + self:GetForward() * self.SpawnOffset.x
     newpos = newpos + self:GetRight() * self.SpawnOffset.y
     newpos = newpos + self:GetUp() * self.SpawnOffset.z
-    newgun:SetPos(newpos)
-    newgun.nodupe = true
-    newgun.spawnedBy = self:Getowning_ent()
-    newgun:Spawn()
+    newent:SetPos(newpos)
+    newent.nodupe = true
+    newent.spawnedBy = self:Getowning_ent()
+    newent:Spawn()
 
     SafeRemoveEntity(self:GetIngredient1())
     SafeRemoveEntity(self:GetIngredient2())
     SafeRemoveEntity(self:GetIngredient3())
+
+    self:SetRecipeOutput(0)
+    self.NextPickupTime = CurTime() + 5
 end
 
 function ENT:EjectIngredients()
@@ -141,7 +159,12 @@ function ENT:EjectIngredients()
         newpos = newpos + self:GetRight() * self.SpawnOffset.y
         newpos = newpos + self:GetUp() * self.SpawnOffset.z
         newpos = newpos + (VectorRand() * 8)
+
+        self:GetIngredient1():SetParent()
         self:GetIngredient1():SetPos(newpos)
+        self:GetIngredient1():SetNoDraw(false)
+        self:GetIngredient1():SetMoveType(MOVETYPE_VPHYSICS)
+        self:GetIngredient1():SetCollisionGroup(COLLISION_GROUP_DEBRIS)
 
         self:SetIngredient1(NULL)
     end
@@ -152,7 +175,12 @@ function ENT:EjectIngredients()
         newpos = newpos + self:GetRight() * self.SpawnOffset.y
         newpos = newpos + self:GetUp() * self.SpawnOffset.z
         newpos = newpos + (VectorRand() * 8)
+
+        self:GetIngredient2():SetParent()
         self:GetIngredient2():SetPos(newpos)
+        self:GetIngredient2():SetNoDraw(false)
+        self:GetIngredient2():SetMoveType(MOVETYPE_VPHYSICS)
+        self:GetIngredient2():SetCollisionGroup(COLLISION_GROUP_DEBRIS)
 
         self:SetIngredient2(NULL)
     end
@@ -163,8 +191,15 @@ function ENT:EjectIngredients()
         newpos = newpos + self:GetRight() * self.SpawnOffset.y
         newpos = newpos + self:GetUp() * self.SpawnOffset.z
         newpos = newpos + (VectorRand() * 8)
+
+        self:GetIngredient3():SetParent()
         self:GetIngredient3():SetPos(newpos)
+        self:GetIngredient3():SetNoDraw(false)
+        self:GetIngredient3():SetMoveType(MOVETYPE_VPHYSICS)
+        self:GetIngredient3():SetCollisionGroup(COLLISION_GROUP_DEBRIS)
 
         self:SetIngredient3(NULL)
     end
+
+    self.NextPickupTime = CurTime() + 5
 end

@@ -420,16 +420,6 @@ local function hudPaint()
         return
     end
 
-    local context = ArcRP_GetCustomContextMenu(ent, LocalPlayer())
-    // local customUse = ArcRP_GetCustomUse(ent, LocalPlayer())
-
-    // local text
-
-    if !context then
-        contextindex = 1
-        return
-    end
-
     // if customUse or ent.interactionHint then
     //     local hinttext = isfunction(ent.interactionHint) and ent.interactionHint() or ent.interactionHint
     //     text = "[" .. TacRP.GetBindKey("+use") .. "] " .. (((customUse or {}).message) or hinttext or "")
@@ -446,21 +436,25 @@ local function hudPaint()
     //         end
     //     end
     // end
-    // if ent.contextHint then
-    //     if isfunction(ent.contextHint) then
-    //         text = ent.contextHint() or text
-    //     else
-    //         text = ent.contextHint
 
-    //     end
-    // end
+    if ent.contextHint or ent.interactionHint then
+        local text
 
-    local yh = TacRP.SS(10)
+        if isfunction(ent.contextHint) then
+            text = ent.contextHint() or text
+        else
+            text = ent.contextHint
+        end
 
-    for index, item in ipairs(context) do
-        local selected = index == contextindex
+        if ent.interactionHint then
+            if isfunction(ent.interactionHint) then
+                text = ent.interactionHint() or text
+            else
+                text = ent.interactionHint
+            end
 
-        local text = "[" .. TacRP.GetBindKey("+use") .. "] " .. item.message
+            text = "[" .. TacRP.GetBindKey("+use") .. "] " .. text
+        end
 
         local font = "TacRP_HD44780A00_5x8_4"
         surface.SetFont(font)
@@ -469,7 +463,41 @@ local function hudPaint()
         h = h + TacRP.SS(4)
 
         local textcol = Color(255, 255, 255)
+        surface.SetDrawColor(0, 0, 0, 200)
+
+        TacRP.DrawCorneredBox(ScrW() / 2 - w / 2, ScrH() / 2 + TacRP.SS(16), w, h)
+        draw.SimpleText(text, font, ScrW() / 2, ScrH() / 2 + TacRP.SS(16) + h / 2, textcol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    end
+
+    local context = ArcRP_GetCustomContextMenu(ent, LocalPlayer())
+    // local customUse = ArcRP_GetCustomUse(ent, LocalPlayer())
+
+    // local text
+
+    if !context then
+        contextindex = 1
+        return
+    end
+
+    local yh = TacRP.SS(10)
+
+    for index, item in ipairs(context) do
+        local selected = index == contextindex
+
+        local text = item.message
+
         if selected then
+            text = "[" .. TacRP.GetBindKey("+use") .. "] " .. text
+        end
+
+        local font = "TacRP_HD44780A00_5x8_4"
+        surface.SetFont(font)
+        local w, h = surface.GetTextSize(text)
+        w = w + TacRP.SS(8)
+        h = h + TacRP.SS(4)
+
+        local textcol = Color(255, 255, 255)
+        if selected and #context > 1 then
             surface.SetDrawColor(255, 255, 255, 200)
             textcol = Color(0, 0, 0)
         else

@@ -23,11 +23,43 @@ function ENT:Initialize()
     self.bountyAmount = 200
 end
 
+function ENT:PowerOn()
+    self:StartSound()
+
+    for i, ent in ipairs(self.ConnectedEntities) do
+        ent:PowerOn()
+    end
+end
+
+function ENT:PowerOff()
+    self:SoundStop()
+
+    for i, ent in ipairs(self.ConnectedEntities) do
+        ent:PowerOff()
+    end
+end
+
+function ENT:UpdateConnections()
+    self:SetConnectedEntityAmount(#self.ConnectedEntities)
+end
+
+function ENT:Disconnect(entity)
+    table.RemoveByValue(self.ConnectedEntities, entity)
+    self:UpdateConnections()
+
+    SafeRemoveEntity(entity.PowerCable)
+end
+
+function ENT:Connect(entity)
+    table.insert(self.ConnectedEntities, entity)
+    self:UpdateConnections()
+
+    entity.PowerCable = constraint.Rope(self, entity, 0, 0, Vector(0, 0, 8), Vector(0, 0, 0), 512, 0, 64, 2, "cable/cable2", false)
+end
+
 function ENT:StartSound()
     if !self.Sound then
         self:EmitSound("ambient/machines/spinup.wav")
-    else
-        self:EmitSound("buttons/lever5.wav")
     end
     self.Sound = CreateSound(self, Sound("ambient/machines/machine3.wav"))
     self.Sound:SetSoundLevel(60)
@@ -44,11 +76,11 @@ function ENT:SoundStop()
 end
 
 function ENT:Touch(entity)
-    if entity.isFuel then
+    if entity.craftingIngredient == "fuel" then
         self:SetFuelExpireTime(CurTime() + math.min(self:GetFuelTime() + (60 * 10), self:GetCapacity()))
         SafeRemoveEntity(entity)
 
-        self:StartSound()
+        self:PowerOn()
     end
 end
 
@@ -84,7 +116,7 @@ function ENT:Think()
     end
 
     if self:GetFuelExpireTime() < CurTime() then
-        self:SoundStop()
+        self:PowerOff()
     end
 
     if not self.sparking then return end
@@ -98,5 +130,5 @@ function ENT:Think()
 end
 
 function ENT:OnRemove()
-    self:SoundStop()
+    self:PowerOff()
 end

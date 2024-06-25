@@ -21,6 +21,12 @@ function ENT:SetupDataTables()
     self:SetMoney(0)
 end
 
+function ENT:IsPowered()
+    if !IsValid(self:GetGenerator()) then return false end
+
+    return self:GetGenerator():IsPowered()
+end
+
 function ENT:GetPrintInterval()
     return 120
 end
@@ -36,18 +42,29 @@ end
 function ENT:contextHint()
     local paper = self:GetPaper()
 
-    return "PAPER: " .. tostring(paper) .. "/" .. tostring(self:GetCapacity()) .. " | SPD " .. tostring(self:GetSpeedUpgrades() + 1) .. " | EFF " .. tostring(self:GetEfficiencyUpgrades() + 1) .. " | POWER OK"
+    return "PAPER: " .. tostring(paper) .. "/" .. tostring(self:GetCapacity()) .. " | SPD " .. tostring(self:GetSpeedUpgrades() + 1) .. " | EFF " .. tostring(self:GetEfficiencyUpgrades() + 1) .. (IsValid(self:GetGenerator()) and (self:IsPowered() and " | POWER OK" or " | NO POWER") or " | NO CONN")
 end
 
 function ENT:GetContextMenu(player)
+    local tbl = {}
     if self:GetMoney() > 0 then
-        return {
+        table.insert(tbl,
             {
                 message = "Get Money (" .. DarkRP.formatMoney(self:GetMoney()) .. ")",
                 callback = function(ent2, ply2)
                     ent2:TakeMoney(ply2)
                 end,
             }
-        }
+        )
     end
+    table.insert(tbl,
+        {
+            message = "Reconnect Power",
+            callback = function(ent2, ply2)
+                ent2:ConnectPower()
+            end,
+        }
+    )
+
+    return tbl
 end

@@ -23,19 +23,29 @@ function ENT:Initialize()
 
     self.LastPrintTime = CurTime()
 
-    self.sound = CreateSound(self, Sound("ambient/levels/labs/equipment_printer_loop1.wav"))
-    self.sound:SetSoundLevel(52)
-    self.sound:PlayEx(1, 100)
-
     self.bountyAmount = 400
 end
 
+function ENT:StartSound()
+    self.Sound = CreateSound(self, Sound("ambient/levels/labs/equipment_printer_loop1.wav"))
+    self.Sound:SetSoundLevel(60)
+    self.Sound:PlayEx(0, 100)
+    self.Sound:ChangeVolume(1, 2)
+end
+
+function ENT:SoundStop()
+    if self.Sound then
+        self.Sound:Stop()
+        self.Sound = nil
+    end
+end
 
 function ENT:Touch(entity)
-    if entity.isPaper then
+    if entity.craftingIngredient == "paper" then
         self:EmitSound("buttons/button6.wav")
         self:SetPaper(self:GetCapacity())
         SafeRemoveEntity(entity)
+        self:UpdateConnections()
     end
 end
 
@@ -63,15 +73,18 @@ function ENT:Destruct()
 end
 
 function ENT:CreateMoneybag()
-    if not IsValid(self) or self:IsOnFire() then return end
+    if !IsValid(self) or self:IsOnFire() then return end
 
-    if self:GetPaper() <= 0 then return end
+    if !self:IsPowered() then self:SoundStop() return end
+    if self:GetPaper() <= 0 then self:SoundStop() return end
 
     local amount = 100
 
     // DarkRP.createMoneyBag(Vector(MoneyPos.x + 15, MoneyPos.y, MoneyPos.z + 15), amount)
     self:SetMoney(self:GetMoney() + amount)
     self:SetPaper(self:GetPaper() - 1)
+
+    if self:GetPaper() <= 0 then self:SoundStop() return end
 end
 
 function ENT:Think()
@@ -87,20 +100,13 @@ function ENT:Think()
         self.LastPrintTime = CurTime()
     end
 
-    if not self.sparking then return end
-
-    local effectdata = EffectData()
-    effectdata:SetOrigin(self:GetPos())
-    effectdata:SetMagnitude(1)
-    effectdata:SetScale(1)
-    effectdata:SetRadius(2)
-    util.Effect("Sparks", effectdata)
+    if IsValid(self:GetGenerator()) and !IsValid(self.PowerCable) then
+        self:Disconnect()
+    end
 end
 
 function ENT:OnRemove()
-    if self.sound then
-        self.sound:Stop()
-    end
+    self:SoundStop()
 end
 
 function ENT:TakeMoney(ply)
@@ -111,4 +117,83 @@ function ENT:TakeMoney(ply)
 
         self:SetMoney(0)
     end
+end
+
+ENT.NextConnectTime = 0
+
+function ENT:ConnectPower()
+    if self.NextConnectTime > CurTime() then return end
+
+    self:Disconnect()
+
+    local best_generator_has_power = false
+    local best_generator = nil
+    local best_generator_dist = 0
+
+    for i, ent in ipairs(ents.FindInSphere(self:GetPos(), 256)) do
+        if ent.IsGenerator then
+            if !best_generator then
+                best_generator = ent
+                best_generator_dist = ent:GetPos():Distance(self:GetPos())
+                best_generator_has_power = ent:IsPowered()
+            else
+                if best_generator_has_power and !ent:IsPowered() then continue end
+                if !best_generator_has_power and ent:IsPowered() then
+                    best_generator = ent
+                    best_generator_dist = ent:GetPos():Distance(self:GetPos())
+                    best_generator_has_power = ent:IsPowered()
+                    continue
+                end
+                local dist = ent:GetPos():Distance(self:GetPos())
+
+                if dist <= best_generator_dist then
+                    best_generator = ent
+                    best_generator_dist = ent:GetPos():Distance(self:GetPos())
+                    best_generator_has_power = ent:IsPowered()
+                end
+            end
+        end
+    end
+
+    self:Connect(best_generator)
+
+    self.NextConnectTime = CurTime() + 1
+end
+
+function ENT:Connect(gen)
+    self:SetGenerator(gen)
+
+    if gen then
+        self:GetGenerator():Connect(self)
+    end
+
+    self:UpdateConnections()
+end
+
+function ENT:Disconnect()
+    if IsValid(self:GetGenerator()) then
+        self:GetGenerator():Disconnect(self)
+    end
+
+    self:SetGenerator(NULL)
+
+    self:UpdateConnections()
+end
+
+function ENT:UpdateConnections()
+    if self:IsPowered() and self:GetPaper() > 0 then
+        if !self.Sound then
+            self:StartSound()
+        end
+    else
+        self:SoundStop()
+    end
+end
+
+function ENT:PowerOn(entity)
+    self:UpdateConnections()
+end
+
+function ENT:PowerOff(entity)
+    self:UpdateConnections()
 end

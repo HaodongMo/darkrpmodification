@@ -37,5 +37,5 @@ function ENT:contextHint()
     local fueltime = self:GetFuelTime()
     local maxfueltime = self:GetCapacity()
 
-    return "FUEL " .. string.FormattedTime( fueltime, "%02i:%02i" ) .. "/" .. string.FormattedTime( maxfueltime, "%02i:%02i" )
+    return "FUEL " .. string.FormattedTime( fueltime, "%02i:%02i" ) .. "/" .. string.FormattedTime( maxfueltime, "%02i:%02i" ) .. " | " .. tostring(self:GetConnectedEntityAmount()) .. " CONN"
 end

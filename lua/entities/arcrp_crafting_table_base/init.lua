@@ -24,7 +24,7 @@ function ENT:Initialize()
     end
 end
 
-ENT.SpawnOffset = Vector(0, -64, 16)
+ENT.SpawnOffset = Vector(0, -72, 16)
 ENT.NextPickupTime = 0
 
 function ENT:Touch(entity)
@@ -161,9 +161,9 @@ function ENT:EjectIngredients()
 
         local ing1 = self:GetIngredient1()
 
+        ing1:SetMoveType(MOVETYPE_VPHYSICS)
         ing1:SetPos(newpos)
         ing1:SetNoDraw(false)
-        ing1:SetMoveType(MOVETYPE_VPHYSICS)
         ing1:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 
         local phys = ing1:GetPhysicsObject()
@@ -182,9 +182,9 @@ function ENT:EjectIngredients()
 
         local ing2 = self:GetIngredient2()
 
+        ing2:SetMoveType(MOVETYPE_VPHYSICS)
         ing2:SetPos(newpos)
         ing2:SetNoDraw(false)
-        ing2:SetMoveType(MOVETYPE_VPHYSICS)
         ing2:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 
         local phys = ing2:GetPhysicsObject()
@@ -203,9 +203,9 @@ function ENT:EjectIngredients()
 
         local ing3 = self:GetIngredient3()
 
-        ing3:SetPos(newpos)
-        ing3:SetNoDraw(false)
         ing3:SetMoveType(MOVETYPE_VPHYSICS)
+        ing3:SetPos(newpos)
+        ing3:SetNoDraw(false) 
         ing3:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 
         local phys = ing3:GetPhysicsObject()

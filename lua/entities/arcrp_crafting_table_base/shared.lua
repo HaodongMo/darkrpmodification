@@ -15,7 +15,7 @@ function ENT:contextHint()
     local has_ingredients = IsValid(self:GetIngredient1()) or IsValid(self:GetIngredient2()) or IsValid(self:GetIngredient3())
 
     if !has_ingredients then
-        return "Crafting Bench"
+        return self.PrintName
     else
         local str = ""
 

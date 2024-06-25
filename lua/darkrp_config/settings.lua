@@ -881,25 +881,6 @@ GM.Config.craftingRecipes = {
                 "tacrp_ammo_gas"
             }
         },
-        {
-            name = "Grenade Launcher",
-            ingredients = {
-                component = 2,
-                pipe = 1,
-            },
-            output = {
-                "tacrp_m320"
-            }
-        },
-        {
-            name = "Rocket Launcher",
-            ingredients = {
-                component = 3
-            },
-            output = {
-                "tacrp_rpg7"
-            }
-        }
     },
     guns = {
         {
@@ -914,12 +895,24 @@ GM.Config.craftingRecipes = {
             }
         },
         {
-            name = "C4 Detonator",
+            name = "Grenade Launcher",
             ingredients = {
-                electronics = 1,
+                explosive = 1,
+                component = 1,
+                pipe = 1,
             },
             output = {
-                "tacrp_c4_detonator"
+                "tacrp_m320"
+            }
+        },
+        {
+            name = "Rocket Launcher",
+            ingredients = {
+                component = 2,
+                explosive = 1,
+            },
+            output = {
+                "tacrp_rpg7"
             }
         },
         {
@@ -1009,6 +1002,15 @@ GM.Config.craftingRecipes = {
                 "tacrp_mtx_dual",
                 "tacrp_sphinx",
                 "tacrp_xd45"
+            }
+        },
+        {
+            name = "C4 Detonator",
+            ingredients = {
+                electronics = 1,
+            },
+            output = {
+                "tacrp_c4_detonator"
             }
         },
     }

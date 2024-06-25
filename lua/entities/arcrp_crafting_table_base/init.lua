@@ -33,7 +33,7 @@ function ENT:Touch(entity)
     if self.NextPickupTime > CurTime() then return end
 
     if entity.isCraftingIngredient then
-        if !self:GetIngredient1() and !self:GetIngredient2() and !self:GetIngredient3() then return end
+        if IsValid(self:GetIngredient1()) and IsValid(self:GetIngredient2()) and IsValid(self:GetIngredient3()) then return end
         if entity == self:GetIngredient1() then return end
         if entity == self:GetIngredient2() then return end
         if entity == self:GetIngredient3() then return end

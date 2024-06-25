@@ -242,6 +242,7 @@ TEAM_GUNSMITH = DarkRP.createJob("Gunsmith", {
     max = 2,
     sortOrder = 102,
     gunsmith = true,
+    weapons = {}
 })
 
 TEAM_LAWYER = DarkRP.createJob("Lawyer", {
@@ -260,6 +261,7 @@ Free your clients from prison (with or without the police's consent).]],
     max = 1,
     sortOrder = 103,
     unarrest = true,
+    weapons = {}
 })
 
 TEAM_CRAFTSMAN = DarkRP.createJob("Craftsman", {
@@ -273,6 +275,7 @@ TEAM_CRAFTSMAN = DarkRP.createJob("Craftsman", {
     category = "Citizens",
     max = 2,
     sortOrder = 104,
+    weapons = {}
 })
 
 TEAM_COURIER = DarkRP.createJob("Courier", {
@@ -287,6 +290,7 @@ TEAM_COURIER = DarkRP.createJob("Courier", {
     category = "Citizens",
     max = 3,
     sortOrder = 105,
+    weapons = {}
 })
 
 TEAM_MARTIAL_ARTIST = DarkRP.createJob("Martial Artist", {
@@ -301,6 +305,7 @@ TEAM_MARTIAL_ARTIST = DarkRP.createJob("Martial Artist", {
     max = 1,
     sortOrder = 106,
     martialArtist = true,
+    weapons = {}
 })
 
 

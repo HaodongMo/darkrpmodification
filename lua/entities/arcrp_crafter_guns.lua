@@ -1,3 +1,5 @@
+AddCSLuaFile()
+
 ENT.Type = "anim"
 ENT.Base = "arcrp_crafting_table_base"
 ENT.PrintName = "Gun Crafting Machine"

@@ -308,6 +308,20 @@ TEAM_MARTIAL_ARTIST = DarkRP.createJob("Martial Artist", {
     weapons = {}
 })
 
+TEAM_SHOPKEEPER = DarkRP.createJob("Shopkeeper", {
+    color = Color(150, 255, 75, 255),
+    model = {"models/player/hostage/hostage_03.mdl"},
+    description =
+[[You sell shipments of crafting materials to other players, like the Gunsmith and Craftsman.]],
+    command = "shopkeeper",
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    maxpocket = 5,
+    category = "Citizens",
+    max = 2,
+    sortOrder = 105,
+    weapons = {}
+})
 
 --[[---------------------------------------------------------------------------
 Define which team joining players spawn into and what team you change to if demoted

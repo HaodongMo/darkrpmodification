@@ -40,6 +40,17 @@ hook.Add("TacRP_CanCustomize", "tacrp_rpcustomize", function(ply, wep, att, slot
     return true
 end)
 
+hook.Add("playerArrested", "tacrp_arrest_bailbonds", function(ply, time, arrestor)
+    if ply:GetNWBool("Bail", false) then
+        ply:SetNWBool("Bail", false)
+        timer.Simple(1, function()
+            if !IsValid(ply) then return end
+            DarkRP.notify(ply, 3, 10, "Your bail bonds have bought you out of jail!")
+            ply:unArrest()
+        end)
+    end
+end)
+
 // drop moolah on death
 hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker)
     if !IsValid(attacker) or attacker:isCP() then return end

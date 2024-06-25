@@ -61,6 +61,14 @@ DarkRP.createEntity("Tax Return Forms", {
     allowed = TEAM_LAWYER
 })
 
+DarkRP.createEntity("Bail Bonds", {
+    ent = "arcrp_bailbonds",
+    model = "models/props_lab/clipboard.mdl",
+    price = 100,
+    max = 3,
+    cmd = "buybail",
+    allowed = TEAM_LAWYER
+})
 
 // DarkRP.createEntity("Bitcoin Miner", {
 //     ent = "arcrp_bitcoin_miner",

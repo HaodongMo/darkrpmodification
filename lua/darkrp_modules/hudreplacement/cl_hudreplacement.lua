@@ -456,10 +456,10 @@ local function hudPaint()
     //     end
     // end
 
-    local interactionHint = ArcRP_GetCustomInteractionHint(ent, LocalPlayer())
+    local customContextHint = ArcRP_GetCustomContextHint(ent, LocalPlayer())
 
-    if ent.contextHint or ent.interactionHint or interactionHint then
-        local text = interactionHint or ""
+    if ent.contextHint or ent.interactionHint or customContextHint then
+        local text = customContextHint or ""
 
         if ent.contextHint then
             if isfunction(ent.contextHint) then

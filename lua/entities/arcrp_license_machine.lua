@@ -8,6 +8,7 @@ ENT.Spawnable = true
 
 ENT.Model = "models/props_lab/monitor02.mdl"
 
+ENT.interactionHint = "Apply for Gun License"
 ENT.Cost = 15
 
 if SERVER then

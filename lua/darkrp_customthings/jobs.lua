@@ -252,6 +252,7 @@ TEAM_LAWYER = DarkRP.createJob("Lawyer", {
 
 File tax returns to help your clients get money back from the IRS.
 Sell insurance that prevent money loss on death.
+Sell bail bonds to prevent arrest.
 Free your clients from prison (with or without the police's consent).]],
     command = "lawyer",
     salary = GAMEMODE.Config.normalsalary,

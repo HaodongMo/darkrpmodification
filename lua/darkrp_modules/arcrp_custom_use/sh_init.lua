@@ -1,14 +1,7 @@
 -- ent = entity you are trying to customUse
 -- ply = custom user
 
-local doors = {
-    ["func_door"] = true,
-    ["func_door_rotating"] = true,
-    ["prop_door_rotating"] = true,
-    ["func_movelinear"] = true
-}
-
-function ArcRP_GetCustomInteractionHint(ent, ply)
+function ArcRP_GetCustomContextHint(ent, ply)
     if ent:isDoor() then
         local owner = ent:getDoorOwner()
 

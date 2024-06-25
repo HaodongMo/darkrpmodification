@@ -101,3 +101,23 @@ hook.Add("playerGetSalary", "arcrp_salary_bankrobbery", function(ply, amount)
         return false, "The bank was recently robbed - no salary could be paid out.", 0
     end
 end)
+
+local ramkill = {
+    ["sammyservers_textscreen"] = true,
+    ["darkrp_billboard"] = true,
+}
+
+hook.Add("canDoorRam", "arcrp_doorram", function(ply, tr, ent)
+    if ramkill[ent:GetClass()] and !ent.USED then
+        ent.USED = true
+        if CLIENT then return end
+        ent:SetNotSolid( true )
+        ent:SetMoveType( MOVETYPE_NONE )
+        ent:SetNoDraw( true )
+        local ed = EffectData()
+        ed:SetEntity( ent )
+        util.Effect( "entity_remove", ed, true, true )
+        SafeRemoveEntityDelayed(ent, 1)
+        return true
+    end
+end)

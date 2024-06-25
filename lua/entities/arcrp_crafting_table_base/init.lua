@@ -28,7 +28,7 @@ function ENT:Initialize()
 end
 
 ENT.SpawnOffset = Vector(-12, -40, 35)
-ENT.OutputForce = Vector(0, -400, 500)
+ENT.OutputForce = Vector(0, -200, 250)
 ENT.NextPickupTime = 0
 
 function ENT:Touch(entity)
@@ -93,9 +93,20 @@ function ENT:CheckRecipe()
     self:SetRecipeOutput(output)
 end
 
+function ENT:OnRemove()
+    if self.IdleSound then
+        self.IdleSound:Stop()
+    end
+end
+
 function ENT:FinishCrafting()
     self:SetIsCrafting(false)
     self:SetCraftingEndTime(0)
+
+    if self.IdleSound then
+        self.IdleSound:FadeOut(1)
+    end
+    self:EmitSound("ambient/machines/spindown.wav", 95)
 
     local out = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()]
     local entname = table.Random(out.output)
@@ -110,8 +121,6 @@ function ENT:FinishCrafting()
     newent.nodupe = true
     newent.spawnedBy = self:Getowning_ent()
     newent:Spawn()
-    newent:GetPhysicsObject():SetVelocityInstantaneous(self:GetForward() * self.OutputForce.x + self:GetRight() * self.OutputForce.y + self:GetUp() * self.OutputForce.z)
-    newent:GetPhysicsObject():ApplyTorqueCenter(VectorRand() * 200)
 
     for i = 1, self.MaxIngredientTypes do
         local ing = ArcRP_Craft.ItemsID[self["GetIngredientID" .. i](self)]
@@ -173,6 +182,11 @@ function ENT:Craft(activator)
     else
         self:SetIsCrafting(true)
         self:SetCraftingEndTime(CurTime() + out.time)
+        if !self.IdleSound then
+            self.IdleSound = CreateSound(self, "ambient/machines/spin_loop.wav")
+            self.IdleSound:SetSoundLevel(95)
+        end
+        self.IdleSound:Play()
     end
 end
 

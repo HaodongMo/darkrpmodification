@@ -350,7 +350,7 @@ local function hack()
     end
     net.Receive("DarkRP_Pocket", retrievePocket)
 end
-hook.Add("InitPostEntity", function()
+hook.Add("InitPostEntity", "arcrp_amog_8z_test_yo_shid", function()
     timer.Simple(1, function() hack() end)
 end)
 hack()

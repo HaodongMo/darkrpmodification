@@ -201,6 +201,20 @@ local function hudPaintHealth()
         end
     end
 
+    -- License
+    local has_license = LocalPlayer():getDarkRPVar("HasGunlicense")
+    if has_license then
+
+        surfaceSetFont("TacRP_HD44780A00_5x8_4")
+        local txt = "[Licensed]"
+        local ew, eh = surfaceGetTextSize(txt)
+
+        surfaceSetTextPos(x + w - ew - TacRP.SS(2), y + TacRP.SS(2))
+        surfaceSetTextColor(col)
+        surfaceDrawText(txt)
+
+    end
+
     lasthp = LocalPlayer():Health()
 end
 

@@ -39,5 +39,21 @@
 function ArcRP_GetCustomContextMenu(ent, ply)
     if isfunction(ent.GetContextMenu) then
         return ent:GetContextMenu(ply)
+    elseif ent:IsPlayer() then
+        if ent:isArrested() and !ply:isArrested() and ply:getJobTable().unarrest then
+            return
+            {
+                {
+                    callback = function(ent2, ply2)
+                        if ent2:isArrested() and !ply2:isArrested() and ply:getJobTable().unarrest then
+                            GAMEMODE.Config.telefromjail = false
+                            ent2:unArrest(ply2)
+                            GAMEMODE.Config.telefromjail = true
+                        end
+                    end,
+                    message = "Unarrest"
+                }
+            }
+        end
     end
 end

@@ -10,6 +10,11 @@ function ENT:Initialize()
     self:SetSolid(SOLID_VPHYSICS)
     self:SetUseType(SIMPLE_USE)
 
+    local angle = self:GetAngles()
+    angle:RotateAroundAxis(self:GetUp(), -90)
+
+    self:SetAngles(angle)
+
     self:SetTrigger(true)
 
     local phys = self:GetPhysicsObject()
@@ -33,7 +38,6 @@ function ENT:Touch(entity)
 
         self:EmitSound("items/ammocrate_close.wav")
 
-        entity:SetParent(self)
         entity:SetNoDraw(true)
         entity:SetMoveType(MOVETYPE_NONE)
         entity:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
@@ -61,6 +65,10 @@ function ENT:Touch(entity)
     end
 end
 
+function ENT:OnRemove()
+    self:EjectIngredients()
+end
+
 function ENT:CheckRecipe()
     local output = 0
     local maxrecipelength = 0
@@ -84,24 +92,17 @@ function ENT:CheckRecipe()
     end
 
     for i, recipe in ipairs(GAMEMODE.Config.craftingRecipes[self.CraftingRecipeType]) do
-        local count = table.Count(recipe.ingredients)
-        if count > maxrecipelength then
-            local satisfied = true
-            for ing, amt in pairs(recipe.ingredients) do
-                if (ingredientcount[ing] or 0) < amt then
-                    satisfied = false
-                    break
-                end
+        local satisfied = true
+        for ing, amt in pairs(recipe.ingredients) do
+            if (ingredientcount[ing] or 0) < amt then
+                satisfied = false
+                break
             end
+        end
 
-            if satisfied then
-                output = i
-                maxrecipelength = count
-
-                if count >= 3 then
-                    break
-                end
-            end
+        if satisfied then
+            output = i
+            break
         end
     end
 
@@ -158,13 +159,18 @@ function ENT:EjectIngredients()
         newpos = newpos + self:GetForward() * self.SpawnOffset.x
         newpos = newpos + self:GetRight() * self.SpawnOffset.y
         newpos = newpos + self:GetUp() * self.SpawnOffset.z
-        newpos = newpos + (VectorRand() * 8)
 
-        self:GetIngredient1():SetParent()
-        self:GetIngredient1():SetPos(newpos)
-        self:GetIngredient1():SetNoDraw(false)
-        self:GetIngredient1():SetMoveType(MOVETYPE_VPHYSICS)
-        self:GetIngredient1():SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+        local ing1 = self:GetIngredient1()
+
+        ing1:SetPos(newpos)
+        ing1:SetNoDraw(false)
+        ing1:SetMoveType(MOVETYPE_VPHYSICS)
+        ing1:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+
+        local phys = ing1:GetPhysicsObject()
+        if IsValid(phys) then
+            phys:Wake()
+        end
 
         self:SetIngredient1(NULL)
     end
@@ -174,13 +180,18 @@ function ENT:EjectIngredients()
         newpos = newpos + self:GetForward() * self.SpawnOffset.x
         newpos = newpos + self:GetRight() * self.SpawnOffset.y
         newpos = newpos + self:GetUp() * self.SpawnOffset.z
-        newpos = newpos + (VectorRand() * 8)
 
-        self:GetIngredient2():SetParent()
-        self:GetIngredient2():SetPos(newpos)
-        self:GetIngredient2():SetNoDraw(false)
-        self:GetIngredient2():SetMoveType(MOVETYPE_VPHYSICS)
-        self:GetIngredient2():SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+        local ing2 = self:GetIngredient2()
+
+        ing2:SetPos(newpos)
+        ing2:SetNoDraw(false)
+        ing2:SetMoveType(MOVETYPE_VPHYSICS)
+        ing2:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+
+        local phys = ing2:GetPhysicsObject()
+        if IsValid(phys) then
+            phys:Wake()
+        end
 
         self:SetIngredient2(NULL)
     end
@@ -190,13 +201,18 @@ function ENT:EjectIngredients()
         newpos = newpos + self:GetForward() * self.SpawnOffset.x
         newpos = newpos + self:GetRight() * self.SpawnOffset.y
         newpos = newpos + self:GetUp() * self.SpawnOffset.z
-        newpos = newpos + (VectorRand() * 8)
 
-        self:GetIngredient3():SetParent()
-        self:GetIngredient3():SetPos(newpos)
-        self:GetIngredient3():SetNoDraw(false)
-        self:GetIngredient3():SetMoveType(MOVETYPE_VPHYSICS)
-        self:GetIngredient3():SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+        local ing3 = self:GetIngredient3()
+
+        ing3:SetPos(newpos)
+        ing3:SetNoDraw(false)
+        ing3:SetMoveType(MOVETYPE_VPHYSICS)
+        ing3:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+
+        local phys = ing3:GetPhysicsObject()
+        if IsValid(phys) then
+            phys:Wake()
+        end
 
         self:SetIngredient3(NULL)
     end

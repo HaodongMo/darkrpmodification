@@ -791,24 +791,37 @@ GM.Config.craftingRecipes = {
             }
         },
         {
-            name = "Pistol",
+            name = "Sniper Rifle",
             ingredients = {
-                component = 1,
+                component = 3,
+            },
+            output = {
+                "tacrp_m14",
+                "tacrp_ex_hecate",
+                "tacrp_as50",
+                "tacrp_uratio",
+                "tacrp_spr"
+            }
+        },
+        {
+            name = "Assault Rifle",
+            ingredients = {
+                component = 2,
                 pipe = 1,
             },
             output = {
-                "tacrp_vertec",
-                "tacrp_ex_m1911",
-                "tacrp_ex_glock",
-                "tacrp_ex_hk45c",
-                "tacrp_p2000",
-                "tacrp_ex_usp",
-                "tacrp_gsr1911",
-                "tacrp_p250",
-                "tacrp_mr96",
-                "tacrp_mtx_dual",
-                "tacrp_sphinx",
-                "tacrp_xd45"
+                "tacrp_ex_ak47",
+                "tacrp_amd65",
+                "tacrp_ex_m4a1",
+                "tacrp_k1a",
+                "tacrp_m4",
+                "tacrp_ak47",
+                "tacrp_g36k",
+                "tacrp_sg551",
+                "tacrp_aug",
+                "tacrp_dsa58",
+                "tacrp_hk417",
+                "tacrp_mg4"
             }
         },
         {
@@ -846,39 +859,26 @@ GM.Config.craftingRecipes = {
             }
         },
         {
-            name = "Assault Rifle",
+            name = "Pistol",
             ingredients = {
-                component = 2,
+                component = 1,
                 pipe = 1,
             },
             output = {
-                "tacrp_ex_ak47",
-                "tacrp_amd65",
-                "tacrp_ex_m4a1",
-                "tacrp_k1a",
-                "tacrp_m4",
-                "tacrp_ak47",
-                "tacrp_g36k",
-                "tacrp_sg551",
-                "tacrp_aug",
-                "tacrp_dsa58",
-                "tacrp_hk417",
-                "tacrp_mg4"
+                "tacrp_vertec",
+                "tacrp_ex_m1911",
+                "tacrp_ex_glock",
+                "tacrp_ex_hk45c",
+                "tacrp_p2000",
+                "tacrp_ex_usp",
+                "tacrp_gsr1911",
+                "tacrp_p250",
+                "tacrp_mr96",
+                "tacrp_mtx_dual",
+                "tacrp_sphinx",
+                "tacrp_xd45"
             }
         },
-        {
-            name = "Sniper Rifle",
-            ingredients = {
-                component = 3,
-            },
-            output = {
-                "tacrp_m14",
-                "tacrp_ex_hecate",
-                "tacrp_as50",
-                "tacrp_uratio",
-                "tacrp_spr"
-            }
-        }
     }
 }
 

@@ -470,13 +470,16 @@ local function hudPaint()
         end
 
         if ent.interactionHint then
+            local interactionText
             if isfunction(ent.interactionHint) then
-                text = ent:interactionHint() or text
+                interactionText = ent:interactionHint()
             else
-                text = ent.interactionHint
+                interactionText = ent.interactionHint
             end
 
-            text = "[" .. TacRP.GetBindKey("+use") .. "] " .. text
+            if interactionText then
+                text = "[" .. TacRP.GetBindKey("+use") .. "] " .. interactionText
+            end
         end
 
         text = text or ""

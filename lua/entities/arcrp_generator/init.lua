@@ -9,6 +9,7 @@ ENT.bountyAmount = 200
 ENT.PoweredSound = "ambient/machines/machine3.wav"
 ENT.Model = "models/props_vehicles/generatortrailer01.mdl"
 ENT.PowerCablePos = Vector(-64, 0, 24)
+ENT.NextUse = 0
 
 function ENT:Initialize()
     self:SetModel(self.Model)
@@ -75,7 +76,7 @@ function ENT:StartSound()
         self:EmitSound("ambient/machines/spinup.wav")
     end
     self.Sound = CreateSound(self, Sound(self.PoweredSound))
-    self.Sound:SetSoundLevel(60)
+    self.Sound:SetSoundLevel(90)
     self.Sound:PlayEx(0, 100)
     self.Sound:ChangeVolume(1, 2)
 end
@@ -89,16 +90,21 @@ function ENT:SoundStop()
 end
 
 function ENT:Touch(entity)
-    if entity.craftingIngredient == "fuel" then
-        self:SetFuelExpireTime(CurTime() + math.min(self:GetFuelTime() + 120, self:GetCapacity()))
+    if entity.USED then return end
+    if entity.craftingIngredient == "fuel" and self:GetFuel() < self:GetCapacity() then
+        entity.USED = true
+        self:SetFuel(math.min(self:GetCapacity(), self:GetFuel() + 120))
         SafeRemoveEntity(entity)
-
-        self:PowerOn()
+        if self:GetSwitchedOn() then
+            self:PowerOn()
+        end
     elseif entity.upgradeType == "generator_cap" then
+        entity.USED = true
         self:SetCapacityUpgrades(self:GetCapacityUpgrades() + 1)
         SafeRemoveEntity(entity)
         self:EmitSound("buttons/lever4.wav")
     elseif entity.upgradeType == "generator_conn" then
+        entity.USED = true
         self:SetConnectionUpgrades(self:GetConnectionUpgrades() + 1)
         SafeRemoveEntity(entity)
         self:EmitSound("buttons/button6.wav")
@@ -136,11 +142,17 @@ function ENT:Think()
         return
     end
 
-    if self:GetFuelExpireTime() < CurTime() then
+    if self:GetSwitchedOn() and (self.NextFuelTick or 0) <= CurTime() then
+        self:SetFuel(math.max(0, self:GetFuel() - 1))
+        self.NextFuelTick = CurTime() + 1
+    end
+
+    if self:GetFuel() <= 0 then
+        self:SetSwitchedOn(false)
         self:PowerOff()
     end
 
-    if not self.sparking then return end
+    if !self.sparking then return end
 
     local effectdata = EffectData()
     effectdata:SetOrigin(self:GetPos())

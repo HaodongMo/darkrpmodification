@@ -8,15 +8,8 @@ ENT.RenderGroup = RENDERGROUP_OPAQUE
 
 ENT.isMoneyLaundry = true
 
-ENT.interactionHint = "Retrieve Laundered Money"
-
-function ENT:GetContextMenu(player)
-    return {
-        {
-            message = "Retrieve Laundered Money",
-            callback = function(ent, ply)
-                ent:GetMoney(ply, ply)
-            end,
-        }
-    }
+function ENT:SetupDataTables()
+    self:NetworkVar("Int", 0, "Reward")
 end
+
+ENT.contextHint = ENT.PrintName

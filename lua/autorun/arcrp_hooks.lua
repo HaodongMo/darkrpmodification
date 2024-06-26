@@ -100,11 +100,32 @@ hook.Add("PostPlayerDeath", "tacrp_police_arrest", function(victim)
     if victim:isWanted() and !victim:isArrested() then
         victim:arrest(300, attacker)
     end
-    if victim:Team() != GAMEMODE.DefaultTeam then
-        victim:teamBan(victim:Team(), 300)
+
+    // Lose job on death and enter 5 min cooldown
+    local t = victim:Team()
+    if t != GAMEMODE.DefaultTeam then
+        // Police cannot immediately switch back to rookie
+        if GAMEMODE.CivilProtection[t] and t != TEAM_POLICE_ROOKIE then
+            victim:teamBan(TEAM_POLICE_ROOKIE, 120)
+        end
+        victim:teamBan(t, 300)
         victim:changeTeam(GAMEMODE.DefaultTeam, true)
     end
 end)
+
+if SERVER then
+    // Switching to a new job voluntarily will teamban for a little while, unless jobs are CP
+    hook.Add("OnPlayerChangedTeam", "arcrp_jobswitchban", function(ply, old, new)
+        if ply:Alive() and old != GAMEMODE.DefaultTeam and
+                !(GAMEMODE.CivilProtection[old] and GAMEMODE.CivilProtection[new]) then
+            ply:teamBan(old, 120)
+            // Switching off CP will also jobban rookie
+            if GAMEMODE.CivilProtection[old] and old != TEAM_POLICE_ROOKIE then
+                ply:teamBan(TEAM_POLICE_ROOKIE, 120)
+            end
+        end
+    end)
+end
 
 
 hook.Add("playerGetSalary", "arcrp_salary_bankrobbery", function(ply, amount)

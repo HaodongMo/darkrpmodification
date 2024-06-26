@@ -106,9 +106,9 @@ DarkRP.createShipment("Paper", {
     category = "Shipments",
 })
 
-DarkRP.createShipment("Nails", {
+DarkRP.createShipment("Screws", {
     model = "models/props_lab/box01a.mdl",
-    entity = "arcrp_in_nails",
+    entity = "arcrp_in_screw",
     price = 175,
     amount = 10,
     separate = false,

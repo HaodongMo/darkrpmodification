@@ -22,6 +22,7 @@ end
 function ENT:Touch(entity)
     if entity.recyclable then
         self:EmitSound("buttons/button6.wav")
+        self:SetMoney(self:GetMoney() + (ArcRP_Craft.Items[entity.craftingIngredient].price or 5))
         SafeRemoveEntity(entity)
     end
 end

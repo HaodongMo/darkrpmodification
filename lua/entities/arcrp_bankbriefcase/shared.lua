@@ -16,7 +16,7 @@ end
 
 ENT.contextHint = function(self)
     if !LocalPlayer():isCP() then
-        return DarkRP.formatMoney(math.ceil(self:GetReward())) .. " (" .. string.ToMinutesSeconds(self:GetTimeoutEnd() - CurTime()) .. ")"
+        return DarkRP.formatMoney(math.ceil(self:GetReward())) .. " (" .. string.ToMinutesSeconds(self:GetTimeoutEnd() - CurTime()) .. " until Expiry)"
     else
         return "Return to bank"
     end

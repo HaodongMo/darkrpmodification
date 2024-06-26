@@ -3,13 +3,70 @@
 
 function ArcRP_GetCustomContextHint(ent, ply)
     if ent:isDoor() then
-        local owner = ent:getDoorOwner()
+        local blocked = ent:getKeysNonOwnable()
+        local doorTeams = ent:getKeysDoorTeams()
+        local doorGroup = ent:getKeysDoorGroup()
+        local playerOwned = ent:isKeysOwned() or table.GetFirstValue(ent:getKeysCoOwners() or {}) ~= nil
+        local owned = playerOwned or doorGroup or doorTeams
 
-        if IsValid(owner) then
-            return "Owned by " .. owner:Nick()
-        else
-            return "F2 to buy door"
+        local text = ""
+
+        local title = ent:getKeysTitle()
+        if title then text = text .. title .. " | " end
+
+        if owned then
+            text = text .. "Owned by: "
         end
+
+        if playerOwned then
+            if ent:isKeysOwned() then
+                text = text .. ent:getDoorOwner():Nick() end
+            for k in pairs(ent:getKeysCoOwners() or {}) do
+                local pk = Player(k)
+                if not IsValid(pk) or not pk:IsPlayer() then continue end
+                text = text .. ", " .. pk:Nick()
+            end
+
+            // local allowedCoOwn = ent:getKeysAllowedToOwn()
+            // if allowedCoOwn and not fn.Null(allowedCoOwn) then
+            //     table.insert(doorInfo, DarkRP.getPhrase("keys_other_allowed"))
+
+            //     for k in pairs(allowedCoOwn) do
+            //         local pk = Player(k)
+            //         if not IsValid(pk) or not pk:IsPlayer() then continue end
+            //         doorInfo = doorInfo .. ", " .. pk:Nick()
+            //     end
+            // end
+        elseif doorGroup then
+            text = text .. doorGroup
+        elseif doorTeams then
+            local is_first = true
+            for k, v in pairs(doorTeams) do
+                if not v or not RPExtraTeams[k] then continue end
+
+                if is_first then
+                    text = text .. RPExtraTeams[k].name
+                else
+                    text = text .. ", " .. RPExtraTeams[k].name
+                end
+                is_first = false
+            end
+        elseif blocked and changeDoorAccess then
+            text = "[F2] Allow Ownership"
+        elseif not blocked then
+            text = "[F2] Buy Door"
+            if changeDoorAccess then
+                text = "[F2] Disallow Ownership"
+            end
+        end
+
+        return text
+
+        // if IsValid(owner) then
+        //     return "Owned by " .. owner:Nick()
+        // else
+        //     return "F2 to buy door"
+        // end
     end
 end
 

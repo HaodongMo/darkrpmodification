@@ -116,3 +116,14 @@ DarkRP.createShipment("Nails", {
     allowed = {TEAM_SHOPKEEPER},
     category = "Shipments",
 })
+
+DarkRP.createShipment("Beer", {
+    model = "models/props_junk/garbage_glassbottle001a.mdl",
+    entity = "arcrp_drug_beer",
+    price = 300,
+    amount = 10,
+    separate = false,
+    noship = false,
+    allowed = {TEAM_SHOPKEEPER},
+    category = "Shipments",
+})

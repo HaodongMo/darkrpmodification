@@ -96,3 +96,7 @@ function ENT:Think()
         return true
     end
 end
+
+function ENT:Use(ply)
+    DarkRP.notify(ply, 0, 3, "This machine can turn stolen bank briefcases into collectable money.")
+end

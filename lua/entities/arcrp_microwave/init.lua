@@ -6,7 +6,7 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 ENT.bountyAmount = 10
-// ENT.PoweredSound = "ambient/machines/lab_loop1.wav"
+ENT.PoweredSound = false
 
 DEFINE_BASECLASS(ENT.Base)
 
@@ -55,7 +55,30 @@ function ENT:Think()
         return
     end
 
+    if self:GetCookingFinishTime() < CurTime() then
+        self:StopCookSound()
+    end
+
     BaseClass.Think(self)
+end
+
+function ENT:StartCookSound()
+    self.Sound = CreateSound(self, Sound("ambient/machines/lab_loop1.wav"))
+    self.Sound:SetSoundLevel(60)
+    self.Sound:PlayEx(1, 100)
+end
+
+function ENT:StopCookSound()
+    if self.Sound then
+        self.Sound:Stop()
+        self.Sound = nil
+    end
+end
+
+function ENT:PowerOff()
+    self:SetCookItem(0)
+    self:SetHasCook(false)
+    self:StopCookSound()
 end
 
 function ENT:Cook(ply, index)
@@ -73,6 +96,7 @@ function ENT:Cook(ply, index)
     self:SetCookingFinishTime(CurTime() + cookitem.cookTime)
     self:SetCookItem(index)
     self:SetHasCook(true)
+    self:StartCookSound()
 end
 
 function ENT:Eat(ply)

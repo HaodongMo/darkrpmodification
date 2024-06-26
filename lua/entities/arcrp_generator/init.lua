@@ -76,7 +76,7 @@ function ENT:StartSound()
         self:EmitSound("ambient/machines/spinup.wav")
     end
     self.Sound = CreateSound(self, Sound(self.PoweredSound))
-    self.Sound:SetSoundLevel(90)
+    self.Sound:SetSoundLevel(self.SoundLevel)
     self.Sound:PlayEx(0, 100)
     self.Sound:ChangeVolume(1, 2)
 end

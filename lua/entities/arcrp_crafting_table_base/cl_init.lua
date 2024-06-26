@@ -52,7 +52,7 @@ function ENT:DrawTranslucent()
         else
             draw.SimpleText("Duration: " .. (recipe.time or 0) .. "s", "HUDNumber5", 8, 40, color_white)
         end
-        draw.SimpleText("Ingredients: ", "HUDNumber5", 8, 72, color_white)
+        draw.SimpleText("Ingredients: " .. (self:HasUpgrade("crafter_speed") and "(30% refund chance)" or ""), "HUDNumber5", 8, 72, color_white)
         local i = 0
         for k, v in pairs(recipe.ingredients) do
             draw.SimpleText("- " .. ((ArcRP_Craft.Items[k] or {}).name or k) .. " x" .. v, "HUDNumber5", 16 + math.floor(i / 3) * 200, 72 + ((i % 3) + 1) * 32, color_white)
@@ -68,6 +68,22 @@ function ENT:DrawTranslucent()
         for i, v in ipairs(self.Upgrades) do
             draw.RoundedBox(8, (i - 1) * 160, 25, 150, 40, self:HasUpgrade(i) and clr_upg_on or clr_upg_off)
             draw.SimpleText(v.name, "HUDNumber5", (i - 1) * 160 + 75, 25 + 20, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+    cam.End3D2D()
+
+    Ang:RotateAroundAxis(Ang:Forward(), -15)
+
+    cam.Start3D2D(Pos + Ang:Up() * 20 + Ang:Forward() * 1 + Ang:Right() * -10, Ang, 0.075)
+        draw.RoundedBox(8, 0, 0, 400, 200, Color(140, 0, 0, 100))
+        if self["GetIngredientID1"](self) == 0 then
+            draw.SimpleText("Empty", "HUDNumber5", 16, 16, color_white)
+        else
+            for i = 1, self.MaxIngredientTypes do
+                local ingid = self["GetIngredientID" .. i](self)
+                if ingid <= 0 then continue end
+                local amt = self["GetIngredientCount" .. i](self)
+                draw.SimpleText( ((ArcRP_Craft.Items[ArcRP_Craft.ItemsID[ingid]] or {}).name or ingid) .. " x" .. amt .. "/" .. self:GetMaxIngredientCount(), "HUDNumber5", 8, 16 + (i - 1) * 32, color_white)
+            end
         end
 
     cam.End3D2D()

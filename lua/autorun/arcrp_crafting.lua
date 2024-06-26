@@ -6,7 +6,7 @@ ArcRP_Craft.Items = {
         description = "",
         model = "models/mechanics/solid_steel/plank_4.mdl",
     },
-    ["chemical"] = {
+    ["chemicals"] = {
         name = "Chemicals",
         description = "",
         model = "models/props_junk/garbage_plasticbottle002a.mdl",
@@ -232,6 +232,52 @@ ArcRP_Craft.Recipes = {
             time = 30,
             output = {
                 "arcrp_up_generator_conn"
+            }
+        },
+        {
+            name = "Autolathe SelfCycle Upgrade",
+            ingredients = {
+                gear = 1,
+                pipe = 1,
+            },
+            time = 120,
+            output = {
+                "arcrp_up_crafter_auto"
+            }
+        },
+        {
+            name = "Autolathe BigBins Upgrade",
+            ingredients = {
+                wood = 1,
+                steel = 1,
+                pipe = 1,
+            },
+            time = 120,
+            output = {
+                "arcrp_up_crafter_auto"
+            }
+        },
+        {
+            name = "Autolathe ConrCttr Upgrade",
+            ingredients = {
+                adv_electronics = 1,
+                component = 1,
+                chemicals = 1,
+            },
+            time = 300,
+            output = {
+                "arcrp_up_crafter_eco"
+            }
+        },
+        {
+            name = "Autolathe TurboGear Upgrade",
+            ingredients = {
+                gear = 2,
+                adv_electronics = 1,
+            },
+            time = 300,
+            output = {
+                "arcrp_up_crafter_speed"
             }
         },
     },

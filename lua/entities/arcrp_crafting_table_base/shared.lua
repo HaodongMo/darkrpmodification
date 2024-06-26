@@ -10,9 +10,10 @@ ENT.Model = "models/props_wasteland/laundry_washer003.mdl"
 ENT.CraftingRecipeType = "guns"
 
 ENT.MaxIngredientTypes = 5
-ENT.MaxIngredientCount = 9
+ENT.MaxIngredientCount = 5
 
 ENT.UpgradeSpeedMult = 0.7
+ENT.UpgradeCapacity = 20
 
 ENT.Upgrades = {
     [1] = {
@@ -58,7 +59,7 @@ function ENT:contextHint()
 
         for i = 1, self.MaxIngredientTypes do
             local ingid = self["GetIngredientID" .. i](self)
-            if ingid <= 0 then break end
+            if ingid <= 0 then continue end
             local ing = ArcRP_Craft.Items[ArcRP_Craft.ItemsID[ingid]]
             local amt = self["GetIngredientCount" .. i](self)
             if i > 1 then str = str .. ", " end
@@ -80,6 +81,17 @@ function ENT:GetContextMenu(player)
     local has_ingredients = self:HasIngredients()
 
     local tbl = {}
+
+    if self:GetIsCrafting() then
+        table.insert(tbl, {
+            message = "Cancel Crafting",
+            callback = function(ent, ply)
+                if ent:GetPos():DistToSqr(ply:GetPos()) > 256 * 256 then return end
+
+                ent:Craft(ply)
+            end,
+        })
+    end
 
     if self:GetRecipeOutput() != 0 and !self:GetIsCrafting() then
         local recipename = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()].name or "??"
@@ -145,7 +157,7 @@ function ENT:GetContextMenu(player)
 end
 
 function ENT:GetMaxIngredientCount()
-    return self:HasUpgrade("crafter_capacity") and 25 or 10
+    return self:HasUpgrade("crafter_capacity") and self.UpgradeCapacity or self.MaxIngredientCount
 end
 
 function ENT:HasUpgrade(i)

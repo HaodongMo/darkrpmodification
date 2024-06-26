@@ -51,6 +51,7 @@ function ENT:Touch(entity)
         local id = ArcRP_Craft.Items[ing].ID
 
         local ind = nil
+        local firstempty = nil
         for i = 1, self.MaxIngredientTypes do
             local ingid = self["GetIngredientID" .. i](self)
             if ingid == id then
@@ -58,12 +59,14 @@ function ENT:Touch(entity)
                 ind = i
                 self["SetIngredientCount" .. i](self, self["GetIngredientCount" .. i](self) + 1)
                 break
-            elseif ingid <= 0 then
-                ind = i
-                self["SetIngredientID" .. i](self, id)
-                self["SetIngredientCount" .. i](self, 1)
-                break
+            elseif !firstempty and ingid <= 0 then
+                firstempty = i
             end
+        end
+        if ind == nil and firstempty != nil then
+            self["SetIngredientID" .. firstempty](self, id)
+            self["SetIngredientCount" .. firstempty](self, 1)
+            ind = firstempty
         end
         if ind != nil then
             entity.USED = true
@@ -172,22 +175,18 @@ function ENT:FinishCrafting()
         end
     end
 
-    -- Do not leave gaps in the slots
-    for i = 1, self.MaxIngredientTypes - 1 do
-        if self["GetIngredientID" .. i](self) <= 0 or self["GetIngredientCount" .. i](self) <= 0 then
-            for j = i + 1, self.MaxIngredientTypes do
-                if self["GetIngredientID" .. j](self) > 0 and self["GetIngredientCount" .. i](self) > 0 then
-                    self["SetIngredientID" .. i](self, self["GetIngredientID" .. j](self))
-                    self["SetIngredientCount" .. i](self, self["GetIngredientCount" .. j](self))
-                    self["SetIngredientID" .. j](self, 0)
-                    self["SetIngredientCount" .. j](self, 0)
-                    break
-                end
-            end
-        end
-    end
-
     self:CheckRecipe(true)
+    self.NextPickupTime = CurTime() + 1
+end
+
+function ENT:CancelCrafting()
+    self:SetIsCrafting(false)
+    self:SetCraftingEndTime(0)
+    if self.IdleSound then
+        self.IdleSound:FadeOut(1)
+    end
+    self:EmitSound("ambient/machines/spindown.wav", 95)
+    self:CheckRecipe()
     self.NextPickupTime = CurTime() + 1
 end
 

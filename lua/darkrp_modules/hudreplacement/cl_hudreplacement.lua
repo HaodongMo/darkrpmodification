@@ -482,7 +482,9 @@ local function hudPaint()
             end
         end
 
-        if text and text != "" then
+        text = text or ""
+
+        if text != "" then
             local font = "TacRP_HD44780A00_5x8_4"
             surface.SetFont(font)
             local w, h = surface.GetTextSize(text)
@@ -495,8 +497,7 @@ local function hudPaint()
             TacRP.DrawCorneredBox(ScrW() / 2 - w / 2, ScrH() / 2 + TacRP.SS(16), w, h)
             draw.SimpleText(text, font, ScrW() / 2, ScrH() / 2 + TacRP.SS(16) + h / 2, textcol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
-
-end
+    end
 
     local context = ArcRP_GetCustomContextMenu(ent, LocalPlayer())
     // local customUse = ArcRP_GetCustomUse(ent, LocalPlayer())

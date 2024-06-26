@@ -46,7 +46,7 @@ DarkRP.createEntity("Explosives Autolathe", {
 
 DarkRP.createEntity("The Instrument", {
     ent = "weapon_the_instrument",
-    model = "models/props_c17/tv_monitor01.mdl",
+    model = "models/props_lab/monitor01b.mdl",
     price = 125,
     max = 1,
     cmd = "buytheinstrument",
@@ -102,4 +102,12 @@ DarkRP.createEntity("Generator", {
     price = 950,
     max = 1,
     cmd = "buygen"
+})
+
+DarkRP.createEntity("Microwave", {
+    ent = "arcrp_microwave",
+    model = "models/props/cs_office/microwave.mdl",
+    price = 80,
+    max = 1,
+    cmd = "buymicrowave"
 })

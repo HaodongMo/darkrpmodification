@@ -1,0 +1,65 @@
+--[[---------------------------------------------------------------------------
+This is an example of a custom entity.
+---------------------------------------------------------------------------]]
+AddCSLuaFile("cl_init.lua")
+AddCSLuaFile("shared.lua")
+include("shared.lua")
+
+ENT.bountyAmount = 10
+// ENT.PoweredSound = "ambient/machines/lab_loop1.wav"
+
+DEFINE_BASECLASS(ENT.Base)
+
+function ENT:Initialize()
+    self:SetModel("models/props/cs_office/microwave.mdl")
+    self:PhysicsInit(SOLID_VPHYSICS)
+    self:SetMoveType(MOVETYPE_VPHYSICS)
+    self:SetSolid(SOLID_VPHYSICS)
+    local phys = self:GetPhysicsObject()
+    phys:Wake()
+
+    self.Cooking = false
+
+    self:SetHealth(100)
+
+    self:SetTrigger(true)
+end
+
+function ENT:OnTakeDamage(dmg)
+    self:SetHealth(self:Health() - dmg:GetDamage())
+    if self:Health() <= 0 then
+        self:Destruct()
+        self:Remove()
+    end
+end
+
+function ENT:Destruct()
+    local vPoint = self:GetPos()
+    local effectdata = EffectData()
+    effectdata:SetStart(vPoint)
+    effectdata:SetOrigin(vPoint)
+    effectdata:SetScale(1)
+    util.Effect("Explosion", effectdata)
+
+    if IsValid(attacker) and attacker:IsPlayer() then
+        attacker:addMoney(self.bountyAmount)
+        DarkRP.notify(attacker, 0, 3, "You received a bounty of " .. DarkRP.formatMoney(self.bountyAmount) .. "!")
+    end
+end
+
+function ENT:Think()
+
+    if self:WaterLevel() > 0 then
+        self:Destruct()
+        self:Remove()
+        return
+    end
+
+    BaseClass.Think(self)
+end
+
+function ENT:Cook(ply, index)
+end
+
+function ENT:Eat(ply)
+end

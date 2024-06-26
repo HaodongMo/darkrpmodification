@@ -590,22 +590,24 @@ hook.Add( "PlayerBindPress", "ArcRP_ContextMenu_Interact", function(ply, bind, p
 
         local context = ArcRP_GetCustomContextMenu(ent, LocalPlayer())
 
-        local contextitem = context[contextindex]
+        if context then
+            local contextitem = context[contextindex]
 
-        if contextitem then
-            if contextitem.callback then
-                net.Start("arcrp_customuse")
-                net.WriteUInt(contextindex, 8)
-                net.WriteEntity(ent)
-                net.SendToServer()
-            end
+            if contextitem then
+                if contextitem.callback then
+                    net.Start("arcrp_customuse")
+                    net.WriteUInt(contextindex, 8)
+                    net.WriteEntity(ent)
+                    net.SendToServer()
+                end
 
-            if contextitem.cl_callback then
-                contextitem.cl_callback(ent, LocalPlayer())
+                if contextitem.cl_callback then
+                    contextitem.cl_callback(ent, LocalPlayer())
+                end
+
+                block = true
             end
         end
-
-        block = true
     end
 
     return block

@@ -470,27 +470,33 @@ local function hudPaint()
         end
 
         if ent.interactionHint then
+            local interactionText
             if isfunction(ent.interactionHint) then
-                text = ent:interactionHint() or text
+                interactionText = ent:interactionHint()
             else
-                text = ent.interactionHint
+                interactionText = ent.interactionHint
             end
 
-            text = "[" .. TacRP.GetBindKey("+use") .. "] " .. text
+            if interactionText then
+                text = "[" .. TacRP.GetBindKey("+use") .. "] " .. interactionText
+            end
         end
 
-        local font = "TacRP_HD44780A00_5x8_4"
-        surface.SetFont(font)
-        local w, h = surface.GetTextSize(text)
-        w = w + TacRP.SS(8)
-        h = h + TacRP.SS(4)
+        if text and text != "" then
+            local font = "TacRP_HD44780A00_5x8_4"
+            surface.SetFont(font)
+            local w, h = surface.GetTextSize(text)
+            w = w + TacRP.SS(8)
+            h = h + TacRP.SS(4)
 
-        local textcol = Color(255, 255, 255)
-        surface.SetDrawColor(0, 0, 0, 200)
+            local textcol = Color(255, 255, 255)
+            surface.SetDrawColor(0, 0, 0, 200)
 
-        TacRP.DrawCorneredBox(ScrW() / 2 - w / 2, ScrH() / 2 + TacRP.SS(16), w, h)
-        draw.SimpleText(text, font, ScrW() / 2, ScrH() / 2 + TacRP.SS(16) + h / 2, textcol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    end
+            TacRP.DrawCorneredBox(ScrW() / 2 - w / 2, ScrH() / 2 + TacRP.SS(16), w, h)
+            draw.SimpleText(text, font, ScrW() / 2, ScrH() / 2 + TacRP.SS(16) + h / 2, textcol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+
+end
 
     local context = ArcRP_GetCustomContextMenu(ent, LocalPlayer())
     // local customUse = ArcRP_GetCustomUse(ent, LocalPlayer())

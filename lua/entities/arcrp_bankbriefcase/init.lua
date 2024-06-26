@@ -4,7 +4,12 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 function ENT:Initialize()
-    self:SetModel("models/props_c17/SuitCase001a.mdl")
+    if IsValid(ArcRP_BankRob.GetBriefcase()) then
+        print("Hey there's already a briefcase!")
+        self:Remove()
+        return
+    end
+    self:SetModel("models/weapons/tacint/props_misc/briefcase_bomb-1.mdl")
     DarkRP.ValidatedPhysicsInit(self, SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)
@@ -14,18 +19,22 @@ function ENT:Initialize()
 
     if phys:IsValid() then
         phys:Wake()
+        phys:SetMass(50)
     end
+
+    SetGlobalEntity("ArcRP_BankBriefcase", self)
 end
 
-function ENT:canUse(owner, activator)
-    return true
+function ENT:Think()
+    if self:GetTimeoutEnd() > 0 and self:GetTimeoutEnd() < CurTime() then
+        ArcRP_BankRob.EndRobbery(self, true)
+    end
 end
 
 function ENT:Use(activator, caller)
     if activator:isCP() then
-        for _, ply in ipairs(player.GetAll()) do
-            DarkRP.notify(ply, 0, 10, "The bank robbery has been ended by " .. activator:GetName() .. "!")
-            self:Remove()
-        end
+        DarkRP.notify(activator, 0, 5, "This is the stolen money from the bank. Bring this back to the pallet to return the money.")
+    else
+        DarkRP.notify(activator, 0, 5, "This is the stolen money from the bank. Bring it to a money laundry to secure the loot!")
     end
 end

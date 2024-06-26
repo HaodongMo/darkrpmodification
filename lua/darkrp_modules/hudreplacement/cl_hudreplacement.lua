@@ -541,9 +541,7 @@ end
 
 hook.Add("HUDPaint", "DarkRP_Mod_HUDPaint", hudPaint)
 
-hook.Add( "PlayerBindPress", "ArcRP_ContextMenu_Interact", function(ply, bind, pressed)
-    if !pressed then return end
-
+local function contextScroll(val)
     local tr = LocalPlayer():GetEyeTrace()
 
     local ent = tr.Entity
@@ -555,41 +553,62 @@ hook.Add( "PlayerBindPress", "ArcRP_ContextMenu_Interact", function(ply, bind, p
 
     if !context then return end
 
-    local block = nil
-
     local min = 1
     local max = #context
 
-    if bind == "invnext" then
-        if #context > 1 then
-            contextindex = contextindex + 1
-            block = true
-        end
-    elseif bind == "invprev" then
-        if #context > 1 then
-            contextindex = contextindex - 1
-            block = true
-        end
-    elseif bind == "+use" then
-        local contextitem = context[contextindex]
-
-        if contextitem then
-            if contextitem.callback then
-                net.Start("arcrp_customuse")
-                net.WriteUInt(contextindex, 8)
-                net.WriteEntity(ent)
-                net.SendToServer()
-            end
-
-            if contextitem.cl_callback then
-                contextitem.cl_callback(ent, LocalPlayer())
-            end
-        end
-
-        block = true
+    if #context > 1 then
+        contextindex = contextindex + val
     end
 
     contextindex = math.Clamp(contextindex, min, max)
+
+    return true
+end
+
+hook.Add("InputMouseApply", "ArcRP_ContextMenu_Wheel", function(cmd, x, y, ang)
+    if input.LookupBinding( "invnext" ) and input.LookupBinding( "invprev" ) then return end
+
+    contextScroll(-cmd:GetMouseWheel())
+end)
+
+hook.Add( "PlayerBindPress", "ArcRP_ContextMenu_Interact", function(ply, bind, pressed)
+    if !pressed then return end
+
+    local block = nil
+
+    if bind == "invnext" then
+        block = contextScroll(1)
+    elseif bind == "invprev" then
+        block = contextScroll(-1)
+    elseif bind == "+use" then
+        local tr = LocalPlayer():GetEyeTrace()
+
+        local ent = tr.Entity
+        if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 128 * 128 then
+            return
+        end
+
+        local context = ArcRP_GetCustomContextMenu(ent, LocalPlayer())
+
+        if context then
+            local contextitem = context[contextindex]
+
+            if contextitem then
+                if contextitem.callback then
+                    net.Start("arcrp_customuse")
+                    net.WriteUInt(contextindex, 8)
+                    net.WriteEntity(ent)
+                    net.SendToServer()
+                end
+
+                if contextitem.cl_callback then
+                    contextitem.cl_callback(ent, LocalPlayer())
+                end
+
+                block = true
+            end
+        end
+    end
 
     return block
 end)

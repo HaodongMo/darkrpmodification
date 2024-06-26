@@ -18,6 +18,9 @@ ENT.DefaultConnections = 4
 ENT.MaxCapacityUpgrades = 4
 ENT.MaxConnectionUpgrades = 4
 
+ENT.SoundLevel = 90
+ENT.Show3D2D = true
+
 function ENT:SetupDataTables()
     self:NetworkVar("Float", 0, "Fuel")
 

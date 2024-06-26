@@ -81,7 +81,7 @@ Entities
 DarkRP.disabledDefaults["entities"] = {
     ["Drug lab"]      = true,
     ["Gun lab"]       = true,
-    ["Money printer"] = false,
+    ["Money printer"] = true,
     ["Microwave"]     = true, --Hungermod only
     ["Tip Jar"]       = false,
 }

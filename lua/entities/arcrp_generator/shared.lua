@@ -12,6 +12,9 @@ ENT.IsGenerator = true
 
 ENT.ConnectedEntities = {}
 
+ENT.DefaultCapacity = 15
+ENT.DefaultConnections = 4
+
 function ENT:SetupDataTables()
     self:NetworkVar("Float", 0, "FuelExpireTime")
     self:NetworkVar("Int", 0, "ConnectedEntityAmount")
@@ -27,11 +30,11 @@ function ENT:IsPowered()
 end
 
 function ENT:GetMaxConnectedEntities()
-    return 4 + (2 * self:GetConnectionUpgrades())
+    return self.DefaultConnections + (2 * self:GetConnectionUpgrades())
 end
 
 function ENT:GetCapacity()
-    return 60 * (15 + (5 * self:GetCapacityUpgrades()))
+    return 60 * (self.DefaultCapacity + (5 * self:GetCapacityUpgrades()))
 end
 
 function ENT:GetFuelTime()

@@ -270,7 +270,7 @@ TEAM_CRAFTSMAN = DarkRP.createJob("Craftsman", {
     description =
 [[You are an expert in industrial production.
 
-Buy autolathes and provide it ingredients to craft weapons and explosives.]],
+Buy autolathes and provide it ingredients to craft weapons, explosives, and upgrades.]],
     command = "craftsman",
     salary = GAMEMODE.Config.normalsalary,
     admin = 0,

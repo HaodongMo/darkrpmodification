@@ -79,10 +79,27 @@ DarkRP.createEntity("Bail Bonds", {
     allowed = TEAM_LAWYER
 })
 
-// DarkRP.createEntity("Bitcoin Miner", {
-//     ent = "arcrp_bitcoin_miner",
-//     model = "models/props_c17/consolebox05a.mdl",
-//     price = 5000,
-//     max = 1,
-//     cmd = "buyminer"
-// })
+DarkRP.createEntity("Money Printer", {
+    ent = "arcrp_money_printer",
+    model = "models/props_c17/consolebox05a.mdl",
+    price = 600,
+    max = 4,
+    cmd = "buyprinter"
+})
+
+DarkRP.createEntity("Compact Generator", {
+    ent = "arcrp_generator_compact",
+    model = "models/props_c17/TrapPropeller_Engine.mdl",
+    price = 600,
+    max = 1,
+    cmd = "buycompactgen"
+})
+
+
+DarkRP.createEntity("Generator", {
+    ent = "arcrp_generator",
+    model = "models/props_vehicles/generatortrailer01.mdl",
+    price = 950,
+    max = 1,
+    cmd = "buygen"
+})

@@ -4,7 +4,7 @@ local donotdrop = {
 }
 
 local dodrop = {
-    "weapon_the_instrument"
+    // "weapon_the_instrument"
 }
 
 local function DoDropWeapon( victim, inflictor, attacker )

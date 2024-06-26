@@ -194,6 +194,7 @@ Admin only role. Hilariously overpowered.]],
         cploadout(ply, 100)
     end,
     giveLicense = true,
+    candemote = false,
     gunsmith = true,
     martialArtist = true,
 })

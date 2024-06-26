@@ -6,46 +6,64 @@ ArcRP_Craft.Items = {
         name = "Steel",
         description = "",
         model = "models/mechanics/solid_steel/plank_4.mdl",
+        price = 10,
+        recyclable = true
     },
     ["chemicals"] = {
         name = "Chemicals",
         description = "",
         model = "models/props_junk/garbage_plasticbottle002a.mdl",
+        price = 15,
+        recyclable = true
     },
     ["electronics"] = {
         name = "Electronics",
         description = "",
         model = "models/props_lab/reciever01d.mdl",
+        price = 40,
+        recyclable = true
     },
     ["fuel"] = {
         name = "Fuel",
         description = "",
         model = "models/props_junk/metalgascan.mdl",
+        price = 40,
+        recyclable = true
     },
     ["gear"] = {
         name = "Gear",
         description = "",
         model = "models/props_phx/gears/spur9.mdl",
+        price = 12,
+        recyclable = true
     },
     ["screw"] = {
         name = "Screws",
         description = "",
         model = "models/props_lab/box01a.mdl",
+        price = 17,
+        recyclable = true
     },
     ["paper"] = {
         name = "Paper",
         description = "",
         model = "models/props/cs_office/Paper_towels.mdl",
+        price = 6,
+        recyclable = true
     },
     ["pipe"] = {
         name = "Pipe",
         description = "",
         model = "models/props_pipes/pipe01_straight01_short.mdl",
+        price = 11,
+        recyclable = true
     },
     ["wood"] = {
         name = "Wood",
         description = "",
         model = "models/props_junk/wood_pallet001a_chunkb2.mdl",
+        price = 5,
+        recyclable = true
     },
 
     // Crafted ingredients
@@ -53,26 +71,36 @@ ArcRP_Craft.Items = {
         name = "Component",
         description = "",
         model = "models/xqm/pistontype1.mdl",
+        price = 40,
+        recyclable = true
     },
     ["adv_electronics"] = {
         name = "Advanced Electronics",
         description = "",
         model = "models/props_lab/reciever01a.mdl",
+        price = 100,
+        recyclable = true
     },
     ["explosive"] = {
         name = "Explosives",
         description = "",
         model = "models/props_junk/metal_paintcan001a.mdl",
+        price = 55,
+        recyclable = true
     },
     ["fuze"] = {
         name = "Fuze",
         description = "",
         model = "models/props_c17/TrapPropeller_Lever.mdl",
+        price = 45,
+        recyclable = true
     },
     ["receiver"] = {
         name = "Receiver",
         description = "",
         model = "models/maxofs2d/button_slider.mdl",
+        price = 55,
+        recyclable = true
     },
 
     // Drugs
@@ -161,6 +189,7 @@ local function generate_ents()
             tbl.Spawnable = true
             tbl.Category = "ArcRP - Ingredients"
             tbl.craftingIngredient = k
+            tbl.recyclable = v.recyclable
             tbl.Model = v.model
             scripted_ents.Register(tbl, "arcrp_in_" .. k)
         end
@@ -179,6 +208,7 @@ local function generate_ents()
         tbl.Category = "ArcRP - Machine Upgrades"
         tbl.isUpgrade = true
         tbl.upgradeType = k
+        tbl.recyclable = v.recyclable
         tbl.Model = v.model
         scripted_ents.Register(tbl, "arcrp_up_" .. k)
     end
@@ -418,7 +448,7 @@ ArcRP_Craft.Recipes = {
                 "arcrp_in_component"
             }
         },
-        {   name = "Explosives",
+        {   name = "Explosive Filler",
             ingredients = {
                 fuel = 1,
                 chemicals = 1,

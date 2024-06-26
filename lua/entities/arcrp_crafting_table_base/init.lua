@@ -142,7 +142,10 @@ function ENT:FinishCrafting()
     self:EmitSound("ambient/machines/spindown.wav", 95)
 
     local out = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()]
-    local entname = table.Random(out.output)
+    local entname = istable(out.output) and table.Random(out.output) or out.output
+    if out.output_rare and math.random() <= (out.rare_chance or 0.3) * (self:HasUpgrade("crafter_rarity") and 1.5 or 1) then
+        entname = istable(out.output_rare) and table.Random(out.output_rare) or out.output_rare
+    end
     local newent = ents.Create(entname)
     if !IsValid(newent) then return end
 

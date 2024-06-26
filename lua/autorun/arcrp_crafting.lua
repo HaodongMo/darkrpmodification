@@ -1,6 +1,7 @@
 ArcRP_Craft = ArcRP_Craft or {}
 
 ArcRP_Craft.Items = {
+    // Basic ingredients
     ["steel"] = {
         name = "Steel",
         description = "",
@@ -16,25 +17,10 @@ ArcRP_Craft.Items = {
         description = "",
         model = "models/props_lab/reciever01d.mdl",
     },
-    ["adv_electronics"] = {
-        name = "Advanced Electronics",
-        description = "",
-        model = "models/props_lab/reciever01a.mdl",
-    },
-    ["explosive"] = {
-        name = "Explosives",
-        description = "",
-        model = "models/props_junk/metal_paintcan001a.mdl",
-    },
     ["fuel"] = {
         name = "Fuel",
         description = "",
         model = "models/props_junk/metalgascan.mdl",
-    },
-    ["fuze"] = {
-        name = "Fuze",
-        description = "",
-        model = "models/props_c17/TrapPropeller_Lever.mdl",
     },
     ["gear"] = {
         name = "Gear",
@@ -62,10 +48,31 @@ ArcRP_Craft.Items = {
         model = "models/props_junk/wood_pallet001a_chunkb2.mdl",
     },
 
+    // Crafted ingredients
     ["component"] = {
         name = "Component",
         description = "",
         model = "models/xqm/pistontype1.mdl",
+    },
+    ["adv_electronics"] = {
+        name = "Advanced Electronics",
+        description = "",
+        model = "models/props_lab/reciever01a.mdl",
+    },
+    ["explosive"] = {
+        name = "Explosives",
+        description = "",
+        model = "models/props_junk/metal_paintcan001a.mdl",
+    },
+    ["fuze"] = {
+        name = "Fuze",
+        description = "",
+        model = "models/props_c17/TrapPropeller_Lever.mdl",
+    },
+    ["receiver"] = {
+        name = "Receiver",
+        description = "",
+        model = "models/maxofs2d/button_slider.mdl",
     },
 }
 ArcRP_Craft.ItemsID = {}
@@ -155,20 +162,18 @@ hook.Add("InitPostEntity", "ArcRP_GenerateIngredients", generate_ents)
 
 ArcRP_Craft.Recipes = {
     civil = {
-        {
-            name = "Component",
+        {   name = "Component",
             ingredients = {
                 gear = 1,
                 steel = 1,
                 screw = 1,
             },
-            time = 10,
+            time = 5,
             output = {
                 "arcrp_in_component"
             }
         },
-        {
-            name = "Advanced Electronics",
+        {   name = "Advanced Electronics",
             ingredients = {
                 electronics = 2,
                 screw = 1,
@@ -178,8 +183,59 @@ ArcRP_Craft.Recipes = {
                 "arcrp_in_adv_electronics"
             }
         },
-        {
-            name = "Printer Capacity Upgrade",
+        {   name = "Blunt Melee",
+            ingredients = {
+                wood = 2,
+                pipe = 1,
+            },
+            time = 30,
+            output = {
+                "tacrp_m_crowbar",
+                "tacrp_m_pan",
+                "tacrp_m_hamma",
+                "tacrp_m_pipe",
+                "tacrp_m_bat",
+                "tacrp_m_wrench",
+                "tacrp_m_tonfa",
+                "tacrp_m_shovel",
+            },
+            output_rare = {
+                "tacrp_m_wiimote"
+            },
+            rare_chance = 0.05,
+        },
+        {   name = "Sharp Melee",
+            ingredients = {
+                wood = 2,
+                steel = 1,
+            },
+            time = 30,
+            output = {
+                "tacrp_m_bamaslama",
+                "tacrp_m_rambo",
+                "tacrp_m_boina",
+                "tacrp_m_harpoon",
+                "tacrp_knife",
+                "tacrp_m_gerber",
+                "tacrp_m_glock",
+                "tacrp_knife2",
+                "tacrp_m_kitchen",
+                "tacrp_m_kukri",
+                "tacrp_m_bayonet",
+                "tacrp_m_machete",
+                "tacrp_m_cleaver",
+                "tacrp_m_fasthawk",
+                "tacrp_m_knife3",
+                "tacrp_m_css",
+                "tacrp_m_tracker",
+                "tacrp_m_incorp",
+            },
+            output_rare = {
+                "tacrp_m_heathawk"
+            },
+            rare_chance = 0.05,
+        },
+        {   name = "Printer Capacity Upgrade",
             ingredients = {
                 component = 1,
                 adv_electronics = 1,
@@ -190,8 +246,7 @@ ArcRP_Craft.Recipes = {
                 "arcrp_up_printer_cap"
             }
         },
-        {
-            name = "Printer Efficiency Upgrade",
+        {   name = "Printer Efficiency Upgrade",
             ingredients = {
                 adv_electronics = 2,
                 component = 1,
@@ -201,8 +256,7 @@ ArcRP_Craft.Recipes = {
                 "arcrp_up_printer_efficiency"
             }
         },
-        {
-            name = "Printer Speed Upgrade",
+        {   name = "Printer Speed Upgrade",
             ingredients = {
                 adv_electronics = 2,
                 electronics = 1,
@@ -212,8 +266,7 @@ ArcRP_Craft.Recipes = {
                 "arcrp_up_printer_speed"
             }
         },
-        {
-            name = "Generator Capacity Upgrade",
+        {   name = "Generator Capacity Upgrade",
             ingredients = {
                 component = 1,
                 steel = 2
@@ -223,8 +276,7 @@ ArcRP_Craft.Recipes = {
                 "arcrp_up_generator_cap"
             }
         },
-        {
-            name = "Generator Connections Upgrade",
+        {   name = "Generator Connections Upgrade",
             ingredients = {
                 component = 1,
                 electronics = 1,
@@ -234,8 +286,7 @@ ArcRP_Craft.Recipes = {
                 "arcrp_up_generator_conn"
             }
         },
-        {
-            name = "Autolathe SelfCycle Upgrade",
+        {   name = "Autolathe SelfCycle Upgrade",
             ingredients = {
                 gear = 1,
                 pipe = 1,
@@ -245,8 +296,7 @@ ArcRP_Craft.Recipes = {
                 "arcrp_up_crafter_auto"
             }
         },
-        {
-            name = "Autolathe BigBins Upgrade",
+        {   name = "Autolathe BigBins Upgrade",
             ingredients = {
                 wood = 1,
                 steel = 1,
@@ -257,8 +307,7 @@ ArcRP_Craft.Recipes = {
                 "arcrp_up_crafter_auto"
             }
         },
-        {
-            name = "Autolathe ConrCttr Upgrade",
+        {   name = "Autolathe ConrCttr Upgrade",
             ingredients = {
                 adv_electronics = 1,
                 component = 1,
@@ -269,8 +318,7 @@ ArcRP_Craft.Recipes = {
                 "arcrp_up_crafter_eco"
             }
         },
-        {
-            name = "Autolathe TurboGear Upgrade",
+        {   name = "Autolathe TurboGear Upgrade",
             ingredients = {
                 gear = 2,
                 adv_electronics = 1,
@@ -282,8 +330,7 @@ ArcRP_Craft.Recipes = {
         },
     },
     bombs = {
-        {
-            name = "Component",
+        {   name = "Component",
             ingredients = {
                 gear = 1,
                 steel = 1,
@@ -294,101 +341,100 @@ ArcRP_Craft.Recipes = {
                 "arcrp_in_component"
             }
         },
-        {
-            name = "Explosive Filler",
+        {   name = "Explosives",
             ingredients = {
                 fuel = 1,
                 chemicals = 1,
             },
+            time = 10,
             output = {
                 "arcrp_in_explosive"
             }
         },
-        {
-            name = "Fuze",
+        {   name = "Fuze",
             ingredients = {
                 electronics = 1,
                 wood = 1,
             },
+            time = 3,
             output = {
                 "arcrp_in_fuze"
             }
         },
-        {
-            name = "Frag Grenade",
+        {   name = "Frag Grenade",
             ingredients = {
                 fuze = 1,
                 explosive = 1,
             },
+            time = 10,
             output = {
                 "tacrp_ammo_frag"
             }
         },
-        {
-            name = "C4 Charge",
+        {   name = "C4 Charge",
             ingredients = {
                 electronics = 1,
                 explosive = 2,
             },
+            time = 20,
             output = {
                 "tacrp_ammo_c4"
             }
         },
-        {
-            name = "Breaching Charge",
+        {   name = "Breaching Charge",
             ingredients = {
                 electronics = 1,
                 explosive = 1,
             },
+            time = 10,
             output = {
                 "tacrp_ammo_charge"
             }
         },
-        {
-            name = "Flashbang",
+        {   name = "Flashbang",
             ingredients = {
                 fuze = 1,
                 paper = 1,
             },
+            time = 10,
             output = {
                 "tacrp_ammo_flashbang"
             }
         },
-        {
-            name = "Thermite Grenade",
+        {   name = "Thermite Grenade",
             ingredients = {
                 fuze = 1,
                 screw = 1,
                 fuel = 1,
             },
+            time = 10,
             output = {
                 "tacrp_ammo_fire"
             }
         },
-        {
-            name = "Smoke Grenade",
+        {   name = "Smoke Grenade",
             ingredients = {
                 fuze = 1,
                 fuel = 1,
             },
+            time = 10,
             output = {
                 "tacrp_ammo_smoke"
             }
         },
-        {
-            name = "Gas Grenade",
+        {   name = "Gas Grenade",
             ingredients = {
                 fuze = 1,
                 chemicals = 1,
             },
+            time = 10,
             output = {
                 "tacrp_ammo_gas"
             }
         },
     },
     guns = {
-        {
-            name = "Component",
+        {   name = "Component",
             ingredients = {
                 gear = 1,
                 steel = 1,
@@ -399,120 +445,192 @@ ArcRP_Craft.Recipes = {
                 "arcrp_in_component"
             }
         },
-        {
-            name = "Assault Rifle",
+        {   name = "Receiver",
             ingredients = {
-                component = 3
+                component = 1,
+                chemicals = 1,
             },
+            time = 15,
             output = {
-                "tacrp_ex_ak47",
-                "tacrp_amd65",
+                "arcrp_in_receiver"
+            }
+        },
+        {   name = "Sidearm",
+            ingredients = {
+                component = 1,
+                pipe = 1,
+            },
+            time = 15,
+            output = {
+                "tacrp_vertec",
+                "tacrp_ex_m1911",
+                "tacrp_ex_glock",
+                "tacrp_p2000",
+                "tacrp_ex_usp",
+                "tacrp_gsr1911",
+
+                "tacrp_p250",
+                "tacrp_mr96",
+                "tacrp_sphinx",
+            },
+            output_rare = {
+                "tacrp_ex_hk45c",
+                "tacrp_mtx_dual",
+                "tacrp_xd45"
+            },
+            rare_chance = 0.1,
+        },
+        {   name = "Sporter",
+            ingredients = {
+                component = 1,
+                wood = 1,
+            },
+            time = 20,
+            output = {
+                "tacrp_civ_p90",
+                "tacrp_civ_mp5",
+                "tacrp_m1",
+            },
+            output_rare = {
+                "tacrp_ar15",
+                "tacrp_civ_g36k",
+            },
+            rare_chance = 0.2,
+        },
+        {   name = "SMG",
+            ingredients = {
+                component = 2,
+                pipe = 1,
+            },
+            time = 30,
+            output = {
+                "tacrp_skorpion",
+                "tacrp_ex_mac10",
+                "tacrp_mp5",
+                "tacrp_ex_ump45",
+                "tacrp_skorpion",
+                "tacrp_ex_mac10",
+                "tacrp_mp5",
+                "tacrp_ex_ump45",
+
+                "tacrp_uzi",
+                "tacrp_mp7",
+                "tacrp_ex_mp9",
+                "tacrp_p90",
+            },
+            output_rare = {
+                "tacrp_pdw",
+                "tacrp_superv",
+            },
+            rare_chance = 0.1,
+        },
+        {   name = "Light Rifle",
+            ingredients = {
+                component = 2,
+                receiver = 1,
+            },
+            time = 60,
+            output = {
                 "tacrp_ex_m4a1",
                 "tacrp_k1a",
                 "tacrp_m4",
                 "tacrp_ak47",
                 "tacrp_g36k",
-                "tacrp_sg551",
                 "tacrp_aug",
-                "tacrp_dsa58",
-                "tacrp_hk417",
-                "tacrp_mg4"
-            }
+            },
+            output_rare = {
+                "tacrp_sg551",
+            },
+            rare_chance = 0.1,
         },
-        {
-            name = "Grenade Launcher",
+        {   name = "Heavy Rifle",
             ingredients = {
-                explosive = 1,
                 component = 1,
+                receiver = 1,
                 pipe = 1,
             },
+            time = 90,
             output = {
-                "tacrp_m320"
-            }
-        },
-        {
-            name = "Rocket Launcher",
-            ingredients = {
-                component = 2,
-                explosive = 1,
+                "tacrp_ex_ak47",
+                "tacrp_amd65",
+                "tacrp_dsa58",
             },
-            output = {
-                "tacrp_rpg7"
-            }
-        },
-        {
-            name = "Sniper Rifle",
-            ingredients = {
-                component = 2,
-                electronics = 1
+            output_rare = {
+                "tacrp_hk417",
             },
-            output = {
-                "tacrp_m14",
-                "tacrp_ex_hecate",
-                "tacrp_as50",
-                "tacrp_uratio",
-                "tacrp_spr"
-            }
+            rare_chance = 0.1,
         },
-        {
-            name = "SMG",
-            ingredients = {
-                component = 2,
-                pipe = 1,
-            },
-            output = {
-                "tacrp_skorpion",
-                "tacrp_ex_mac10",
-                "tacrp_uzi",
-                "tacrp_ex_mp9",
-                "tacrp_p90",
-                "tacrp_mp5",
-                "tacrp_mp7",
-                "tacrp_ex_ump45",
-                "tacrp_pdw",
-                "tacrp_superv"
-            }
-        },
-        {
-            name = "Shotgun",
+        { name = "Shotgun",
             ingredients = {
                 component = 2,
                 steel = 1,
             },
             output = {
-                "tacrp_m4star10",
                 "tacrp_fp6",
-                "tacrp_ks23",
                 "tacrp_bekas",
                 "tacrp_tgs12"
-            }
+            },
+            output_rare = {
+                "tacrp_m4star10",
+                "tacrp_ks23",
+            },
+            rare_chance = 0.2,
         },
-        {
-            name = "Pistol",
+        {   name = "Sniper Rifle",
             ingredients = {
+                receiver = 1,
+                component = 1,
+                electronics = 1
+            },
+            time = 90,
+            output = {
+                "tacrp_m14",
+                "tacrp_ex_hecate",
+                "tacrp_uratio",
+                "tacrp_spr",
+            },
+            output_rare = {
+                "tacrp_as50",
+            },
+            rare_chance = 0.1,
+        },
+        {   name = "Grenade Launcher",
+            ingredients = {
+                explosive = 1,
                 component = 1,
                 pipe = 1,
             },
+            time = 60,
             output = {
-                "tacrp_vertec",
-                "tacrp_ex_m1911",
-                "tacrp_ex_glock",
-                "tacrp_ex_hk45c",
-                "tacrp_p2000",
-                "tacrp_ex_usp",
-                "tacrp_gsr1911",
-                "tacrp_p250",
-                "tacrp_mr96",
-                "tacrp_mtx_dual",
-                "tacrp_sphinx",
-                "tacrp_xd45"
+                "tacrp_m320"
             }
         },
-        {
-            name = "C4 Detonator",
+        {   name = "Rocket Launcher",
+            ingredients = {
+                receiver = 1,
+                wood = 1,
+                explosive = 1,
+            },
+            time = 150,
+            output = {
+                "tacrp_rpg7"
+            }
+        },
+        {   name = "Machine Gun",
+            ingredients = {
+                receiver = 2,
+                adv_electronics = 1,
+            },
+            time = 180,
+            output = {
+                "tacrp_mg4"
+            }
+        },
+        {   name = "C4 Detonator",
             ingredients = {
                 electronics = 1,
             },
+            time = 5,
             output = {
                 "tacrp_c4_detonator"
             }

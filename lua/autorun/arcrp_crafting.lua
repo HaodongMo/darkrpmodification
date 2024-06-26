@@ -6,7 +6,7 @@ ArcRP_Craft.Items = {
         description = "",
         model = "models/mechanics/solid_steel/plank_4.mdl",
     },
-    ["chemical"] = {
+    ["chemicals"] = {
         name = "Chemicals",
         description = "",
         model = "models/props_junk/garbage_plasticbottle002a.mdl",
@@ -94,6 +94,49 @@ ArcRP_Craft.Items = {
 ArcRP_Craft.ItemsID = {}
 ArcRP_Craft.ItemsBit = 32
 
+ArcRP_Craft.Upgrades = {
+    ["generator_cap"] = {
+        name = "Generator Capacity Upgrade",
+        model = "models/props_junk/PropaneCanister001a.mdl"
+    },
+    ["generator_conn"] = {
+        name = "Generator Connection Upgrade",
+        model = "models/props_junk/PropaneCanister001a.mdl"
+    },
+    ["printer_cap"] = {
+        name = "Printer Capacity Upgrade",
+        model = "models/props/cs_office/computer_caseb_p9a.mdl"
+    },
+    ["printer_efficiency"] = {
+        name = "Printer Efficiency Upgrade",
+        model = "models/props/cs_office/computer_caseb_p3a.mdl"
+    },
+    ["printer_speed"] = {
+        name = "Printer Speed Upgrade",
+        model = "models/props/cs_office/computer_caseb_p2a.mdl"
+    },
+    ["crafter_auto"] = {
+        name = "Autolathe SelfCycle Upgrade",
+        model = "models/props_lab/partsbin01.mdl"
+    },
+    ["crafter_eco"] = {
+        name = "Autolathe ConrCttr Upgrade",
+        model = "models/props_lab/partsbin01.mdl"
+    },
+    ["crafter_speed"] = {
+        name = "Autolathe TurboGear Upgrade",
+        model = "models/props_lab/partsbin01.mdl"
+    },
+    ["crafter_capacity"] = {
+        name = "Autolathe BigBins Upgrade",
+        model = "models/props_lab/partsbin01.mdl"
+    },
+    ["crafter_rarity"] = {
+        name = "Autolathe XpertCraft Upgrade",
+        model = "models/props_lab/partsbin01.mdl"
+    },
+}
+
 local function generate_ents()
     local i = 1
     for k, v in pairs(ArcRP_Craft.Items) do
@@ -113,6 +156,22 @@ local function generate_ents()
         end
     end
     ArcRP_Craft.ItemsBit = math.min(math.ceil(math.log(i + 1, 2)), 32)
+
+    for k, v in pairs(ArcRP_Craft.Upgrades) do
+        v.ID = i
+        ArcRP_Craft.ItemsID[i] = k
+        i = i + 1
+
+        local tbl = {}
+        tbl.Base = "arcrp_upgrade"
+        tbl.PrintName = v.name
+        tbl.Spawnable = true
+        tbl.Category = "ArcRP - Machine Upgrades"
+        tbl.isUpgrade = true
+        tbl.upgradeType = k
+        tbl.Model = v.model
+        scripted_ents.Register(tbl, "arcrp_up_" .. k)
+    end
 end
 
 generate_ents()
@@ -198,6 +257,52 @@ ArcRP_Craft.Recipes = {
             time = 30,
             output = {
                 "arcrp_up_generator_conn"
+            }
+        },
+        {
+            name = "Autolathe SelfCycle Upgrade",
+            ingredients = {
+                gear = 1,
+                pipe = 1,
+            },
+            time = 120,
+            output = {
+                "arcrp_up_crafter_auto"
+            }
+        },
+        {
+            name = "Autolathe BigBins Upgrade",
+            ingredients = {
+                wood = 1,
+                steel = 1,
+                pipe = 1,
+            },
+            time = 120,
+            output = {
+                "arcrp_up_crafter_auto"
+            }
+        },
+        {
+            name = "Autolathe ConrCttr Upgrade",
+            ingredients = {
+                adv_electronics = 1,
+                component = 1,
+                chemicals = 1,
+            },
+            time = 300,
+            output = {
+                "arcrp_up_crafter_eco"
+            }
+        },
+        {
+            name = "Autolathe TurboGear Upgrade",
+            ingredients = {
+                gear = 2,
+                adv_electronics = 1,
+            },
+            time = 300,
+            output = {
+                "arcrp_up_crafter_speed"
             }
         },
     },

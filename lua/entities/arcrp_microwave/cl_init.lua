@@ -9,29 +9,33 @@ end
 function ENT:Draw()
     self:DrawModel()
 
-    // local Pos = self:GetPos()
-    // local Ang = self:GetAngles()
+    if !self:IsPowered() then return end
 
-    // surface.SetFont("HUDNumber5")
-    // local text = "Money Printer"
-    // local text2 = ""
-    // if !self:IsPowered() then
-    //     text2 = "No Power - Cannot Print"
-    // else
-    //     text2 = "Paper: " .. tostring(self:GetPaper()) .. "/" .. self:GetCapacity()
-    // end
-    // local text3 = "Stored: " .. DarkRP.formatMoney(self:GetMoney())
-    // local TextWidth = surface.GetTextSize(text)
-    // local TextWidth2 = surface.GetTextSize(text2)
-    // local TextWidth3 = surface.GetTextSize(text3)
+    local Pos = self:GetPos()
+    local Ang = self:GetAngles()
 
-    // Ang:RotateAroundAxis(Ang:Up(), 90)
+    surface.SetFont("HUDNumber5")
+    local text = ""
+    if self:GetHasCook() then
+        if self:GetCookTime() > 0 then
+            local cooktime = self:GetCookTime()
 
-    // cam.Start3D2D(Pos + Ang:Up() * 11.5, Ang, 0.11)
-    //     draw.WordBox(2, -TextWidth * 0.5, -68, text, "HUDNumber5", Color(140, 0, 0, 100), Color(255, 255, 255, 255))
-    //     draw.WordBox(2, -TextWidth2 * 0.5, -24, text2, "HUDNumber5", Color(140, 0, 0, 100), Color(255, 255, 255, 255))
-    //     draw.WordBox(2, -TextWidth3 * 0.5, 18, text3, "HUDNumber5", Color(140, 0, 0, 100), Color(255, 255, 255, 255))
-    // cam.End3D2D()
+            text = string.FormattedTime(cooktime, "%02i:%02i")
+        else
+            text = "DONE"
+        end
+    else
+        text = "00:00"
+    end
+
+    local TextWidth = surface.GetTextSize(text)
+
+    Ang:RotateAroundAxis(Ang:Forward(), -90)
+    Ang:RotateAroundAxis(Ang:Up(), 180)
+
+    cam.Start3D2D(Pos + Ang:Up() * 10.5 + Ang:Right() * -11 + Ang:Forward() * 12.25, Ang, 0.06)
+        draw.WordBox(2, -TextWidth * 0.5, -68, text, "HUDNumber5", Color(140, 0, 0, 100), Color(255, 255, 255, 255))
+    cam.End3D2D()
 end
 
 function ENT:Think()

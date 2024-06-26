@@ -93,17 +93,17 @@ function ENT:Touch(entity)
     if entity.USED then return end
     if entity.craftingIngredient == "fuel" and self:GetFuel() < self:GetCapacity() then
         entity.USED = true
-        self:SetFuel(math.min(self:GetCapacity(), self:GetFuel() + 120))
+        self:SetFuel(math.min(self:GetCapacity(), self:GetFuel() + 300))
         SafeRemoveEntity(entity)
         if self:GetSwitchedOn() then
             self:PowerOn()
         end
-    elseif entity.upgradeType == "generator_cap" then
+    elseif entity.upgradeType == "generator_cap" and self:GetCapacityUpgrades() < self.MaxCapacityUpgrades then
         entity.USED = true
         self:SetCapacityUpgrades(self:GetCapacityUpgrades() + 1)
         SafeRemoveEntity(entity)
         self:EmitSound("buttons/lever4.wav")
-    elseif entity.upgradeType == "generator_conn" then
+    elseif entity.upgradeType == "generator_conn" and self:GetConnectionUpgrades() < self.MaxConnectionUpgrades then
         entity.USED = true
         self:SetConnectionUpgrades(self:GetConnectionUpgrades() + 1)
         SafeRemoveEntity(entity)
@@ -148,7 +148,6 @@ function ENT:Think()
     end
 
     if self:GetFuel() <= 0 then
-        self:SetSwitchedOn(false)
         self:PowerOff()
     end
 

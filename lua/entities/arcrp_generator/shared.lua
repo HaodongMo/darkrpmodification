@@ -15,6 +15,9 @@ ENT.ConnectedEntities = {}
 ENT.DefaultCapacity = 15
 ENT.DefaultConnections = 4
 
+ENT.MaxCapacityUpgrades = 4
+ENT.MaxConnectionUpgrades = 4
+
 function ENT:SetupDataTables()
     self:NetworkVar("Float", 0, "Fuel")
 

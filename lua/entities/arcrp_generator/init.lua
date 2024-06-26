@@ -5,10 +5,13 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
-ENT.bountyAmount = 0
+ENT.bountyAmount = 200
+ENT.PoweredSound = "ambient/machines/machine3.wav"
+ENT.Model = "models/props_vehicles/generatortrailer01.mdl"
+ENT.PowerCablePos = Vector(-64, 0, 24)
 
 function ENT:Initialize()
-    self:SetModel("models/props_vehicles/generatortrailer01.mdl")
+    self:SetModel(self.Model)
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)
@@ -19,8 +22,6 @@ function ENT:Initialize()
     self:SetHealth(400)
 
     self:SetTrigger(true)
-
-    self.bountyAmount = 200
 end
 
 function ENT:PowerOn()
@@ -66,14 +67,14 @@ function ENT:Connect(entity)
     self:UpdatePowerState()
 
     SafeRemoveEntity(entity.PowerCable)
-    entity.PowerCable = constraint.Rope(self, entity, 0, 0, Vector(-64, 0, 24), Vector(0, 0, 0), 512, 0, 64, 2, "cable/cable2", false)
+    entity.PowerCable = constraint.Rope(self, entity, 0, 0, self.PowerCablePos, Vector(0, 0, 0), 512, 0, 64, 2, "cable/cable2", false)
 end
 
 function ENT:StartSound()
     if !self.Sound then
         self:EmitSound("ambient/machines/spinup.wav")
     end
-    self.Sound = CreateSound(self, Sound("ambient/machines/machine3.wav"))
+    self.Sound = CreateSound(self, Sound(self.PoweredSound))
     self.Sound:SetSoundLevel(60)
     self.Sound:PlayEx(0, 100)
     self.Sound:ChangeVolume(1, 2)

@@ -35,8 +35,17 @@ ENT.NextPickupTime = 0
 ENT.CraftingStoppedTime = 0
 
 function ENT:Touch(entity)
-    if self.NextPickupTime > CurTime() then return end
-    if entity.isCraftingIngredient and !entity.USED then
+    if self.NextPickupTime > CurTime() or entity.USED then return end
+
+    if self.UpgradeIndex[entity.upgradeType] and !self:HasUpgrade(entity.upgradeType) then
+        entity.USED = true
+        self:InstallUpgrade(entity.upgradeType)
+        SafeRemoveEntity(entity)
+        self:EmitSound("buttons/lever4.wav")
+        return
+    end
+
+    if entity.isCraftingIngredient then
 
         local ing = entity.craftingIngredient
         local id = ArcRP_Craft.Items[ing].ID
@@ -45,7 +54,7 @@ function ENT:Touch(entity)
         for i = 1, self.MaxIngredientTypes do
             local ingid = self["GetIngredientID" .. i](self)
             if ingid == id then
-                if self.MaxIngredientCount <= self["GetIngredientCount" .. i](self) then return end
+                if self:GetMaxIngredientCount() <= self["GetIngredientCount" .. i](self) then return end
                 ind = i
                 self["SetIngredientCount" .. i](self, self["GetIngredientCount" .. i](self) + 1)
                 break
@@ -65,7 +74,16 @@ function ENT:Touch(entity)
     end
 end
 
-function ENT:CheckRecipe()
+local function has_ingredients(recipe, ingredientcount)
+    for ing, amt in pairs(recipe.ingredients) do
+        if (ingredientcount[ing] or 0) < amt then
+            return false
+        end
+    end
+    return true
+end
+
+function ENT:CheckRecipe(autocraft)
     local output = 0
 
     local ingredientcount = {}
@@ -78,16 +96,25 @@ function ENT:CheckRecipe()
         ingredientcount[ing] = amt
     end
 
-    for i, recipe in ipairs(ArcRP_Craft.Recipes[self.CraftingRecipeType]) do
-        local satisfied = true
-        for ing, amt in pairs(recipe.ingredients) do
-            if (ingredientcount[ing] or 0) < amt then
-                satisfied = false
-                break
-            end
+    -- First check current recipe and don't change it if it remains valid
+    local currecipe = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()]
+    if currecipe and has_ingredients(currecipe, ingredientcount) then
+        if autocraft and IsValid(self.lastActivator) and self:IsPowered() and self:HasUpgrade("crafter_auto") then
+            self:Craft(self.lastActivator)
         end
+        return
+    end
 
-        if satisfied then
+    -- If there is a hovered recipe, check it first
+    currecipe = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetSelectedRecipeIndex()]
+    if currecipe and has_ingredients(currecipe, ingredientcount) then
+        self:SetRecipeOutput(output)
+        return
+    end
+
+    -- Check all recipes in order
+    for i, recipe in ipairs(ArcRP_Craft.Recipes[self.CraftingRecipeType]) do
+        if has_ingredients(recipe, ingredientcount) then
             output = i
             break
         end
@@ -129,7 +156,16 @@ function ENT:FinishCrafting()
         local ing = ArcRP_Craft.ItemsID[self["GetIngredientID" .. i](self)]
         -- print(self["GetIngredientID" .. i](self), self["GetIngredientCount" .. i](self))
         if !out.ingredients[ing] then continue end
-        local newamt = self["GetIngredientCount" .. i](self) - out.ingredients[ing]
+
+        -- Chance to not consume ingredient
+        local take = out.ingredients[ing]
+        if self:HasUpgrade("crafter_eco") then
+            for j = 1, out.ingredients[ing] do
+                if math.random() <= 0.3 then take = take - 1 end
+            end
+        end
+
+        local newamt = self["GetIngredientCount" .. i](self) - take
         self["SetIngredientCount" .. i](self, newamt)
         if newamt <= 0 then
             self["SetIngredientID" .. i](self, 0)
@@ -151,8 +187,7 @@ function ENT:FinishCrafting()
         end
     end
 
-
-    self:CheckRecipe()
+    self:CheckRecipe(true)
     self.NextPickupTime = CurTime() + 1
 end
 
@@ -179,12 +214,16 @@ function ENT:Craft(activator)
         return
     end
 
+    self.lastActivator = activator
+
     local out = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()]
-    if (out.time or 0) == 0 then
+    local craftTime = (out.time or 0) * (self:HasUpgrade("crafter_speed") and self.UpgradeSpeedMult or 1)
+
+    if craftTime == 0 then
         self:FinishCrafting()
     else
         self:SetIsCrafting(true)
-        self:SetCraftingEndTime(CurTime() + out.time)
+        self:SetCraftingEndTime(CurTime() + craftTime)
         if !self.IdleSound then
             self.IdleSound = CreateSound(self, "ambient/machines/spin_loop.wav")
             self.IdleSound:SetSoundLevel(95)
@@ -198,7 +237,9 @@ function ENT:PauseCrafting()
         self.IdleSound:FadeOut(1)
     end
 
-    self:SetCraftingEndTime(math.huge)
+    if self:GetCraftingEndTime() > 0 then
+        self:SetCraftingEndTime(-(self:GetCraftingEndTime() - CurTime()))
+    end
 end
 
 function ENT:ResumeCrafting()
@@ -208,8 +249,9 @@ function ENT:ResumeCrafting()
     end
     self.IdleSound:Play()
 
-    local out = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()]
-    self:SetCraftingEndTime(CurTime() + out.time)
+    if self:GetCraftingTime() < 0 then
+        self:SetCraftingEndTime(CurTime() + -self:GetCraftingEndTime())
+    end
 end
 
 function ENT:EjectIngredients()
@@ -245,7 +287,7 @@ function ENT:EjectIngredients()
 end
 
 function ENT:Think()
-    if self:IsPowered() and self:GetIsCrafting() and self:GetCraftingEndTime() <= CurTime() then
+    if self:IsPowered() and self:GetIsCrafting() and self:GetCraftingEndTime() > 0 and self:GetCraftingEndTime() <= CurTime() then
         self:FinishCrafting()
     end
 

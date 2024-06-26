@@ -47,6 +47,8 @@ function ENT:Destruct()
     end
 end
 
+ENT.NextCookThinkTime = 0
+
 function ENT:Think()
 
     if self:WaterLevel() > 0 then
@@ -55,8 +57,13 @@ function ENT:Think()
         return
     end
 
-    if self:GetCookingFinishTime() < CurTime() then
-        self:StopCookSound()
+    if self:IsPowered() and self:GetHasCook() and self.NextCookThinkTime <= CurTime() then
+        self:SetCookTime(self:GetCookTime() - 1)
+        if self:GetCookTime() <= 0 then
+            self:StopCookSound()
+            self:CookDone()
+        end
+        self.NextCookThinkTime = CurTime() + 1
     end
 
     BaseClass.Think(self)
@@ -75,10 +82,18 @@ function ENT:StopCookSound()
     end
 end
 
+function ENT:PowerOn()
+    if self:GetHasCook() then
+        self:StartCookSound()
+    end
+end
+
 function ENT:PowerOff()
-    self:SetCookItem(0)
-    self:SetHasCook(false)
     self:StopCookSound()
+end
+
+function ENT:CookDone()
+    self:EmitSound("garrysmod/content_downloaded.wav") -- Need to replace this with BEEP. BEEP. BEEP
 end
 
 function ENT:Cook(ply, index)
@@ -93,7 +108,7 @@ function ENT:Cook(ply, index)
 
     DarkRP.notify(ply, 0, 3, "You bought " .. cookitem.name .. " and started cooking it.")
     ply:addMoney(-cookitem.price)
-    self:SetCookingFinishTime(CurTime() + cookitem.cookTime)
+    self:SetCookTime(cookitem.cookTime)
     self:SetCookItem(index)
     self:SetHasCook(true)
     self:StartCookSound()
@@ -101,7 +116,7 @@ end
 
 function ENT:Eat(ply)
     if !self:GetHasCook() then return end
-    if self:GetCookingFinishTime() > CurTime() then return end
+    if self:GetCookTime() > 0 then return end
     if self:GetCookItem() == 0 then return end
 
     local cookitem = self.CookItems[self:GetCookItem()]

@@ -31,16 +31,22 @@ ENT.CookItems = {
 
 function ENT:SetupOtherDataTables()
     self:NetworkVar("Int", 0, "CookItem")
-    self:NetworkVar("Float", 0, "CookingFinishTime")
+    self:NetworkVar("Int", 1, "CookTime")
     self:NetworkVar("Bool", 0, "HasCook")
 end
 
 function ENT:contextHint()
     if self:GetHasCook() then
-        if self:GetCookingFinishTime() > CurTime() then
-            local cooktime = self:GetCookingFinishTime() - CurTime()
+        if self:GetCookTime() > 0 then
+            local cooktime = self:GetCookTime()
 
-            return string.FormattedTime(cooktime, "%02i:%02i")
+            local str = string.FormattedTime(cooktime, "%02i:%02i")
+
+            if !self:IsPowered() then
+                str = "NO POWER (" .. str .. " LEFT)"
+            end
+
+            return str
         else
             local item = self.CookItems[self:GetCookItem()]
 
@@ -66,7 +72,7 @@ function ENT:GetContextMenu(player)
                 })
             end
         end
-    elseif self:GetCookingFinishTime() < CurTime() then
+    elseif self:GetCookTime() <= 0 then
         local cookitem = self.CookItems[self:GetCookItem()]
         table.insert(tbl, {
             message = "Eat " .. cookitem.name,

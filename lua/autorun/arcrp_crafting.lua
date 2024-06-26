@@ -189,6 +189,7 @@ local function generate_ents()
             tbl.Spawnable = true
             tbl.Category = "ArcRP - Ingredients"
             tbl.craftingIngredient = k
+            tbl.recyclable = v.recyclable
             tbl.Model = v.model
             scripted_ents.Register(tbl, "arcrp_in_" .. k)
         end

@@ -568,8 +568,6 @@ end
 hook.Add("InputMouseApply", "ArcRP_ContextMenu_Wheel", function(cmd, x, y, ang)
     if input.LookupBinding( "invnext" ) and input.LookupBinding( "invprev" ) then return end
 
-    print(cmd:GetMouseWheel())
-
     contextScroll(-cmd:GetMouseWheel())
 end)
 

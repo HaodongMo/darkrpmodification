@@ -3,7 +3,6 @@ AddCSLuaFile()
 ENT.Type 			= "anim"
 ENT.Base 			= "base_anim"
 ENT.PrintName		= "Upgrade"
-ENT.Category = "ArcRP Upgrades"
 
 ENT.isUpgrade = true
 ENT.upgradeType = ""

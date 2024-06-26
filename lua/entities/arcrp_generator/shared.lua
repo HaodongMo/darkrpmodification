@@ -4,6 +4,7 @@ This is an example of a custom entity.
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
 ENT.PrintName = "Power Generator"
+ENT.Category = "ArcRP - Machines"
 ENT.Author = "arctic arc9"
 ENT.Spawnable = true
 ENT.AdminSpawnable = false

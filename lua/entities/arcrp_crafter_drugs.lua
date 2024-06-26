@@ -3,6 +3,7 @@ AddCSLuaFile()
 ENT.Type = "anim"
 ENT.Base = "arcrp_crafting_table_base"
 ENT.PrintName = "Drug Lab"
+ENT.Category = "ArcRP - Machines"
 ENT.Author = "Arctic"
 ENT.Spawnable = true
 

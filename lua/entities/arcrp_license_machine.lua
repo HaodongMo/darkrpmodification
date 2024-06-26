@@ -3,6 +3,7 @@ AddCSLuaFile()
 ENT.Type 			= "anim"
 ENT.Base 			= "base_anim"
 ENT.PrintName		= "Gun License Machine"
+ENT.Category = "ArcRP - World"
 
 ENT.Spawnable = true
 

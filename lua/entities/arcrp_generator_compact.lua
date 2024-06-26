@@ -3,6 +3,7 @@ AddCSLuaFile()
 ENT.Type 			= "anim"
 ENT.Base 			= "arcrp_generator"
 ENT.PrintName		= "Compact Generator"
+ENT.Category = "ArcRP - Machines"
 ENT.Spawnable = true
 
 ENT.Model = "models/props_c17/TrapPropeller_Engine.mdl"

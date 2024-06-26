@@ -1,6 +1,7 @@
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
 ENT.PrintName = "Money Laundry"
+ENT.Category = "ArcRP - World"
 ENT.Author = "Arctic"
 ENT.Spawnable = true
 

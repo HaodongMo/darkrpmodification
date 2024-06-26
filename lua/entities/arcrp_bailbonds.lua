@@ -3,6 +3,8 @@ AddCSLuaFile()
 ENT.Type 			= "anim"
 ENT.Base 			= "base_anim"
 ENT.PrintName		= "Bail Bonds"
+ENT.Category = "ArcRP - Items"
+
 ENT.Spawnable = true
 
 ENT.Model = "models/props_lab/clipboard.mdl"

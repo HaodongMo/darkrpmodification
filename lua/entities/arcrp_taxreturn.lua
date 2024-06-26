@@ -3,6 +3,8 @@ AddCSLuaFile()
 ENT.Type 			= "anim"
 ENT.Base 			= "base_anim"
 ENT.PrintName		= "Tax Return Forms"
+ENT.Spawnable = true
+ENT.Category = "ArcRP - Items"
 
 ENT.Model = "models/props_lab/clipboard.mdl"
 

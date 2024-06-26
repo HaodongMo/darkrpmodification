@@ -1,6 +1,7 @@
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
 ENT.PrintName = "Bank Money Pallet"
+ENT.Category = "ArcRP - World"
 ENT.Author = "Arctic"
 ENT.Spawnable = true
 

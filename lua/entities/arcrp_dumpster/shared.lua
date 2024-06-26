@@ -2,6 +2,7 @@ ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
 ENT.PrintName = "Dumpster"
 ENT.Author = "Arctic"
+ENT.Category = "ArcRP - World"
 ENT.Spawnable = true
 
 ENT.RenderGroup = RENDERGROUP_OPAQUE

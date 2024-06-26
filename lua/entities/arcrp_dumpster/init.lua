@@ -41,84 +41,28 @@ ENT.ScavengeLoot_Guns = {
     "tacrp_m1"
 }
 ENT.ScavengeLoot_Melees = {
-    "tacrp_m_bamaslama",
-    "tacrp_m_bat",
-    "tacrp_m_bayonet",
-    "tacrp_m_boina",
     "tacrp_m_cleaver",
-    "tacrp_m_crowbar",
-    "tacrp_m_css",
-    "tacrp_m_fasthawk",
-    "tacrp_m_gerber",
-    "tacrp_m_glock",
     "tacrp_m_hamma",
-    "tacrp_m_harpoon",
-    "tacrp_m_incorp",
     "tacrp_m_kitchen",
-    "tacrp_m_knife3",
-    "tacrp_m_kukri",
-    "tacrp_m_machete",
-    "tacrp_m_pan",
     "tacrp_m_pipe",
-    "tacrp_m_rambo",
-    "tacrp_m_shovel",
-    "tacrp_m_tonfa",
-    "tacrp_m_tracker",
     "tacrp_m_wrench",
-    "tacrp_m_bamaslama",
-    "tacrp_m_bat",
-    "tacrp_m_bayonet",
-    "tacrp_m_boina",
-    "tacrp_m_cleaver",
-    "tacrp_m_crowbar",
-    "tacrp_m_css",
-    "tacrp_m_fasthawk",
-    "tacrp_m_gerber",
-    "tacrp_m_glock",
-    "tacrp_m_hamma",
-    "tacrp_m_harpoon",
-    "tacrp_m_incorp",
-    "tacrp_m_kitchen",
-    "tacrp_m_knife3",
-    "tacrp_m_kukri",
-    "tacrp_m_machete",
-    "tacrp_m_pan",
-    "tacrp_m_pipe",
-    "tacrp_m_rambo",
-    "tacrp_m_shovel",
-    "tacrp_m_tonfa",
-    "tacrp_m_tracker",
-    "tacrp_m_wrench",
-
-    // rare
-    "tacrp_m_heathawk",
-    "tacrp_m_wiimote",
+    "tacrp_knife",
 }
 ENT.ScavengeLoot_Items = {
-    "tacrp_ammo_flashbang",
-    "tacrp_ammo_flashbang",
-    "tacrp_ammo_flashbang",
-    "tacrp_ammo_smoke",
-    "tacrp_ammo_smoke",
-    "tacrp_ammo_smoke",
-    "tacrp_ammo_gas",
-    "tacrp_ammo_gas",
-    "tacrp_ammo_heal",
     "arcrp_drug_beer",
     "arcrp_drug_beer",
     "arcrp_drug_beer",
-    "arcrp_in_component",
-    "arcrp_in_electronics",
-    "arcrp_in_adv_electronics",
-    "arcrp_in_steel",
+    "arcrp_drug_beer",
+    "arcrp_drug_beer",
+    "arcrp_in_wood",
+    "arcrp_in_wood",
+    "arcrp_in_wood",
+    "arcrp_in_paper",
+    "arcrp_in_paper",
+    "arcrp_in_paper",
     "arcrp_in_chemicals",
     "arcrp_in_fuel",
-    "arcrp_in_fuze",
-    "arcrp_in_gear",
-    "arcrp_in_screws",
-    "arcrp_in_paper",
-    "arcrp_in_pipe",
-    "arcrp_in_wood",
+    "arcrp_in_steel",
 }
 
 ENT.ScavengeLoot_LiveGrenades = {
@@ -220,16 +164,13 @@ function ENT:Scavenge(activator, caller)
 
         local roll = math.random(1, 100)
 
-        if roll <= 60 then
+        // Weapon
+        if roll <= 7 then
             // roll random melee
             local randowep = table.Random(self.ScavengeLoot_Melees)
-
-            if roll <= 3 then
+            if roll <= 2 then
                 // roll random gun
                 randowep = table.Random(self.ScavengeLoot_Guns)
-            elseif roll <= 45 then
-                // item
-                randowep = table.Random(self.ScavengeLoot_Items)
             end
 
             local newwep = ents.Create(randowep)
@@ -254,14 +195,22 @@ function ENT:Scavenge(activator, caller)
             newwep:Spawn()
 
             DarkRP.notify(activator, 0, 5, "You found " .. descriptors[math.random(1, #descriptors)] .. " " .. newwep.PrintName .. "!")
-        elseif roll <= 70 then
-            local amount = math.ceil(math.random(5, 30))
+        elseif roll <= 12 then
+            local amount = math.ceil(math.random(1, 15))
             activator:addMoney(amount)
             DarkRP.notify(activator, 0, 5, "You found " .. DarkRP.formatMoney(amount) .. "!")
-        elseif roll <= 95 then
-            local amount = math.ceil(math.random(1, 5))
-            activator:addMoney(amount)
-            DarkRP.notify(activator, 0, 5, "You found " .. DarkRP.formatMoney(amount) .. ".")
+        elseif roll <= 50 then
+            local newwep = ents.Create(table.Random(self.ScavengeLoot_Items))
+            if !IsValid(newwep) then print("Invalid entity: " .. randowep) return end
+            local newpos = self:GetPos()
+            newpos = newpos + self:GetForward() * self.SpawnOffset.x
+            newpos = newpos + self:GetRight() * self.SpawnOffset.y
+            newpos = newpos + self:GetUp() * self.SpawnOffset.z
+            newwep:SetPos(newpos)
+            newwep.nodupe = true
+            newwep.spawnedBy = activator
+            newwep:Spawn()
+            DarkRP.notify(activator, 0, 5, "You found some junk.")
         elseif roll == 100 then
             -- hot potato
             local newwep = ents.Create(table.Random(self.ScavengeLoot_LiveGrenades))

@@ -148,6 +148,7 @@ function ENT:Think()
     end
 
     if self:GetFuel() <= 0 then
+        self:SetSwitchedOn(false)
         self:PowerOff()
     end
 

@@ -1,7 +1,7 @@
 AddCSLuaFile()
 ENT.Type = "anim"
 ENT.Base = "arcrp_drug_base"
-ENT.PrintName = "Beer"
+ENT.PrintName = "Bottle of Beer"
 ENT.Author = "Arctic"
 ENT.Spawnable = true
 ENT.Category = "ArcRP - Drugs"

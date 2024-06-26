@@ -32,6 +32,8 @@ SWEP.BounceWeaponIcon = false
 SWEP.m_bPlayPickupSound = false
 SWEP.HitDistance = 60
 
+SWEP.DoNotDrop = true
+
 function SWEP:SetupDataTables()
     self:NetworkVar("Bool", 0, "Dragging")
 end

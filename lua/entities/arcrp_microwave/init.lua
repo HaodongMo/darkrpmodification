@@ -92,8 +92,14 @@ function ENT:PowerOff()
     self:StopCookSound()
 end
 
+ENT.NumBeeps = 0
+
 function ENT:CookDone()
-    self:EmitSound("garrysmod/content_downloaded.wav") -- Need to replace this with BEEP. BEEP. BEEP
+    if self.NumBeeps >= 3 then return end
+
+    self:EmitSound("buttons/blip1.wav", 75, 120)
+
+    self.NumBeeps = self.NumBeeps + 1
 end
 
 function ENT:Cook(ply, index)
@@ -112,6 +118,7 @@ function ENT:Cook(ply, index)
     self:SetCookItem(index)
     self:SetHasCook(true)
     self:StartCookSound()
+    self.NumBeeps = 0
 end
 
 function ENT:Eat(ply)

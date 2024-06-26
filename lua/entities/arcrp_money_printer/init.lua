@@ -35,6 +35,18 @@ function ENT:Touch(entity)
         self:SetPaper(self:GetCapacity())
         SafeRemoveEntity(entity)
         self:UpdatePowerState()
+    elseif entity.upgradeType == "printer_capacity" then
+        self:SetCapacityUpgrades(self:GetCapacityUpgrades() + 1)
+        SafeRemoveEntity(entity)
+        self:EmitSound("buttons/button6.wav")
+    elseif entity.upgradeType == "printer_efficiency" then
+        self:SetEfficiencyUpgrades(self:GetEfficiencyUpgrades() + 1)
+        SafeRemoveEntity(entity)
+        self:EmitSound("buttons/button6.wav")
+    elseif entity.upgradeType == "printer_speed" then
+        self:SetSpeedUpgrades(self:GetSpeedUpgrades() + 1)
+        SafeRemoveEntity(entity)
+        self:EmitSound("buttons/button6.wav")
     end
 end
 
@@ -67,7 +79,7 @@ function ENT:CreateMoneybag()
     if !self:IsPowered() then self:UpdatePowerState() return end
     if self:GetPaper() <= 0 then self:UpdatePowerState() return end
 
-    local amount = 100
+    local amount = self:GetPrintAmount()
 
     // DarkRP.createMoneyBag(Vector(MoneyPos.x + 15, MoneyPos.y, MoneyPos.z + 15), amount)
     self:SetMoney(self:GetMoney() + amount)

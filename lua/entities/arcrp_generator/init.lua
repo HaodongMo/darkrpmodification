@@ -93,6 +93,14 @@ function ENT:Touch(entity)
         SafeRemoveEntity(entity)
 
         self:PowerOn()
+    elseif entity.upgradeType == "generator_cap" then
+        self:SetCapacityUpgrades(self:GetCapacityUpgrades() + 1)
+        SafeRemoveEntity(entity)
+        self:EmitSound("buttons/lever4.wav")
+    elseif entity.upgradeType == "generator_conn" then
+        self:SetConnectionUpgrades(self:GetConnectionUpgrades() + 1)
+        SafeRemoveEntity(entity)
+        self:EmitSound("buttons/button6.wav")
     end
 end
 

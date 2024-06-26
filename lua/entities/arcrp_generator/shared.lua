@@ -9,7 +9,6 @@ ENT.Spawnable = true
 ENT.AdminSpawnable = false
 
 ENT.IsGenerator = true
-ENT.MaxConnectedEntities = 4
 
 ENT.ConnectedEntities = {}
 
@@ -17,6 +16,7 @@ function ENT:SetupDataTables()
     self:NetworkVar("Float", 0, "FuelExpireTime")
     self:NetworkVar("Int", 0, "ConnectedEntityAmount")
     self:NetworkVar("Int", 1, "CapacityUpgrades")
+    self:NetworkVar("Int", 2, "ConnectionUpgrades")
     self:NetworkVar("Entity", 0, "owning_ent")
 
     self:SetFuelExpireTime(0)
@@ -26,8 +26,12 @@ function ENT:IsPowered()
     return self:GetFuelExpireTime() > CurTime()
 end
 
+function ENT:GetMaxConnectedEntities()
+    return 4 + (2 * self:GetConnectionUpgrades())
+end
+
 function ENT:GetCapacity()
-    return 60 * 15
+    return 60 * (15 + (5 * self:GetCapacityUpgrades()))
 end
 
 function ENT:GetFuelTime()
@@ -38,7 +42,7 @@ function ENT:contextHint()
     local fueltime = self:GetFuelTime()
     local maxfueltime = self:GetCapacity()
 
-    return "FUEL " .. string.FormattedTime( fueltime, "%02i:%02i" ) .. "/" .. string.FormattedTime( maxfueltime, "%02i:%02i" ) .. " | " .. tostring(self:GetConnectedEntityAmount()) .. "/" .. self.MaxConnectedEntities .. " CONN" 
+    return "FUEL " .. string.FormattedTime( fueltime, "%02i:%02i" ) .. "/" .. string.FormattedTime( maxfueltime, "%02i:%02i" ) .. " | " .. tostring(self:GetConnectedEntityAmount()) .. "/" .. self:GetMaxConnectedEntities() .. " CONN" 
 end
 
 

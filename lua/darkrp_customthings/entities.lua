@@ -26,6 +26,15 @@ DarkRP.createEntity("Weapon Autolathe", {
     allowed = {TEAM_GUNSMITH, TEAM_CRAFTSMAN}
 })
 
+DarkRP.createEntity("Civilian Autolathe", {
+    ent = "arcrp_crafter_civil",
+    model = "models/props_wasteland/laundry_washer003.mdl",
+    price = 500,
+    max = 1,
+    cmd = "buycivilianlab",
+    allowed = TEAM_CRAFTSMAN
+})
+
 DarkRP.createEntity("Explosives Autolathe", {
     ent = "arcrp_crafter_bombs",
     model = "models/props_wasteland/laundry_washer003.mdl",

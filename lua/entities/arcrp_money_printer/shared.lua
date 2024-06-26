@@ -20,15 +20,15 @@ function ENT:SetupOtherDataTables()
 end
 
 function ENT:GetPrintInterval()
-    return 120
+    return 120 * math.pow(0.8, self:GetSpeedUpgrades())
 end
 
 function ENT:GetPrintAmount()
-    return 200
+    return 100 + (50 * self:GetEfficiencyUpgrades())
 end
 
 function ENT:GetCapacity()
-    return 15
+    return 15 + (10 * self:GetCapacityUpgrades())
 end
 
 function ENT:contextHint()

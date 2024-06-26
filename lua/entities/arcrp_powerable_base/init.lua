@@ -49,7 +49,7 @@ function ENT:ConnectPower()
 
     for i, ent in ipairs(ents.FindInSphere(self:GetPos(), 256)) do
         if ent.IsGenerator then
-            if ent:GetConnectedEntityAmount() >= ent.MaxConnectedEntities then continue end
+            if ent:GetConnectedEntityAmount() >= ent:GetMaxConnectedEntities() then continue end
             if !best_generator then
                 best_generator = ent
                 best_generator_dist = ent:GetPos():Distance(self:GetPos())

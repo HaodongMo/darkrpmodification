@@ -90,7 +90,7 @@ end
 
 function ENT:Touch(entity)
     if entity.craftingIngredient == "fuel" then
-        self:SetFuelExpireTime(CurTime() + math.min(self:GetFuelTime() + (60 * 10), self:GetCapacity()))
+        self:SetFuelExpireTime(CurTime() + math.min(self:GetFuelTime() + 120, self:GetCapacity()))
         SafeRemoveEntity(entity)
 
         self:PowerOn()

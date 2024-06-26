@@ -15,9 +15,12 @@ function ENT:DrawTranslucent()
 
     surface.SetFont("HUDNumber5")
     local text = self.PrintName
-    if self:GetIsCrafting() then
+    if self:GetIsCrafting() and self:IsPowered() then
         local recipename = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()].name or "??"
         text = recipename .. " - " .. math.ceil(self:GetCraftingEndTime() - CurTime()) .. "s"
+    end
+    if !self:IsPowered() then
+        text2 = "No Power - Cannot Craft"
     end
     local TextWidth = surface.GetTextSize(text)
     local TextWidth2 = surface.GetTextSize(text2)

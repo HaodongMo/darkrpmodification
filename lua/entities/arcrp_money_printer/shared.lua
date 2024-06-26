@@ -2,29 +2,21 @@
 This is an example of a custom entity.
 ---------------------------------------------------------------------------]]
 ENT.Type = "anim"
-ENT.Base = "base_gmodentity"
+ENT.Base = "arcrp_powerable_base"
 ENT.PrintName = "Money Printer"
 ENT.Author = "arctic arc9"
 ENT.Spawnable = true
 ENT.AdminSpawnable = false
 
-function ENT:SetupDataTables()
+function ENT:SetupOtherDataTables()
     self:NetworkVar("Int", 0, "Paper")
     self:NetworkVar("Int", 1, "CapacityUpgrades")
     self:NetworkVar("Int", 2, "SpeedUpgrades")
     self:NetworkVar("Int", 3, "EfficiencyUpgrades")
     self:NetworkVar("Int", 4, "Money")
-    self:NetworkVar("Entity", 0, "owning_ent")
-    self:NetworkVar("Entity", 1, "Generator")
 
     self:SetPaper(self:GetCapacity())
     self:SetMoney(0)
-end
-
-function ENT:IsPowered()
-    if !IsValid(self:GetGenerator()) then return false end
-
-    return self:GetGenerator():IsPowered()
 end
 
 function ENT:GetPrintInterval()

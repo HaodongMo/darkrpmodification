@@ -26,33 +26,44 @@ end
 function ENT:PowerOn()
     self:StartSound()
 
-    for i, ent in ipairs(self.ConnectedEntities) do
-        ent:PowerOn()
+    self:UpdatePowerState()
+
+    for i, ent in pairs(self.ConnectedEntities) do
+        ent:UpdatePowerState()
     end
 end
 
 function ENT:PowerOff()
     self:SoundStop()
 
-    for i, ent in ipairs(self.ConnectedEntities) do
-        ent:PowerOff()
+    self:UpdatePowerState()
+
+    for i, ent in pairs(self.ConnectedEntities) do
+        ent:UpdatePowerState()
     end
 end
 
-function ENT:UpdateConnections()
+function ENT:UpdatePowerState()
     self:SetConnectedEntityAmount(#self.ConnectedEntities)
 end
 
 function ENT:Disconnect(entity)
     table.RemoveByValue(self.ConnectedEntities, entity)
-    self:UpdateConnections()
+    self:UpdatePowerState()
 
     SafeRemoveEntity(entity.PowerCable)
 end
 
+function ENT:DisconnectAll()
+    for _, ent in pairs(self.ConnectedEntities) do
+        ent:Disconnect(self)
+        self:Disconnect(ent)
+    end
+end
+
 function ENT:Connect(entity)
     table.insert(self.ConnectedEntities, entity)
-    self:UpdateConnections()
+    self:UpdatePowerState()
 
     SafeRemoveEntity(entity.PowerCable)
     entity.PowerCable = constraint.Rope(self, entity, 0, 0, Vector(-64, 0, 24), Vector(0, 0, 0), 512, 0, 64, 2, "cable/cable2", false)

@@ -3,6 +3,8 @@ AddCSLuaFile("shared.lua")
 
 include("shared.lua")
 
+DEFINE_BASECLASS(ENT.Base)
+
 function ENT:Initialize()
     self:SetModel(self.Model)
     DarkRP.ValidatedPhysicsInit(self, SOLID_VPHYSICS)
@@ -154,6 +156,10 @@ function ENT:FinishCrafting()
 end
 
 function ENT:Craft(activator)
+    if !self:IsPowered() then
+        DarkRP.notify(activator, 1, 4, "You need power to start crafting!")
+        return
+    end
     if self:GetRecipeOutput() == 0 then return end
 
     local item_count = 0
@@ -184,6 +190,25 @@ function ENT:Craft(activator)
         end
         self.IdleSound:Play()
     end
+end
+
+function ENT:PauseCrafting()
+    if self.IdleSound then
+        self.IdleSound:FadeOut(1)
+    end
+
+    self:SetCraftingEndTime(math.huge)
+end
+
+function ENT:ResumeCrafting()
+    if !self.IdleSound then
+        self.IdleSound = CreateSound(self, "ambient/machines/spin_loop.wav")
+        self.IdleSound:SetSoundLevel(95)
+    end
+    self.IdleSound:Play()
+
+    local out = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()]
+    self:SetCraftingEndTime(CurTime() + out.time)
 end
 
 function ENT:EjectIngredients()
@@ -219,9 +244,11 @@ function ENT:EjectIngredients()
 end
 
 function ENT:Think()
-    if self:GetIsCrafting() and self:GetCraftingEndTime() <= CurTime() then
+    if self:IsPowered() and self:GetIsCrafting() and self:GetCraftingEndTime() <= CurTime() then
         self:FinishCrafting()
     end
+
+    BaseClass.Think(self)
 end
 
 
@@ -248,4 +275,18 @@ function ENT:Destruct(dmg)
     effectdata:SetScale(1)
     util.Effect(self:WaterLevel() > 1 and "WaterSurfaceExplosion" or "Explosion", effectdata)
     util.Decal("Scorch", vPoint, vPoint - Vector(0, 0, 25), self)
+end
+
+function ENT:UpdatePowerState()
+    BaseClass.UpdatePowerState(self)
+
+    if self:IsPowered() then
+        if self:GetIsCrafting() then
+            self:ResumeCrafting()
+        end
+    else
+        if self:GetIsCrafting() then
+            self:PauseCrafting()
+        end
+    end
 end

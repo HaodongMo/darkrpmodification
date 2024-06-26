@@ -9,6 +9,7 @@ ENT.Spawnable = true
 ENT.AdminSpawnable = false
 
 ENT.IsGenerator = true
+ENT.MaxConnectedEntities = 4
 
 ENT.ConnectedEntities = {}
 
@@ -37,5 +38,23 @@ function ENT:contextHint()
     local fueltime = self:GetFuelTime()
     local maxfueltime = self:GetCapacity()
 
-    return "FUEL " .. string.FormattedTime( fueltime, "%02i:%02i" ) .. "/" .. string.FormattedTime( maxfueltime, "%02i:%02i" ) .. " | " .. tostring(self:GetConnectedEntityAmount()) .. " CONN"
+    return "FUEL " .. string.FormattedTime( fueltime, "%02i:%02i" ) .. "/" .. string.FormattedTime( maxfueltime, "%02i:%02i" ) .. " | " .. tostring(self:GetConnectedEntityAmount()) .. "/" .. self.MaxConnectedEntities .. " CONN" 
+end
+
+
+function ENT:GetContextMenu(player)
+    local tbl = {}
+
+    if self:GetConnectedEntityAmount() > 0 then
+        table.insert(tbl, {
+            message = "Disconnect All",
+            callback = function(ent, ply)
+                if ent:GetPos():DistToSqr(ply:GetPos()) > 256 * 256 then return end
+
+                ent:DisconnectAll()
+            end,
+        })
+    end
+
+    return tbl
 end

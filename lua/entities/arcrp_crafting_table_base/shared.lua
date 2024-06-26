@@ -1,5 +1,5 @@
 ENT.Type = "anim"
-ENT.Base = "base_gmodentity"
+ENT.Base = "arcrp_powerable_base"
 ENT.PrintName = "Base Crafting Bench"
 ENT.Author = "Arctic"
 ENT.Spawnable = false
@@ -14,6 +14,10 @@ ENT.MaxIngredientCount = 9
 
 function ENT:contextHint()
     local has_ingredients = self:HasIngredients()
+
+    if !self:IsPowered() then
+        return "NO POWER"
+    end
 
     if self:GetIsCrafting() then
         local recipename = ArcRP_Craft.Recipes[self.CraftingRecipeType][self:GetRecipeOutput()].name or "??"
@@ -97,12 +101,19 @@ function ENT:GetContextMenu(player)
         end,
     })
 
+    table.insert(tbl,
+        {
+            message = "Reconnect Power",
+            callback = function(ent2, ply2)
+                ent2:ConnectPower()
+            end,
+        }
+    )
 
     return tbl
 end
 
-function ENT:SetupDataTables()
-    self:NetworkVar("Entity", 0, "owning_ent")
+function ENT:SetupOtherDataTables()
     self:NetworkVar("Int", 0, "RecipeOutput")
     self:NetworkVar("Int", 1, "SelectedRecipeIndex")
     self:NetworkVar("Bool", 0, "IsCrafting")

@@ -74,6 +74,32 @@ ArcRP_Craft.Items = {
         description = "",
         model = "models/maxofs2d/button_slider.mdl",
     },
+
+    // Drugs
+    ["medishot"] = {
+        name = "Medi-Shot",
+        donotgenerate = true,
+    },
+    ["adrenalin"] = {
+        name = "Adrenaline",
+        donotgenerate = true,
+    },
+    ["mutant"] = {
+        name = "Mutant",
+        donotgenerate = true,
+    },
+    ["crocodile"] = {
+        name = "Crocodile",
+        donotgenerate = true,
+    },
+    ["rebound"] = {
+        name = "Rebound",
+        donotgenerate = true,
+    },
+    ["troil"] = {
+        name = "Troil",
+        donotgenerate = true,
+    },
 }
 ArcRP_Craft.ItemsID = {}
 ArcRP_Craft.ItemsBit = 32
@@ -128,14 +154,16 @@ local function generate_ents()
         ArcRP_Craft.ItemsID[i] = k
         i = i + 1
 
-        local tbl = {}
-        tbl.Base = "arcrp_ingredient"
-        tbl.PrintName = v.name
-        tbl.Spawnable = true
-        tbl.Category = "ArcRP - Ingredients"
-        tbl.craftingIngredient = k
-        tbl.Model = v.model
-        scripted_ents.Register(tbl, "arcrp_in_" .. k)
+        if !v.donotgenerate then
+            local tbl = {}
+            tbl.Base = "arcrp_ingredient"
+            tbl.PrintName = v.name
+            tbl.Spawnable = true
+            tbl.Category = "ArcRP - Ingredients"
+            tbl.craftingIngredient = k
+            tbl.Model = v.model
+            scripted_ents.Register(tbl, "arcrp_in_" .. k)
+        end
     end
     ArcRP_Craft.ItemsBit = math.min(math.ceil(math.log(i + 1, 2)), 32)
 
@@ -327,6 +355,55 @@ ArcRP_Craft.Recipes = {
             output = {
                 "arcrp_up_crafter_speed"
             }
+        },
+    },
+    drugs = {
+        {
+            name = "Mutant",
+            ingredients = {
+                crocodile = 1,
+                adrenalin = 1,
+                chemical = 1,
+            },
+            time = 30
+        },
+        {
+            name = "Crocodile",
+            ingredients = {
+                fuel = 1,
+                medishot = 1,
+            },
+            time = 30
+        },
+        {
+            name = "Rebound",
+            ingredients = {
+                chemical = 1,
+                medishot = 1,
+            },
+            time = 30
+        },
+        {
+            name = "Adrenalin",
+            ingredients = {
+                chemical = 1,
+                paper = 1,
+            },
+            time = 30
+        },
+        {
+            name = "Medi-shot",
+            ingredients = {
+                chemical = 1,
+            },
+            time = 30
+        },
+        {
+            name = "Troil",
+            ingredients = {
+                fuel = 1,
+            },
+            time = 30
         },
     },
     bombs = {

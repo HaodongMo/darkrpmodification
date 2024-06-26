@@ -1,7 +1,8 @@
 local RealGetConVar = GetConVar
 
 local ForcedConVars = {
-    ["imde_hud"] = "0"
+    ["imde_hud"] = "0",
+    ["cl_new_impact_effects"] = "1"
 }
 
 local ProxyConVar = {

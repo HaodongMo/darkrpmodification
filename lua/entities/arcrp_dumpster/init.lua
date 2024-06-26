@@ -104,6 +104,21 @@ ENT.ScavengeLoot_Items = {
     "tacrp_ammo_gas",
     "tacrp_ammo_gas",
     "tacrp_ammo_heal",
+    "arcrp_drug_beer",
+    "arcrp_drug_beer",
+    "arcrp_drug_beer",
+    "arcrp_in_component",
+    "arcrp_in_electronics",
+    "arcrp_in_adv_electronics",
+    "arcrp_in_steel",
+    "arcrp_in_chemicals",
+    "arcrp_in_fuel",
+    "arcrp_in_fuze",
+    "arcrp_in_gear",
+    "arcrp_in_screws",
+    "arcrp_in_paper",
+    "arcrp_in_pipe",
+    "arcrp_in_wood",
 }
 
 ENT.ScavengeLoot_LiveGrenades = {
@@ -194,7 +209,7 @@ function ENT:DisposeWeapon(activator, caller)
         else
             DarkRP.notify(activator, 0, 4, "Thank you for keeping the streets clean! Your disposal item was not eligible for a cash refund.")
         end
-        
+
         self:EmitSound("doors/door_metal_thin_close2.wav", 85, math.Rand(98, 102))
     end
 end
@@ -205,14 +220,14 @@ function ENT:Scavenge(activator, caller)
 
         local roll = math.random(1, 100)
 
-        if roll <= 20 then
+        if roll <= 60 then
             // roll random melee
             local randowep = table.Random(self.ScavengeLoot_Melees)
 
             if roll <= 3 then
                 // roll random gun
                 randowep = table.Random(self.ScavengeLoot_Guns)
-            elseif roll <= 9 then
+            elseif roll <= 45 then
                 // item
                 randowep = table.Random(self.ScavengeLoot_Items)
             end
@@ -239,11 +254,11 @@ function ENT:Scavenge(activator, caller)
             newwep:Spawn()
 
             DarkRP.notify(activator, 0, 5, "You found " .. descriptors[math.random(1, #descriptors)] .. " " .. newwep.PrintName .. "!")
-        elseif roll <= 40 then
+        elseif roll <= 70 then
             local amount = math.ceil(math.random(5, 30))
             activator:addMoney(amount)
             DarkRP.notify(activator, 0, 5, "You found " .. DarkRP.formatMoney(amount) .. "!")
-        elseif roll <= 70 then
+        elseif roll <= 95 then
             local amount = math.ceil(math.random(1, 5))
             activator:addMoney(amount)
             DarkRP.notify(activator, 0, 5, "You found " .. DarkRP.formatMoney(amount) .. ".")

@@ -8,6 +8,10 @@ local clr_upg_on = Color(30, 120, 25, 255)
 function ENT:Initialize()
 end
 
+ENT.DisplayAngles = Angle(0, 90, 180)
+ENT.DisplayOffset1 = Vector(0, 16, 26)
+ENT.DisplayOffset2 = Vector(-9, -40, 22)
+
 function ENT:DrawTranslucent()
     self:DrawModel()
 
@@ -28,10 +32,11 @@ function ENT:DrawTranslucent()
     local TextWidth = surface.GetTextSize(text)
     local TextWidth2 = surface.GetTextSize(text2)
 
-    Ang:RotateAroundAxis(Ang:Up(), 180)
-    Ang:RotateAroundAxis(Ang:Forward(), 90)
+    Ang:RotateAroundAxis(Ang:Up(), self.DisplayAngles.z)
+    Ang:RotateAroundAxis(Ang:Forward(), self.DisplayAngles.y)
+    Ang:RotateAroundAxis(Ang:Right(), self.DisplayAngles.x)
 
-    cam.Start3D2D(Pos + Ang:Up() * 26 + Ang:Forward() * 16, Ang, 0.11)
+    cam.Start3D2D(Pos + Ang:Up() * self.DisplayOffset1.z + Ang:Forward() * self.DisplayOffset1.y + Ang:Right() * self.DisplayOffset1.x, Ang, 0.11)
         draw.WordBox(2, -TextWidth * 0.5, -30, text, "HUDNumber5", Color(140, 0, 0, 100), Color(255, 255, 255, 255))
         if text2 != "" then
             draw.WordBox(2, -TextWidth2 * 0.5, 8, text2, "HUDNumber5", Color(140, 0, 0, 100), Color(255, 255, 255, 255))
@@ -42,7 +47,7 @@ function ENT:DrawTranslucent()
 
     Ang:RotateAroundAxis(Ang:Forward(), -15)
 
-    cam.Start3D2D(Pos + Ang:Up() * 22 + Ang:Forward() * -40 + Ang:Right() * -9, Ang, 0.05)
+    cam.Start3D2D(Pos + Ang:Up() * self.DisplayOffset2.z + Ang:Forward() * self.DisplayOffset2.y + Ang:Right() * self.DisplayOffset2.x, Ang, 0.05)
         draw.RoundedBox(8, 0, 0, 600, 300, Color(140, 0, 0, 100))
         local recipe = ArcRP_Craft.Recipes[self.CraftingRecipeType][index]
         if !recipe then return end

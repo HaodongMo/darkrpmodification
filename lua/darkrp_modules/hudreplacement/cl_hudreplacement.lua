@@ -55,6 +55,7 @@ local col_bal = Color(255, 200, 100)
 local col_amr = Color(200, 200, 255)
 local col_hi2 = Color(255, 230, 200)
 local col_dark = Color(255, 255, 255, 20)
+local col_super = Color(255, 255, 100)
 
 local surfaceSetColor = surface.SetTextColor
 local surfaceSetFont = surface.SetFont
@@ -143,16 +144,23 @@ local function hudPaintHealth()
 
     surfaceDrawText("♥")
 
-    local hpb_can = math.ceil(hpb_segments * perc)
+    local hpb_canraw = math.ceil(hpb_segments * perc)
 
-    hpb_can = math.min(hpb_can, hpb_segments)
+    hpb_can = math.min(hpb_canraw, hpb_segments)
+
+    local overheal = hpb_canraw - hpb_can
 
     for i = 1, hpb_segments do
-        if hpb_can <= 2 then
-            surfaceSetDrawColor(col_hi)
+        if overheal >= i then
+            surfaceSetDrawColor(col_super)
         else
-            surfaceSetDrawColor(col)
+            if hpb_can <= 2 then
+                surfaceSetDrawColor(col_hi)
+            else
+                surfaceSetDrawColor(col)
+            end
         end
+
         if hpb_can >= i then
             surfaceDrawRect(hpb_x + (i * (hpb_w + TacRP.SS(1))), hpb_y, hpb_w, hpb_h)
         else

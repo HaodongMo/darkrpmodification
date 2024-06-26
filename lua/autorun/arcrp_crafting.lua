@@ -16,6 +16,11 @@ ArcRP_Craft.Items = {
         description = "",
         model = "models/props_lab/reciever01d.mdl",
     },
+    ["adv_electronics"] = {
+        name = "Advanced Electronics",
+        description = "",
+        model = "models/props_lab/reciever01a.mdl",
+    },
     ["explosive"] = {
         name = "Explosives",
         description = "",
@@ -90,6 +95,87 @@ hook.Add("InitPostEntity", "ArcRP_GenerateIngredients", generate_ents)
 
 
 ArcRP_Craft.Recipes = {
+    civil = {
+        {
+            name = "Component",
+            ingredients = {
+                gear = 1,
+                steel = 1,
+                screw = 1,
+            },
+            time = 10,
+            output = {
+                "arcrp_in_component"
+            }
+        },
+        {
+            name = "Advanced Electronics",
+            ingredients = {
+                electronics = 2,
+                screw = 1,
+            },
+            time = 10,
+            output = {
+                "arcrp_in_adv_electronics"
+            }
+        },
+        {
+            name = "Printer Capacity Upgrade",
+            ingredients = {
+                component = 1,
+                adv_electronics = 1,
+                pipe = 1
+            },
+            time = 15,
+            output = {
+                "arcrp_up_printer_cap"
+            }
+        },
+        {
+            name = "Printer Efficiency Upgrade",
+            ingredients = {
+                adv_electronics = 2,
+                component = 1,
+            },
+            time = 15,
+            output = {
+                "arcrp_up_printer_efficiency"
+            }
+        },
+        {
+            name = "Printer Speed Upgrade",
+            ingredients = {
+                adv_electronics = 2,
+                electronics = 1,
+            },
+            time = 15,
+            output = {
+                "arcrp_up_printer_speed"
+            }
+        },
+        {
+            name = "Generator Capacity Upgrade",
+            ingredients = {
+                component = 1,
+                steel = 2
+            },
+            time = 30,
+            output = {
+                "arcrp_up_generator_cap"
+            }
+        },
+        {
+            name = "Generator Connections Upgrade",
+            ingredients = {
+                component = 1,
+                electronics = 1,
+            },
+            time = 30,
+            output = {
+                "arcrp_up_generator_conn"
+            }
+        },
+    },
     bombs = {
         {
             name = "Component",

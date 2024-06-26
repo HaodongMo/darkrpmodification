@@ -47,10 +47,11 @@ function ENT:GetContextMenu(player)
 
     if self:GetConnectedEntityAmount() > 0 then
         table.insert(tbl, {
-            message = "Disconnect All",
+            message = "Disconnect",
             callback = function(ent, ply)
                 if ent:GetPos():DistToSqr(ply:GetPos()) > 256 * 256 then return end
 
+                ent:EmitSound("ambient/machines/keyboard7_clicks_enter.wav")
                 ent:DisconnectAll()
             end,
         })

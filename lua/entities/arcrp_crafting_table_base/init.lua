@@ -32,6 +32,7 @@ end
 ENT.SpawnOffset = Vector(-12, -40, 35)
 ENT.OutputForce = Vector(0, -200, 250)
 ENT.NextPickupTime = 0
+ENT.CraftingStoppedTime = 0
 
 function ENT:Touch(entity)
     if self.NextPickupTime > CurTime() then return end
@@ -277,16 +278,14 @@ function ENT:Destruct(dmg)
     util.Decal("Scorch", vPoint, vPoint - Vector(0, 0, 25), self)
 end
 
-function ENT:UpdatePowerState()
-    BaseClass.UpdatePowerState(self)
+function ENT:PowerOn()
+    if self:GetIsCrafting() then
+        self:ResumeCrafting()
+    end
+end
 
-    if self:IsPowered() then
-        if self:GetIsCrafting() then
-            self:ResumeCrafting()
-        end
-    else
-        if self:GetIsCrafting() then
-            self:PauseCrafting()
-        end
+function ENT:PowerOff()
+    if self:GetIsCrafting() then
+        self:PauseCrafting()
     end
 end

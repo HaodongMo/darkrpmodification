@@ -105,3 +105,7 @@ function ENT:TakeMoney(ply)
         self:SetMoney(0)
     end
 end
+
+function ENT:PowerOn()
+    self.LastPrintTime = CurTime()
+end

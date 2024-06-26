@@ -25,21 +25,6 @@ function ENT:SoundStop()
     end
 end
 
-function ENT:CreateMoneybag()
-    if !IsValid(self) or self:IsOnFire() then return end
-
-    if !self:IsPowered() then self:SoundStop() return end
-    if self:GetPaper() <= 0 then self:SoundStop() return end
-
-    local amount = 100
-
-    // DarkRP.createMoneyBag(Vector(MoneyPos.x + 15, MoneyPos.y, MoneyPos.z + 15), amount)
-    self:SetMoney(self:GetMoney() + amount)
-    self:SetPaper(self:GetPaper() - 1)
-
-    if self:GetPaper() <= 0 then self:SoundStop() return end
-end
-
 function ENT:Think()
     if IsValid(self:GetGenerator()) and !IsValid(self.PowerCable) then
         self:Disconnect()
@@ -104,6 +89,8 @@ function ENT:Connect(gen)
         self:GetGenerator():Connect(self)
     end
 
+    self:EmitSound("ambient/machines/keyboard7_clicks_enter.wav")
+
     self:UpdatePowerState()
 end
 
@@ -111,15 +98,24 @@ function ENT:Disconnect()
     if IsValid(self:GetGenerator()) then
         self:GetGenerator():Disconnect(self)
         self:SetGenerator(NULL)
+        self:EmitSound("ambient/machines/keyboard2_clicks.wav")
     end
 
     self:UpdatePowerState()
 end
 
+function ENT:PowerOn()
+end
+
+function ENT:PowerOff()
+end
+
 function ENT:UpdatePowerState()
     if self:IsPowered() and self:CanPowerOn() then
         self:StartSound()
+        self:PowerOn()
     else
         self:SoundStop()
+        self:PowerOff()
     end
 end

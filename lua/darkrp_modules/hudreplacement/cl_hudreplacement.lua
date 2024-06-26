@@ -479,17 +479,21 @@ local function hudPaint()
             text = "[" .. TacRP.GetBindKey("+use") .. "] " .. text
         end
 
-        local font = "TacRP_HD44780A00_5x8_4"
-        surface.SetFont(font)
-        local w, h = surface.GetTextSize(text)
-        w = w + TacRP.SS(8)
-        h = h + TacRP.SS(4)
+        text = text or ""
 
-        local textcol = Color(255, 255, 255)
-        surface.SetDrawColor(0, 0, 0, 200)
+        if text != "" then
+            local font = "TacRP_HD44780A00_5x8_4"
+            surface.SetFont(font)
+            local w, h = surface.GetTextSize(text)
+            w = w + TacRP.SS(8)
+            h = h + TacRP.SS(4)
 
-        TacRP.DrawCorneredBox(ScrW() / 2 - w / 2, ScrH() / 2 + TacRP.SS(16), w, h)
-        draw.SimpleText(text, font, ScrW() / 2, ScrH() / 2 + TacRP.SS(16) + h / 2, textcol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            local textcol = Color(255, 255, 255)
+            surface.SetDrawColor(0, 0, 0, 200)
+
+            TacRP.DrawCorneredBox(ScrW() / 2 - w / 2, ScrH() / 2 + TacRP.SS(16), w, h)
+            draw.SimpleText(text, font, ScrW() / 2, ScrH() / 2 + TacRP.SS(16) + h / 2, textcol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
     end
 
     local context = ArcRP_GetCustomContextMenu(ent, LocalPlayer())

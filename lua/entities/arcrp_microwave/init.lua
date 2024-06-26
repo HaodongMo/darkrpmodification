@@ -59,7 +59,31 @@ function ENT:Think()
 end
 
 function ENT:Cook(ply, index)
+    local cookitem = self.CookItems[index]
+
+    if !cookitem then return end
+
+    if ply:getDarkRPVar("money") < cookitem.price then
+        DarkRP.notify(ply, 1, 3, "You can't afford food? How broke are you?")
+        return
+    end
+
+    DarkRP.notify(ply, 0, 3, "You bought " .. cookitem.name .. " and started cooking it.")
+    ply:addMoney(-cookitem.price)
+    self:SetCookingFinishTime(CurTime() + cookitem.cookTime)
+    self:SetCookItem(index)
+    self:SetHasCook(true)
 end
 
 function ENT:Eat(ply)
+    if !self:GetHasCook() then return end
+    if self:GetCookingFinishTime() > CurTime() then return end
+    if self:GetCookItem() == 0 then return end
+
+    local cookitem = self.CookItems[self:GetCookItem()]
+
+    ply:SetHealth(math.min(ply:GetMaxHealth(), ply:Health() + cookitem.healAmount))
+    DarkRP.notify(ply, 0, 3, "You have eaten " .. cookitem.name .. ".")
+    self:SetHasCook(false)
+    self:SetCookItem(0)
 end

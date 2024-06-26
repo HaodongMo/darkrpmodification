@@ -12,14 +12,14 @@ ENT.CookItems = {
     {
         name = "Popcorn",
         healAmount = 10,
-        cookTime = 30,
+        cookTime = 10,
         price = 3,
     },
     {
         name = "Lasagna",
-        healAmount = 20,
-        cookTime = 60,
-        price = 10,
+        healAmount = 35,
+        cookTime = 30,
+        price = 5,
     },
     {
         name = "Frozen Meal",
@@ -66,13 +66,14 @@ function ENT:GetContextMenu(player)
                 })
             end
         end
-    elseif self:GetCookingFinishTime() > CurTime() then
-        tbl = {
-            message = "Eat",
+    elseif self:GetCookingFinishTime() < CurTime() then
+        local cookitem = self.CookItems[self:GetCookItem()]
+        table.insert(tbl, {
+            message = "Eat " .. cookitem.name,
             callback = function(ent, ply)
                 ent:Eat(ply)
             end
-        }
+        })
     end
 
     table.insert(tbl,

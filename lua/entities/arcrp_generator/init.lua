@@ -93,7 +93,7 @@ function ENT:Touch(entity)
     if entity.USED then return end
     if entity.craftingIngredient == "fuel" and self:GetFuel() < self:GetCapacity() then
         entity.USED = true
-        self:SetFuel(math.min(self:GetCapacity(), self:GetFuel() + 120))
+        self:SetFuel(math.min(self:GetCapacity(), self:GetFuel() + 600))
         SafeRemoveEntity(entity)
         if self:GetSwitchedOn() then
             self:PowerOn()

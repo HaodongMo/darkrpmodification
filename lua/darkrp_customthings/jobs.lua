@@ -37,6 +37,37 @@ local function cploadout(ply, armor)
     end
 end
 
+TEAM_CITIZEN = DarkRP.createJob("Citizen", {
+    color = Color(20, 150, 20, 255),
+    model = {
+        "models/fgut/male_01_01.mdl",
+        "models/fgut/male_02_01.mdl",
+        "models/fgut/male_03_01.mdl",
+        "models/fgut/male_04_01.mdl",
+        "models/fgut/male_05_01.mdl",
+        "models/fgut/male_06_01.mdl",
+        "models/fgut/male_07_01.mdl",
+        "models/fgut/male_08_01.mdl",
+        "models/fgut/male_09_01.mdl",
+        "models/fgut/female_01_01.mdl",
+        "models/fgut/female_02_01.mdl",
+        "models/fgut/female_03_01.mdl",
+        "models/fgut/female_04_01.mdl",
+        "models/fgut/female_06_01.mdl",
+        "models/fgut/female_07_01.mdl",
+    },
+    description = [[The Citizen is the most basic level of society you can hold besides being a hobo. You have no specific role in city life.]],
+    weapons = {},
+    command = "citizen",
+    max = 0,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    candemote = false,
+    category = "Citizens",
+})
+
 TEAM_PRESIDENT = DarkRP.createJob("President", {
     color = Color(0, 0, 255, 255),
     model = {"models/player/breen.mdl"},

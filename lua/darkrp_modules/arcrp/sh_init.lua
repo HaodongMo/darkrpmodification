@@ -1,0 +1,1 @@
+DarkRP.registerDarkRPVar("bank",         net.WriteDouble, net.ReadDouble)

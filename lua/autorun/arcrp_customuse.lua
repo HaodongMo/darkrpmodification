@@ -61,6 +61,10 @@ function ArcRP_GetCustomContextHint(ent, ply)
         end
 
         return text
+    elseif ent:GetClass() == "prop_ragdoll" then
+        local downed_ply = ent:GetNWBool("IMDE_IsRagdoll", false) and ent:GetOwner() or ent
+
+        return downed_ply:Nick() .. " | " .. downed_ply:Health() .. "HP"
     end
 end
 
@@ -142,6 +146,9 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                     local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
 
                     victim:IMDE_SetStamina(victim:IMDE_GetMaxStamina())
+                    victim:IMDE_SetBalance(0)
+                    victim:IMDE_MakeConscious()
+                    victim:ScreenFade(SCREENFADE.IN, Color(0, 0, 0, 255), 0.5, 0)
 
                     DarkRP.notify(attacker, 0, 5, "You've helped " .. victim:Nick() .. " up!")
                     DarkRP.notify(victim, 0, 5, attacker:Nick() .. " has helped you up!")

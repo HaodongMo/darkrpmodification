@@ -127,9 +127,10 @@ function ArcRP_GetCustomContextMenu(ent, ply)
 
             if ply:isCP() then
                 table.insert(tbl, {
-                    callback = function(ent2, ply2)
-                        if ply:isCP() then
-                            ent2:arrest(GAMEMODE.Config.jailtimer, ply2)
+                    callback = function(ent2, attacker)
+                        local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
+                        if attacker:isCP() then
+                            victim:arrest(GAMEMODE.Config.jailtimer, attacker)
                         end
                     end,
                     message = "Arrest"

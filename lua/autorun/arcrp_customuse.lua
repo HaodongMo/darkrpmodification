@@ -140,6 +140,18 @@ function ArcRP_GetCustomContextMenu(ent, ply)
             table.insert(tbl, {
                 callback = function(ent2, attacker)
                     local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
+
+                    victim:IMDE_SetStamina(victim:IMDE_GetMaxStamina())
+
+                    DarkRP.notify(attacker, 0, 5, "You've helped " .. victim:Nick() .. " up!")
+                    DarkRP.notify(victim, 0, 5, attacker:Nick() .. " has helped you up!")
+                end,
+                message = "Help Up"
+            })
+
+            table.insert(tbl, {
+                callback = function(ent2, attacker)
+                    local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
                     local amount = ArcRP_DoDropWeapon( victim, nil, attacker )
 
                     if amount > 0 then

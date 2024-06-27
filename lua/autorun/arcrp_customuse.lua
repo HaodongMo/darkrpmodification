@@ -65,7 +65,7 @@ function ArcRP_GetCustomContextHint(ent, ply)
         local downed_ply = ent:GetNWBool("IMDE_IsRagdoll", false) and ent:GetOwner() or ent
 
         if not(IsValid(downed_ply) and downed_ply:IsPlayer()) then return end
-        if downed_ply == LocalPlayer() then return end
+        if downed_ply == ply then return end
 
         return downed_ply:Nick() .. " | " .. downed_ply:Health() .. "HP"
     end
@@ -130,7 +130,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
         local downed_ply = ent:GetNWBool("IMDE_IsRagdoll", false) and ent:GetOwner() or ent
 
         if IsValid(downed_ply) and downed_ply:IsPlayer() then
-            if downed_ply == LocalPlayer() then return end
+            if downed_ply == ply then return end
             local tbl = {}
 
             if ply:isCP() then

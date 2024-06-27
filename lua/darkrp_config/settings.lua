@@ -323,7 +323,7 @@ Other settings
 -- Note: the money packet must support the "Setamount" method (or the amount DTVar).
 GM.Config.MoneyClass = "spawned_money"
 -- In case you do wish to keep the default money, but change the model, this option is the way to go:
-GM.Config.moneyModel = "models/props/cs_assault/money.mdl"
+GM.Config.moneyModel = "models/arcrp/money.mdl"
 -- You can set your own, custom sound to be played for all players whenever a lockdown is initiated.
 -- Note: Remember to include the folder where the sound file is located.
 GM.Config.lockdownsound = "npc/overwatch/cityvoice/f_confirmcivilstatus_1_spkr.wav"

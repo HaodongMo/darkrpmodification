@@ -432,6 +432,7 @@ local function hudPaintAmmo()
 end
 
 local contextindex = 1
+local lastcontextent = nil
 
 local function hudPaint()
     if !LocalPlayer():Alive() then return end
@@ -443,26 +444,12 @@ local function hudPaint()
 
     local ent = tr.Entity
     if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 128 * 128 then
-        contextindex = 1
         return
     end
 
-    // if customUse or ent.interactionHint then
-    //     local hinttext = isfunction(ent.interactionHint) and ent.interactionHint() or ent.interactionHint
-    //     text = "[" .. TacRP.GetBindKey("+use") .. "] " .. (((customUse or {}).message) or hinttext or "")
-
-    //     if customUse and LocalPlayer():KeyPressed(IN_USE) then
-    //         if customUse.callback then
-    //             net.Start("arcrp_customuse")
-    //             net.WriteEntity(ent)
-    //             net.SendToServer()
-    //         end
-
-    //         if customUse.cl_callback then
-    //             customUse.cl_callback(ent, LocalPlayer())
-    //         end
-    //     end
-    // end
+    if lastcontextent != ent then
+        contextindex = 1
+    end
 
     local customContextHint = ArcRP_GetCustomContextHint(ent, LocalPlayer())
 
@@ -508,9 +495,6 @@ local function hudPaint()
     end
 
     local context = ArcRP_GetCustomContextMenu(ent, LocalPlayer())
-    // local customUse = ArcRP_GetCustomUse(ent, LocalPlayer())
-
-    // local text
 
     if !context then
         contextindex = 1
@@ -545,6 +529,8 @@ local function hudPaint()
         TacRP.DrawCorneredBox(ScrW() / 2 - w / 2, ScrH() / 2 + TacRP.SS(32) + ((index - 1) * yh), w, h)
         draw.SimpleText(text, font, ScrW() / 2, ScrH() / 2 + TacRP.SS(32) + h / 2 + ((index - 1) * yh), textcol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
+
+    lastcontextent = ent
 end
 
 hook.Add("HUDPaint", "DarkRP_Mod_HUDPaint", hudPaint)

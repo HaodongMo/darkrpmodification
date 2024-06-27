@@ -2,7 +2,7 @@
 -- ply = custom user
 
 function ArcRP_GetCustomContextHint(ent, ply)
-    if ent:isDoor() then
+    if ent:isKeysOwnable() then
         local blocked = ent:getKeysNonOwnable()
         local doorTeams = ent:getKeysDoorTeams()
         local doorGroup = ent:getKeysDoorGroup()
@@ -73,7 +73,7 @@ end
 function ArcRP_GetCustomContextMenu(ent, ply)
     if isfunction(ent.GetContextMenu) then
         return ent:GetContextMenu(ply)
-    elseif ent:isDoor() then
+    elseif ent:isKeysOwnable() then
         local tbl = {
                 {
                     message = "Open/Close",

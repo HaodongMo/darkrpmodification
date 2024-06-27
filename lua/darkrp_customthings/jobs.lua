@@ -37,6 +37,28 @@ local function cploadout(ply, armor)
     end
 end
 
+TEAM_PRESIDENT = DarkRP.createJob("President", {
+    color = Color(0, 0, 255, 255),
+    model = {"models/player/breen.mdl"},
+    description =
+[[Hail to the Chief, baby!
+
+As President, you set the laws.
+Police are required to enforce the laws you set.]],
+    command = "president",
+    salary = GAMEMODE.Config.normalsalary * 10,
+    admin = 0,
+    category = "Citizens",
+    mayor = true,
+    max = 1,
+    vote = true,
+    giveLicense = true,
+    sortOrder = -1,
+    warrant = true,
+    ban_max_time = 60,
+    unarrest = true,
+})
+
 
 TEAM_POLICE_ROOKIE = DarkRP.createJob("Rookie", {
     color = Color(150, 150, 255, 255),
@@ -64,7 +86,7 @@ TEAM_POLICE_DEPUTY = DarkRP.createJob("Deputy", {
     description =
 [[Deputies are the backbone of the police force.
 
-You are issued with a service pistol (and license) and have the authority to unarrest prisoners.]],
+You are issued with a service pistol (and license) and have the authority to free prisoners.]],
     command = "police_deputy",
     salary = GAMEMODE.Config.normalsalary * 1.25,
     NeedToChangeFrom = TEAM_POLICE_ROOKIE,
@@ -119,45 +141,6 @@ Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses
     unarrest = true,
     PlayerLoadout = function(ply)
         cploadout(ply, 50)
-    end,
-})
-
-TEAM_POLICE_SHERIFF = DarkRP.createJob("Sheriff", {
-    color = Color(25, 25, 25, 255),
-    model = {"models/player/breen.mdl"},
-    description =
-[[The chief of the police force.
-
-Voted in by the sergeants.
-Can promote deputies to Sergeant.
-
-Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses.]],
-    command = "police_sheriff",
-    salary = GAMEMODE.Config.normalsalary * 2,
-    NeedToChangeFrom = TEAM_POLICE_SERGEANT,
-    admin = 0,
-    category = "Police",
-    chief = true,
-    mayor = true,
-    max = 1,
-    vote = true,
-    hasLicense = true,
-    giveLicense = true,
-    RequiresVote = function(ply, job) return (#team.GetPlayers(TEAM_POLICE_SHERIFF) + #team.GetPlayers(TEAM_POLICE_SERGEANT)) > 0 end,
-    sortOrder = 103,
-    ammo = {
-        ["357"] = 36,
-        ["smg1_grenade"] = 3,
-        ["ti_gas"] = 3,
-        ["ti_flashbang"] = 3,
-        ["ti_charge"] = 2,
-    },
-    weapons = {"tacrp_mr96", "tacrp_m_tonfa", "tacrp_civ_m320", "weaponchecker", "door_ram"},
-    warrant = true,
-    ban_max_time = 60,
-    unarrest = true,
-    PlayerLoadout = function(ply)
-        cploadout(ply, 100)
     end,
 })
 
@@ -326,6 +309,19 @@ TEAM_MARTIAL_ARTIST = DarkRP.createJob("Martial Artist", {
     weapons = {}
 })
 
+TEAM_GANGSTER = DarkRP.createJob("Gangster", {
+    color = Color(255, 50, 50, 255),
+    model = {"models/player/arctic.mdl"},
+    description =
+[[You are able to commit crimes, such as robbery, mugging, and raids.]],
+    command = "gangster",
+    salary = 0,
+    admin = 0,
+    category = "Citizens",
+    max = 6,
+    sortOrder = 109,
+})
+
 --[[---------------------------------------------------------------------------
 Define which team joining players spawn into and what team you change to if demoted
 ---------------------------------------------------------------------------]]
@@ -338,7 +334,6 @@ GAMEMODE.CivilProtection = {
     [TEAM_POLICE_ROOKIE] = true,
     [TEAM_POLICE_DEPUTY] = true,
     [TEAM_POLICE_SERGEANT] = true,
-    [TEAM_POLICE_SHERIFF] = true,
     [TEAM_POLICE_SUPERSOLDIER] = true,
 }
 
@@ -355,14 +350,10 @@ GAMEMODE.AllowVoteRoles = {
     [TEAM_POLICE_DEPUTY] = {
         [TEAM_POLICE_DEPUTY] = true,
         [TEAM_POLICE_SERGEANT] = true,
-        [TEAM_POLICE_SHERIFF] = true,
+        [TEAM_PRESIDENT] = true,
     },
     [TEAM_POLICE_SERGEANT] = {
         [TEAM_POLICE_SERGEANT] = true,
-        [TEAM_POLICE_SHERIFF] = true,
-    },
-    [TEAM_POLICE_SHERIFF] = {
-        [TEAM_POLICE_SERGEANT] = true,
-        [TEAM_POLICE_DEPUTY] = true
+        [TEAM_PRESIDENT] = true,
     },
 }

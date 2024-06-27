@@ -28,6 +28,35 @@ ATT.SightAng = Angle(0, 0, 0)
 TacRP.LoadAtt(ATT, "optic_broken")
 -- #endregion
 
+
+------------------------------
+-- #region optic_rmr_broken
+------------------------------
+ATT = {}
+
+ATT.PrintName = "Busted"
+ATT.Icon = Material("entities/tacrp_att_optic_rmr.png", "mips smooth")
+ATT.Description = "Reflex sight that seems to be out of power."
+
+ATT.Model = "models/weapons/tacint/addons/optic_rmr_hq.mdl"
+ATT.Scale =  1
+
+ATT.Category = "optic_pistol"
+
+ATT.SortOrder = 999
+
+ATT.Override_Scope = true
+ATT.Override_ScopeOverlay = false
+ATT.Override_ScopeFOV = 90 / 1.1
+ATT.Override_ScopeLevels = 1
+ATT.Override_ScopeHideWeapon = false
+
+ATT.SightPos = Vector(-0.1, -10, 0.520837)
+ATT.SightAng = Angle(0, 0, 0)
+
+TacRP.LoadAtt(ATT, "optic_broken2")
+-- #endregion
+
 ------------------------------
 -- #region muzz_rusted
 ------------------------------

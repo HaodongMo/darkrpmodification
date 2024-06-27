@@ -241,7 +241,7 @@ end
 
 function ENT:PhysicsCollide(coldata, collider)
     local ent = coldata.HitEntity
-    if IsValid(ent) and ent:GetNWBool("IMDE_IsRagdoll") and ent.IsDeathRagdoll and not IsValid(ent:GetOwner()) and !ent.USED then
+    if IsValid(ent) and ent:GetNW2Bool("IMDE_IsRagdoll") and ent.IsDeathRagdoll and not IsValid(ent:GetOwner()) and !ent.USED then
         ent.USED = true
 
         local money = ent.DisposeReward and math.random(5, 50) or math.random(1, 5)

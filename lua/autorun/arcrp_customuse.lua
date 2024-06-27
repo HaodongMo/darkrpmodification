@@ -62,7 +62,7 @@ function ArcRP_GetCustomContextHint(ent, ply)
 
         return text
     elseif ent:GetClass() == "prop_ragdoll" then
-        local downed_ply = ent:GetNWBool("IMDE_IsRagdoll", false) and ent:GetOwner() or ent
+        local downed_ply = ent:GetNW2Bool("IMDE_IsRagdoll", false) and ent:GetOwner() or ent
 
         return downed_ply:Nick() .. " | " .. downed_ply:Health() .. "HP"
     end
@@ -124,7 +124,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
             }
         end
     elseif ent:GetClass() == "prop_ragdoll" then
-        local downed_ply = ent:GetNWBool("IMDE_IsRagdoll", false) and ent:GetOwner() or ent
+        local downed_ply = ent:GetNW2Bool("IMDE_IsRagdoll", false) and ent:GetOwner() or ent
 
         if IsValid(downed_ply) and downed_ply:IsPlayer() then
             local tbl = {}
@@ -132,7 +132,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
             if ply:isCP() then
                 table.insert(tbl, {
                     callback = function(ent2, attacker)
-                        local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
+                        local victim = ent2:GetNW2Bool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
                         if attacker:isCP() then
                             victim:arrest(GAMEMODE.Config.jailtimer, attacker)
                         end
@@ -143,7 +143,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
 
             table.insert(tbl, {
                 callback = function(ent2, attacker)
-                    local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
+                    local victim = ent2:GetNW2Bool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
 
                     victim:IMDE_SetStamina(victim:IMDE_GetMaxStamina())
                     victim:IMDE_SetBalance(0)
@@ -158,7 +158,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
 
             table.insert(tbl, {
                 callback = function(ent2, attacker)
-                    local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
+                    local victim = ent2:GetNW2Bool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
                     local amount = ArcRP_DoDropWeapon( victim, nil, attacker )
 
                     if amount > 0 then
@@ -174,7 +174,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
             if ply:getJobTable().canMug then
                 table.insert(tbl, {
                     callback = function(ent2, attacker)
-                        local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
+                        local victim = ent2:GetNW2Bool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
                         if attacker:getJobTable().canMug then
                             local nextMugTime = victim.NextCanBeMuggedTime or 0
 

@@ -52,6 +52,11 @@ function ENT:Use(activator, caller)
         return
     end
 
+    if !activator:getJobTable().canRob then
+        DarkRP.notify(activator, 3, 3, "Only Gangsters can rob the bank!")
+        return
+    end
+
     if #player.GetAll() <= ArcRP_BankRob.MinPlayers then
         DarkRP.notify(activator, 3, 3, "There aren't enough players for a bank robbery!")
         return

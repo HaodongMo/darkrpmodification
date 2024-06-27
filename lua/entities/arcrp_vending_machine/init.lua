@@ -5,7 +5,7 @@ include("shared.lua")
 
 function ENT:Initialize()
     self:SetModel("models/props_interiors/VendingMachineSoda01a.mdl")
-    self:SetMaterial("guns4u")
+    self:SetMaterial("arcrp/guns4u")
     DarkRP.ValidatedPhysicsInit(self, SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)

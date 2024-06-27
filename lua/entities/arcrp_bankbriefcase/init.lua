@@ -10,6 +10,7 @@ function ENT:Initialize()
         return
     end
     self:SetModel("models/weapons/tacint/props_misc/briefcase_bomb-1.mdl")
+    self:SetMaterial("arcrp/bank-case")
     DarkRP.ValidatedPhysicsInit(self, SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)

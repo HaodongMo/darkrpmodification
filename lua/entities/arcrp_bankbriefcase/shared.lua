@@ -8,6 +8,7 @@ ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 ENT.isBankBriefcase = true
 ENT.amount = 0
+ENT.unPocketAble = true
 
 function ENT:SetupDataTables()
     self:NetworkVar("Float", 0, "Reward")

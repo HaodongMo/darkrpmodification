@@ -4,7 +4,7 @@ ArcRP_BankRob = ArcRP_BankRob or {}
 -- Timers
 ---------------------------------------------------------------------------------------------------
 
-ArcRP_BankRob.MinPlayers = 5
+ArcRP_BankRob.MinPlayers = 1
 
 -- Cooldown after a failed attempt (pallet was restored)
 ArcRP_BankRob.CooldownAttempt = 120

@@ -153,3 +153,11 @@ hook.Add("canDoorRam", "arcrp_doorram", function(ply, tr, ent)
         return true
     end
 end)
+
+hook.Add("canPocket", "arcrp_unpocketable", function(ply, item)
+    if !IsValid(item) then return false end
+
+    if item.unPocketAble then return false end
+
+    return true
+end)

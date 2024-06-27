@@ -5,7 +5,7 @@ include("shared.lua")
 
 function ENT:Initialize()
     self:SetModel("models/props_junk/TrashDumpster01a.mdl")
-    self:SetMaterial("binaknife")
+    self:SetMaterial("arcrp/binaknife")
     DarkRP.ValidatedPhysicsInit(self, SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)

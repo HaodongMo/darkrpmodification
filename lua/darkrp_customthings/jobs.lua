@@ -57,6 +57,7 @@ Police are required to enforce the laws you set.]],
     warrant = true,
     ban_max_time = 60,
     unarrest = true,
+    weapons = {}
 })
 
 
@@ -320,6 +321,9 @@ TEAM_GANGSTER = DarkRP.createJob("Gangster", {
     category = "Citizens",
     max = 6,
     sortOrder = 109,
+    canRob = true,
+    canMug = true,
+    weapons = {}
 })
 
 --[[---------------------------------------------------------------------------

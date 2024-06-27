@@ -23,6 +23,7 @@ function ENT:MakeWithdrawal(ply, amt)
     ply:setDarkRPVar("bank", ply:getDarkRPVar("bank") - amt)
     ply:addMoney(amt)
     DarkRP.notify(ply, 0, 3, "Successfully withdrawn " .. DarkRP.formatMoney(amt) .. "!")
+    ArcRP_SavePlayerStatsToFile(ply)
 end
 
 function ENT:MakeDeposit(ply, amt)
@@ -31,6 +32,7 @@ function ENT:MakeDeposit(ply, amt)
     ply:addMoney(-amt)
     ply:setDarkRPVar("bank", ply:getDarkRPVar("bank") + amt)
     DarkRP.notify(ply, 0, 3, "Successfully deposited " .. DarkRP.formatMoney(amt) .. "!")
+    ArcRP_SavePlayerStatsToFile(ply)
 end
 
 net.Receive("arcrp_banking", function(len, ply)

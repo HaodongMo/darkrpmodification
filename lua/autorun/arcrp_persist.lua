@@ -37,6 +37,7 @@ end)
 
 hook.Add("playerGetSalary","ArcRP_ReplaceSalary", function(ply, amount)
     ply:setDarkRPVar("bank", ply:getDarkRPVar("bank") + amount)
+    ArcRP_SavePlayerStatsToFile(ply)
     return false, "Payday! " .. DarkRP.formatMoney(amount) .. " was put in your bank account.", 0
 end)
 

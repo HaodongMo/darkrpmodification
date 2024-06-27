@@ -240,6 +240,10 @@ local function hudPaintAmmo()
 
     if !IsValid(wpn) then return end
 
+    local clipsize = wpn:GetMaxClip1()
+
+    if clipsize <= 0 and !wpn.ArcticTacRP then return end
+
     surfaceSetDrawColor(0, 0, 0, 150)
     TacRP.DrawCorneredBox(x, y, w, h, col)
 
@@ -266,8 +270,7 @@ local function hudPaintAmmo()
     if wpn.ArcticTacRP then
         ammotype = getValue(wpn, "PrimaryGrenade") and (TacRP.QuickNades[getValue(wpn, "PrimaryGrenade")].Ammo) or getValue(wpn, "Ammo")
     end
-    local clips = math.min(math.ceil(wpn:GetOwner():GetAmmoCount(ammotype)), 999)
-    local clipsize = wpn:GetMaxClip1()
+    local clips = math.min(math.ceil(wpn:GetOwner():GetAmmoCount(ammotype)), 999) 
 
     if clipsize > 0 then
 

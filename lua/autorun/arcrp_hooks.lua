@@ -72,6 +72,8 @@ hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker
 
     local money = ArcRP_GetMoneyDropAmount(victim)
 
+    local max = 1000
+
     if victim:GetNWBool("Insurance", false) then
         victim:SetNWBool("Insurance", false)
         DarkRP.notify(victim, 3, 10, "Your insurance expired and prevented a medical bill of " .. DarkRP.formatMoney(money) .. ".")

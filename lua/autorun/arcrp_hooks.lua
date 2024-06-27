@@ -51,10 +51,7 @@ hook.Add("playerArrested", "tacrp_arrest_bailbonds", function(ply, time, arresto
     end
 end)
 
-// drop moolah on death
-hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker)
-    if !IsValid(attacker) or attacker:isCP() then return end
-
+function ArcRP_GetMoneyDropAmount(victim)
     local cur = victim:getDarkRPVar("money") or 0
 
     // amount that will never be dropped
@@ -66,13 +63,21 @@ hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker
 
     local money = math.min(max, math.ceil(math.max(cur - safe_min) * frac))
 
+    return money
+end
+
+// drop moolah on death
+hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker)
+    if !IsValid(attacker) or attacker:isCP() then return end
+
+    local money = ArcRP_GetMoneyDropAmount(victim)
+
     if victim:GetNWBool("Insurance", false) then
         victim:SetNWBool("Insurance", false)
-        DarkRP.notify(victim, 3, 10, "Your insurance expired and prevented a money loss of " .. DarkRP.formatMoney(money) .. ".")
+        DarkRP.notify(victim, 3, 10, "Your insurance expired and prevented a medical bill of " .. DarkRP.formatMoney(money) .. ".")
     elseif money > 0 then
         victim:addMoney(-money)
-        DarkRP.createMoneyBag(victim:GetPos() + Vector(0, 0, 10), money)
-        DarkRP.notify(victim, 3, 10, "You lost " .. DarkRP.formatMoney(money) .. " on death." .. (money > 0.5 * max and " Maybe consider getting insurance next time..." or ""))
+        DarkRP.notify(victim, 3, 10, "You paid " .. DarkRP.formatMoney(money) .. " of medical bills on death." .. (money > 0.5 * max and " Maybe consider getting insurance next time..." or ""))
     end
 
     // Tax returns are void
@@ -98,7 +103,7 @@ end)
 // arrest on kill by police
 hook.Add("PostPlayerDeath", "tacrp_police_arrest", function(victim)
     if victim:isWanted() and !victim:isArrested() then
-        victim:arrest(300, attacker)
+        victim:arrest(GAMEMODE.Config.jailtimer, attacker)
     end
 
     // Lose job on death and enter 5 min cooldown

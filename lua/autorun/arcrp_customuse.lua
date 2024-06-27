@@ -119,6 +119,52 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                 }
             }
         end
+    elseif ent:GetClass() == "prop_ragdoll" then
+        local downed_ply = ent:GetNWBool("IMDE_IsRagdoll", false) and ent:GetOwner() or ent
+
+        if IsValid(downed_ply) and downed_ply:IsPlayer() then
+            local tbl = {}
+
+            if ply:isCP() then
+                table.insert(tbl, {
+                    callback = function(ent2, ply2)
+                        if ply:isCP() then
+                            ent2:arrest(GAMEMODE.Config.jailtimer, ply2)
+                        end
+                    end,
+                    message = "Arrest"
+                })
+            end
+
+            if ply:getJobTable().canMug then
+                table.insert(tbl, {
+                    callback = function(ent2, attacker)
+                        local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
+                        if attacker:getJobTable().canMug then
+                            local nextMugTime = victim.NextCanBeMuggedTime or 0
+
+                            if nextMugTime > CurTime() or victim:getDarkRPVar("money") <= 0 then
+                                DarkRP.notify(attacker, 1, 3, "The victim's wallet is empty!")
+                                return
+                            end
+
+                            local money = ArcRP_GetMoneyDropAmount(victim)
+
+                            victim:addMoney(-money)
+                            attacker:addMoney(money)
+
+                            DarkRP.notify(attacker, 3, 5, "You've stolen " .. DarkRP.formatMoney(money) .. " from " .. victim:Nick() .. "!")
+                            DarkRP.notify(victim, 1, 5, attacker:Nick() .. " has stolen " .. DarkRP.formatMoney(money) .. " from you!")
+
+                            victim.NextCanBeMuggedTime = CurTime() + 300
+                        end
+                    end,
+                    message = "Steal Money"
+                })
+            end
+
+            return tbl
+        end
     end
 end
 

@@ -33,4 +33,6 @@ function ArcRP_DoDropWeapon( victim, inflictor, attacker )
     return disarmed
 end
 
-hook.Add("PlayerDeath", "ArcRP_DropWeaponsOndeath", ArcRP_DoDropWeapon)
+hook.Add("PlayerDeath", "ArcRP_DropWeaponsOndeath", function(victim, inflictor, attacker)
+    ArcRP_DoDropWeapon( victim, inflictor, attacker )
+end)

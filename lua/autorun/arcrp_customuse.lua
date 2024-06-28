@@ -106,7 +106,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
 
         return tbl
     elseif ent:IsPlayer() then
-        if ent:isArrested() and !ply:isArrested() and ply:getJobTable().unarrest then
+        if ent:isArrested() and not ply:isArrested() and ply:getJobTable().unarrest then
             return
             {
                 {
@@ -117,6 +117,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                             GAMEMODE.Config.telefromjail = true
                         end
                     end,
+                    interacttime = 1,
                     message = "Unarrest"
                 }
             }
@@ -136,6 +137,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                             victim:arrest(GAMEMODE.Config.jailtimer, attacker)
                         end
                     end,
+                    interacttime = 1,
                     message = "Arrest"
                 })
             end
@@ -182,6 +184,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
 
             if ply:getJobTable().canMug then
                 table.insert(tbl, {
+                    interacttime = 1,
                     callback = function(ent2, attacker)
                         local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
                         if attacker:getJobTable().canMug then

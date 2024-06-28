@@ -50,6 +50,7 @@ function ENT:UpdatePowerState()
 end
 
 function ENT:Disconnect(entity)
+    if !IsValid(self) then return end
     table.RemoveByValue(self.ConnectedEntities, entity)
     self:UpdatePowerState()
 

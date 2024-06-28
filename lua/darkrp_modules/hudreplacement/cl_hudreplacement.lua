@@ -585,12 +585,7 @@ local function hudPaint()
         end
 
         local textcol = Color(255, 255, 255)
-        if selected and #context > 1 and !longUsing then
-            surface.SetDrawColor(255, 255, 255, 200)
-            textcol = Color(0, 0, 0)
-        else
-            surface.SetDrawColor(0, 0, 0, 200)
-        end
+        surface.SetDrawColor(0, 0, 0, 200)
 
         TacRP.DrawCorneredBox(x, y, w, h)
         draw.SimpleText(text, font, x + TacRP.SS(4), y + TacRP.SS(2), textcol, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)

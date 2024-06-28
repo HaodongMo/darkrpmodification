@@ -15,14 +15,23 @@ function ENT:SetupDataTables()
 end
 
 function ENT:GetContextMenu(player)
-    return {
+    local tbl = {
         {
             message = "Scavenge",
-            callback = self.Scavenge or true
+            callback = self.Scavenge or true,
+            interacttime = 2.5,
         },
-        {
-            message = "Dispose of Weapon",
-            callback = self.DisposeWeapon or true
-        }
     }
+
+    local wep = player:GetActiveWeapon()
+
+    if IsValid(wep) and weapons.IsBasedOn(wep:GetClass(), "tacrp_base") then
+        table.insert(tbl, {
+            message = "Dispose of Weapon",
+            callback = self.DisposeWeapon or true,
+            interacttime = 1,
+        })
+    end
+
+    return tbl
 end

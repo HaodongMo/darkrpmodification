@@ -13,6 +13,7 @@ local function CanDropWeapon(victim, wep)
     if wep.AdminOnly then return false end
     if !wep.Spawnable then return false end
     if donotdrop[wep:GetClass()] then return false end
+    if dodrop[wep:GetClass()] then return true end
     if weapons.IsBasedOn(wep:GetClass(), "tacrp_base") then
         if !victim:Alive() then
             ArcRP_AddBrokenAttachment(wep)

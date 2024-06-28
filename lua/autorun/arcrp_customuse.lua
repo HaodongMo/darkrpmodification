@@ -207,13 +207,99 @@ function ArcRP_GetCustomContextMenu(ent, ply)
     end
 end
 
+
+hook.Add("InputMouseApply", "ArcRP_ContextMenu_Wheel", function(cmd, x, y, ang)
+    if input.LookupBinding( "invnext" ) and input.LookupBinding( "invprev" ) then return end
+
+    contextScroll(-cmd:GetMouseWheel())
+end)
+
+hook.Add( "PlayerBindPress", "ArcRP_ContextMenu_Interact", function(ply, bind, pressed)
+    local block = nil
+
+    if pressed and bind == "invnext" then
+        block = contextScroll(1)
+    elseif pressed and bind == "invprev" then
+        block = contextScroll(-1)
+    elseif pressed and bind == "+use" then
+        local tr = LocalPlayer():GetEyeTrace()
+
+        local ent = tr.Entity
+        if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 128 * 128 then
+            return
+        end
+
+        local context = ArcRP_GetCustomContextMenu(ent, LocalPlayer())
+
+        if context then
+            local contextitem = context[contextindex]
+
+            if contextitem then
+                if contextitem.callback then
+                    net.Start("arcrp_customuse")
+                    net.WriteEntity(ent)
+                    net.WriteUInt(contextindex, 8)
+                    net.SendToServer()
+                end
+
+                if contextitem.interacttime then
+                    startinteracttime = CurTime()
+                    interacting_ent = ent
+                    interacting_context = contextitem
+                else
+                    if contextitem.cl_callback then
+                        contextitem.cl_callback(ent, LocalPlayer())
+                    end
+
+                    interacting_ent = nil
+                end
+
+                block = true
+            end
+        end
+    elseif !pressed and bind == "+use" then
+        if interacting_ent then
+            net.Start("arcrp_customusefinish")
+            net.WriteBool(true)
+            net.SendToServer()
+        end
+    end
+
+    return block
+end)
+
 if SERVER then
 
 util.AddNetworkString("arcrp_customuse")
+util.AddNetworkString("arcrp_customusefinish")
+
+net.Receive("arcrp_customusefinish", function(len, ply)
+    local cancel = net.ReadBool()
+
+    if cancel then
+        ply.ArcRP_CustomContextEnt = nil
+        ply.ArcRP_CustomContext = nil
+    end
+
+    local ent = ply.ArcRP_CustomContextEnt
+
+    if !IsValid(ent) then return end
+
+    if ent:GetPos():DistToSqr(ply:GetPos()) > 128 * 128 then return end
+    if !ply:Alive() then return end
+
+    local context = ply.ArcRP_CustomContext
+
+    if CurTime() - ply.ArcRP_CustomUseStartTime >= (context.interacttime or 0) - 0.25 then -- if you have more than 250ms of fucking jitter you need to buy new internet
+        context.callback(ent, ply)
+        ply.ArcRP_CustomContextEnt = nil
+        ply.ArcRP_CustomContext = nil
+    end
+end)
 
 net.Receive("arcrp_customuse", function(len, ply)
-    local index = net.ReadUInt(8)
     local ent = net.ReadEntity()
+    local index = net.ReadUInt(8)
 
     if !IsValid(ent) then return end
 
@@ -226,7 +312,15 @@ net.Receive("arcrp_customuse", function(len, ply)
     if !context[index] then return end
     if !context[index].callback then return end
 
-    context[index].callback(ent, ply)
+    if (context[index].interacttime or 0) > 0 then
+        ply.ArcRP_CustomUseStartTime = CurTime()
+        ply.ArcRP_CustomContext = context[index]
+        ply.ArcRP_CustomContextEnt = ent
+    else
+        context[index].callback(ent, ply)
+        ply.ArcRP_CustomContextEnt = nil
+        ply.ArcRP_CustomContext = nil
+    end
 end)
 
 end

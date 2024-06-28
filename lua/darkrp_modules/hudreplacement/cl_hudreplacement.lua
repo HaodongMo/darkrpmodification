@@ -436,6 +436,26 @@ end
 
 local contextindex = 1
 local lastcontextent = nil
+local startinteracttime = 0
+local interacting_ent = NULL
+local interacting_context = nil
+local interacting_index = 0
+
+local function cancelUse()
+    net.Start("arcrp_customusefinish")
+    net.WriteBool(true)
+    net.SendToServer()
+
+    interacting_ent = NULL
+end
+
+local function finishUse()
+    net.Start("arcrp_customusefinish")
+    net.WriteBool(false)
+    net.SendToServer()
+
+    interacting_ent = NULL
+end
 
 local function hudPaint()
     if !LocalPlayer():Alive() then return end
@@ -504,6 +524,26 @@ local function hudPaint()
         return
     end
 
+    if contextindex > #context then
+        contextindex = #context
+    end
+
+    local longUsing = false
+    local time, perc
+
+    if IsValid(interacting_ent) and contextindex != interacting_index then
+        cancelUse()
+    elseif IsValid(interacting_ent) and contextindex == interacting_index then
+        longUsing = true
+
+        time = CurTime() - startinteracttime
+        perc = math.min(time / interacting_context.interacttime, 1)
+
+        if perc == 1 then
+            finishUse()
+        end
+    end
+
     local x = ScrW() / 2 - TacRP.SS(16)
     local y = ScrH() / 2 + TacRP.SS(32)
 
@@ -538,7 +578,7 @@ local function hudPaint()
         end
 
         local textcol = Color(255, 255, 255)
-        if selected and #context > 1 then
+        if selected and #context > 1 and !longUsing then
             surface.SetDrawColor(255, 255, 255, 200)
             textcol = Color(0, 0, 0)
         else
@@ -547,6 +587,15 @@ local function hudPaint()
 
         TacRP.DrawCorneredBox(x, y, w, h)
         draw.SimpleText(text, font, x + TacRP.SS(4), y + TacRP.SS(2), textcol, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+
+        if longUsing then
+            surface.SetDrawColor(255, 255, 255, 150)
+            surface.DrawRect(x, y, w * perc, h)
+
+            render.SetScissorRect(x, y, x + w * perc, y + h, true)
+            draw.SimpleText(text, font, x + TacRP.SS(4), y + TacRP.SS(2), Color(0, 0, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            render.SetScissorRect(0, 0, 0, 0, false)
+        end
 
         if selected then
             y = y + TacRP.SS(12)
@@ -591,15 +640,13 @@ hook.Add("InputMouseApply", "ArcRP_ContextMenu_Wheel", function(cmd, x, y, ang)
 end)
 
 hook.Add( "PlayerBindPress", "ArcRP_ContextMenu_Interact", function(ply, bind, pressed)
-    if !pressed then return end
-
     local block = nil
 
-    if bind == "invnext" then
+    if pressed and bind == "invnext" then
         block = contextScroll(1)
-    elseif bind == "invprev" then
+    elseif pressed and bind == "invprev" then
         block = contextScroll(-1)
-    elseif bind == "+use" then
+    elseif pressed and bind == "+use" then
         local tr = LocalPlayer():GetEyeTrace()
 
         local ent = tr.Entity
@@ -615,17 +662,30 @@ hook.Add( "PlayerBindPress", "ArcRP_ContextMenu_Interact", function(ply, bind, p
             if contextitem then
                 if contextitem.callback then
                     net.Start("arcrp_customuse")
-                    net.WriteUInt(contextindex, 8)
                     net.WriteEntity(ent)
+                    net.WriteUInt(contextindex, 8)
                     net.SendToServer()
                 end
 
-                if contextitem.cl_callback then
-                    contextitem.cl_callback(ent, LocalPlayer())
+                if contextitem.interacttime then
+                    startinteracttime = CurTime()
+                    interacting_ent = ent
+                    interacting_context = contextitem
+                    interacting_index = contextindex
+                else
+                    if contextitem.cl_callback then
+                        contextitem.cl_callback(ent, LocalPlayer())
+                    end
+
+                    interacting_ent = nil
                 end
 
                 block = true
             end
+        end
+    elseif !pressed and bind == "+use" then
+        if interacting_ent then
+            cancelUse()
         end
     end
 

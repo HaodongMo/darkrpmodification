@@ -504,22 +504,38 @@ local function hudPaint()
         return
     end
 
-    local yh = TacRP.SS(10)
+    local x = ScrW() / 2 - TacRP.SS(16)
+    local y = ScrH() / 2 + TacRP.SS(32)
 
     for index, item in ipairs(context) do
         local selected = index == contextindex
 
         local text = item.message
 
-        if selected then
-            text = "[" .. TacRP.GetBindKey("+use") .. "] " .. text
-        end
-
         local font = "TacRP_HD44780A00_5x8_4"
+        if selected then
+            font = "TacRP_HD44780A00_5x8_6"
+        end
         surface.SetFont(font)
         local w, h = surface.GetTextSize(text)
         w = w + TacRP.SS(8)
         h = h + TacRP.SS(4)
+
+        if selected then
+            local sfont = "TacRP_HD44780A00_5x8_4"
+            local s = TacRP.SS(8)
+            surface.SetDrawColor(col_hi)
+            TacRP.DrawCorneredBox(x - s - TacRP.SS(4), y + TacRP.SS(1), s, s)
+            draw.SimpleText("E", sfont, x - s, y + TacRP.SS(3), Color(0, 0, 0), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+
+            if index > 1 then
+                draw.SimpleText("↑", sfont, x - s, y + TacRP.SS(3) - s - (TacRP.SS(1) * math.sin(CurTime() * 4)), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            end
+
+            if index < #context then
+                draw.SimpleText("↓", sfont, x - s, y + TacRP.SS(3) + s + (TacRP.SS(1) * math.sin(CurTime() * 4)), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            end
+        end
 
         local textcol = Color(255, 255, 255)
         if selected and #context > 1 then
@@ -529,8 +545,14 @@ local function hudPaint()
             surface.SetDrawColor(0, 0, 0, 200)
         end
 
-        TacRP.DrawCorneredBox(ScrW() / 2 - w / 2, ScrH() / 2 + TacRP.SS(32) + ((index - 1) * yh), w, h)
-        draw.SimpleText(text, font, ScrW() / 2, ScrH() / 2 + TacRP.SS(32) + h / 2 + ((index - 1) * yh), textcol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        TacRP.DrawCorneredBox(x, y, w, h)
+        draw.SimpleText(text, font, x + TacRP.SS(4), y + TacRP.SS(2), textcol, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+
+        if selected then
+            y = y + TacRP.SS(12)
+        else
+            y = y + TacRP.SS(10)
+        end
     end
 
     lastcontextent = ent

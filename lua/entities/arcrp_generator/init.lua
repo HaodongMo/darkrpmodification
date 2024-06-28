@@ -57,7 +57,8 @@ function ENT:Disconnect(entity)
 end
 
 function ENT:DisconnectAll()
-    for _, ent in pairs(self.ConnectedEntities) do
+    local entstodisconnect = table.Copy(self.ConnectedEntities)
+    for _, ent in pairs(entstodisconnect) do
         ent:Disconnect(self)
         self:Disconnect(ent)
     end

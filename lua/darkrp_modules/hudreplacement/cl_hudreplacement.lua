@@ -440,6 +440,9 @@ local startinteracttime = 0
 local interacting_ent = NULL
 local interacting_context = nil
 local interacting_index = 0
+local lastusetime = 0
+local lastcontexttime = 0
+local lastcontextent = NULL
 
 local function cancelUse()
     net.Start("arcrp_customusefinish")
@@ -486,6 +489,13 @@ local function hudPaint()
     else
         local tr = LocalPlayer():GetEyeTrace()
         ent = tr.Entity
+
+        if !IsValid(ent) then
+            ent = lastcontextent
+        else
+            lastcontextent = ent
+            lastcontexttime = CurTime()
+        end
     end
 
     if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 128 * 128 then
@@ -571,9 +581,27 @@ local function hudPaint()
         if selected then
             local sfont = "TacRP_HD44780A00_5x8_4"
             local s = TacRP.SS(8)
-            surface.SetDrawColor(col_hi)
+            local d = 0
+            local animtime = 1
+
+            local utime = math.min(CurTime() - lastusetime, animtime)
+
+            if utime < animtime then
+                local prog = utime / animtime
+                local a = prog - 1
+                d = math.sin(24 * a) * (1 - prog)
+            end
+
+            if d == 0 then
+                surface.SetDrawColor(Color(255, 150, 0))
+            else
+                surface.SetDrawColor(Color(
+                    Lerp(d, 255, 255),
+                    Lerp(d, 150, 225),
+                    Lerp(d, 0, 200)))
+            end
             TacRP.DrawCorneredBox(x - s - TacRP.SS(4), y + TacRP.SS(1), s, s)
-            draw.SimpleText("E", sfont, x - s, y + TacRP.SS(3), Color(0, 0, 0), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+            draw.SimpleText(TacRP.GetBind("use"), sfont, x - s, y + TacRP.SS(3), Color(0, 0, 0), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
             if index > 1 then
                 draw.SimpleText("↑", sfont, x - s, y + TacRP.SS(3) - s - (TacRP.SS(1) * math.sin(CurTime() * 4)), Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
@@ -681,6 +709,8 @@ hook.Add( "PlayerBindPress", "ArcRP_ContextMenu_Interact", function(ply, bind, p
 
                     interacting_ent = nil
                 end
+
+                lastusetime = CurTime()
 
                 block = true
             end

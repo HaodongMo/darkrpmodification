@@ -106,22 +106,47 @@ function ArcRP_GetCustomContextMenu(ent, ply)
 
         return tbl
     elseif ent:IsPlayer() then
-        if ent:isArrested() and not ply:isArrested() and ply:getJobTable().unarrest then
-            return
-            {
-                {
-                    callback = function(ent2, ply2)
-                        if ent2:isArrested() and !ply2:isArrested() and ply:getJobTable().unarrest then
-                            GAMEMODE.Config.telefromjail = false
-                            ent2:unArrest(ply2)
-                            GAMEMODE.Config.telefromjail = true
+        local tbl = {}
+
+        if ply:getJobTable().canMug then
+            table.insert(tbl, {
+                callback = function(victim, attacker)
+                    if attacker:getJobTable().canMug then
+                        local nextMugTime = victim.NextCanBeMuggedTime or 0
+
+                        if nextMugTime > CurTime() or victim:getDarkRPVar("money") <= 0 then
+                            DarkRP.notify(attacker, 1, 3, "Their wallet is empty!")
+                            return
+                        else
+                            local money = ArcRP_GetMoneyDropAmount(victim)
+                            if money <= 0 then
+                                DarkRP.notify(attacker, 1, 3, "They don't have a whole lot of money...")
+                            else
+                                DarkRP.notify(attacker, 1, 3, "They have about " .. DarkRP.formatMoney(money) .. " in their wallet...")
+                            end
                         end
-                    end,
-                    interacttime = 1,
-                    message = "Unarrest"
-                }
-            }
+                    end
+                end,
+                message = "Frisk for Money"
+            })
         end
+
+        if ent:isArrested() and not ply:isArrested() and ply:getJobTable().unarrest then
+            table.insert(tbl,
+            {
+                callback = function(ent2, ply2)
+                    if ent2:isArrested() and !ply2:isArrested() and ply:getJobTable().unarrest then
+                        GAMEMODE.Config.telefromjail = false
+                        ent2:unArrest(ply2)
+                        GAMEMODE.Config.telefromjail = true
+                    end
+                end,
+                interacttime = 1,
+                message = "Unarrest"
+            })
+        end
+
+        return tbl
     elseif ent:GetClass() == "prop_ragdoll" then
         local downed_ply = ent:GetNWBool("IMDE_IsRagdoll", false) and ent:GetOwner() or ent
 

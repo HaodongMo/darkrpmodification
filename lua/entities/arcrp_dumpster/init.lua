@@ -165,10 +165,10 @@ function ENT:Scavenge(activator, caller)
         local roll = math.random(1, 100)
 
         // Weapon
-        if roll <= 7 then
+        if roll <= 20 then
             // roll random melee
             local randowep = table.Random(self.ScavengeLoot_Melees)
-            if roll <= 2 then
+            if roll <= 5 then
                 // roll random gun
                 randowep = table.Random(self.ScavengeLoot_Guns)
             end
@@ -183,6 +183,10 @@ function ENT:Scavenge(activator, caller)
             newwep.nodupe = true
             newwep.spawnedBy = activator
 
+            for i = 0, math.random(0, 3) do
+                ArcRP_AddBrokenAttachment(newwep)
+            end
+
             if newwep.ArcticTacRP and newwep.Attachments then
                 for k, v in pairs(newwep.Attachments) do
                     if v.Category == "bolt_automatic" or v.Category == "bolt_manual"
@@ -195,11 +199,11 @@ function ENT:Scavenge(activator, caller)
             newwep:Spawn()
 
             DarkRP.notify(activator, 0, 5, "You found " .. descriptors[math.random(1, #descriptors)] .. " " .. newwep.PrintName .. "!")
-        elseif roll <= 12 then
+        elseif roll <= 40 then
             local amount = math.ceil(math.random(1, 15))
             activator:addMoney(amount)
             DarkRP.notify(activator, 0, 5, "You found " .. DarkRP.formatMoney(amount) .. "!")
-        elseif roll <= 50 then
+        elseif roll <= 75 then
             local newwep = ents.Create(table.Random(self.ScavengeLoot_Items))
             if !IsValid(newwep) then print("Invalid entity: " .. randowep) return end
             local newpos = self:GetPos()

@@ -62,7 +62,7 @@ function ArcRP_AddBrokenAttachment(weapon)
 
             return true
         end
-    else
+    elseif weapon.IsSpawnedWeapon then
         local unbroken_slots = {}
 
         local weptbl = weapons.Get(weapon:GetWeaponClass())

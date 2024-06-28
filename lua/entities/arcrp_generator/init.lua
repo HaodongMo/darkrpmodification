@@ -164,3 +164,7 @@ end
 function ENT:OnRemove()
     self:PowerOff()
 end
+
+function ENT:GetPreferredCarryAngles(ply)
+    return Angle(0, 180, 0)
+end

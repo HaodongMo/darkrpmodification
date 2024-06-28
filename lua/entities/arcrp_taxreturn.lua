@@ -82,3 +82,7 @@ hook.Add("PlayerDisconnected", "ArcRP_TaxReturn", function(ply)
         timer.Remove(timername)
     end
 end)
+
+function ENT:GetPreferredCarryAngles(ply)
+    return Angle(90, -90, 90)
+end

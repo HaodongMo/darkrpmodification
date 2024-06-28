@@ -34,6 +34,10 @@ ENT.OutputForce = Vector(0, -200, 250)
 ENT.NextPickupTime = 0
 ENT.CraftingStoppedTime = 0
 
+function ENT:GetPreferredCarryAngles(ply)
+    return Angle(0, 90, 0)
+end
+
 function ENT:Touch(entity)
     if self.NextPickupTime > CurTime() or entity.USED then return end
 

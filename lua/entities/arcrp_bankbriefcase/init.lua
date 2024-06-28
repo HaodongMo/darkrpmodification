@@ -39,3 +39,7 @@ function ENT:Use(activator, caller)
         DarkRP.notify(activator, 0, 5, "This is the stolen money from the bank. Bring it to a money laundry to secure the loot!")
     end
 end
+
+function ENT:GetPreferredCarryAngles(ply)
+    return Angle(90, 0, 0)
+end

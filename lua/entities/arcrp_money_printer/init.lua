@@ -121,3 +121,7 @@ end
 function ENT:PowerOn()
     self.LastPrintTime = CurTime()
 end
+
+function ENT:GetPreferredCarryAngles(ply)
+    return Angle(45, 180, 0)
+end

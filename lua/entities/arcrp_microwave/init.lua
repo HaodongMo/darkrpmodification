@@ -133,3 +133,7 @@ function ENT:Eat(ply)
     self:SetHasCook(false)
     self:SetCookItem(0)
 end
+
+function ENT:GetPreferredCarryAngles(ply)
+    return Angle(0, 90, 0)
+end

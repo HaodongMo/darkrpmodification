@@ -51,3 +51,7 @@ elseif CLIENT then
         cam.End3D2D()
     end
 end
+
+function ENT:GetPreferredCarryAngles(ply)
+    return Angle(90, -90, 90)
+end

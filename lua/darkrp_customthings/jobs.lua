@@ -350,10 +350,11 @@ TEAM_GANGSTER = DarkRP.createJob("Gangster", {
     salary = 0,
     admin = 0,
     category = "Citizens",
-    max = 6,
+    max = 0,
     sortOrder = 109,
     canRob = true,
     canMug = true,
+    canHitman = true,
     weapons = {}
 })
 

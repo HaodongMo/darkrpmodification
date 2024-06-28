@@ -2,7 +2,7 @@ ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
 ENT.PrintName = "Money Briefcase"
 ENT.Author = "Arctic"
-ENT.Spawnable = false
+ENT.Spawnable = true
 
 ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 

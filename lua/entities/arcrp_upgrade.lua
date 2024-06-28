@@ -36,3 +36,7 @@ elseif CLIENT then
         self:DrawModel()
     end
 end
+
+function ENT:GetPreferredCarryAngles(ply)
+    return Angle(90, 0, 0)
+end

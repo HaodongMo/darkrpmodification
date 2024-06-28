@@ -65,6 +65,8 @@ function ArcRP_GetCustomContextHint(ent, ply)
 end
 
 function ArcRP_GetCustomContextMenu(ent, ply)
+    if not ply:Alive() then return end
+
     if isfunction(ent.GetContextMenu) then
         return ent:GetContextMenu(ply)
     elseif ent:isKeysOwnable() then
@@ -215,7 +217,8 @@ net.Receive("arcrp_customuse", function(len, ply)
 
     if !IsValid(ent) then return end
 
-    if ent:GetPos():Distance(ply:GetPos()) > 256 then return end
+    if ent:GetPos():DistToSqr(ply:GetPos()) > 128 * 128 then return end
+    if !ply:Alive() then return end
 
     local context = ArcRP_GetCustomContextMenu(ent, ply)
 

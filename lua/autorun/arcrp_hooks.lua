@@ -22,6 +22,10 @@ local police_atts = {
 hook.Add("TacRP_CanCustomize", "tacrp_rpcustomize", function(ply, wep, att, slot)
     local atttbl = TacRP.GetAttTable(att)
 
+    if atttbl.IsBlocker then
+        return false, "Permanently Damaged"
+    end
+
     local cat = istable(atttbl.Category) and atttbl.Category[1] or atttbl.Category
 
     if (cat == "melee_spec" or cat == "melee_boost") then
@@ -167,4 +171,33 @@ hook.Add("canPocket", "arcrp_unpocketable", function(ply, item)
     if item.unPocketAble then return false end
 
     return true
+end)
+
+hook.Add("EntityTakeDamage", "arcrp_destroyspawnedweapon", function(ent, dmg)
+    if !IsValid(ent) then return end
+    if !ent.IsSpawnedWeapon then return end
+
+    local damage = dmg:GetDamage()
+
+    if dmg:GetDamageType() == DMG_BLAST then
+        damage = damage * 2.5
+    elseif dmg:GetDamageType() == DMG_SONIC then
+        damage = damage * 0.1
+    end
+
+    local chance = math.min(damage, 30) / 30
+
+    if math.Rand(0, 1) <= chance then
+        local ok = ArcRP_AddBrokenAttachment(ent)
+
+        if !ok then
+            local effectdata = EffectData()
+            effectdata:SetStart(ent:GetPos())
+            effectdata:SetOrigin(ent:GetPos())
+            effectdata:SetScale(1)
+            util.Effect("HelicopterMegaBomb", effectdata)
+
+            SafeRemoveEntity(ent)
+        end
+    end
 end)

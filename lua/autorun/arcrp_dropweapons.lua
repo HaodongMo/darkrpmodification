@@ -8,6 +8,7 @@ local dodrop = {
 }
 
 local function CanDropWeapon(victim, wep)
+    if !IsValid(wep) then return false end
     if wep:GetNWBool("TacRP_PoliceBiocode", false) then return false end -- do not drop police coded weapons
     if wep.AdminOnly then return false end
     if !wep.Spawnable then return false end

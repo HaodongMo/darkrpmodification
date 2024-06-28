@@ -152,13 +152,17 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                         DarkRP.notify(attacker, 3, 5, victim:Nick() .. " has no weapons you can take!")
                     end
                 end,
+                interacttime = 1,
                 message = "Disarm"
             })
 
             if ply:getJobTable().canHelpCritical or downed_ply:Health() > 1 then
                 local msg = "Help Up"
+                local time = 5
                 if downed_ply:Health() <= 1 then
                     msg = "Resuscitate"
+                elseif ply:getJobTable().canHelpCritical then
+                    time = 1
                 end
                 table.insert(tbl, {
                     callback = function(ent2, attacker)
@@ -171,6 +175,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                         DarkRP.notify(attacker, 0, 5, "You've helped " .. victim:Nick() .. " up!")
                         DarkRP.notify(victim, 0, 5, attacker:Nick() .. " has helped you up!")
                     end,
+                    interacttime = time,
                     message = msg
                 })
             end
@@ -206,67 +211,6 @@ function ArcRP_GetCustomContextMenu(ent, ply)
         end
     end
 end
-
-
-hook.Add("InputMouseApply", "ArcRP_ContextMenu_Wheel", function(cmd, x, y, ang)
-    if input.LookupBinding( "invnext" ) and input.LookupBinding( "invprev" ) then return end
-
-    contextScroll(-cmd:GetMouseWheel())
-end)
-
-hook.Add( "PlayerBindPress", "ArcRP_ContextMenu_Interact", function(ply, bind, pressed)
-    local block = nil
-
-    if pressed and bind == "invnext" then
-        block = contextScroll(1)
-    elseif pressed and bind == "invprev" then
-        block = contextScroll(-1)
-    elseif pressed and bind == "+use" then
-        local tr = LocalPlayer():GetEyeTrace()
-
-        local ent = tr.Entity
-        if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 128 * 128 then
-            return
-        end
-
-        local context = ArcRP_GetCustomContextMenu(ent, LocalPlayer())
-
-        if context then
-            local contextitem = context[contextindex]
-
-            if contextitem then
-                if contextitem.callback then
-                    net.Start("arcrp_customuse")
-                    net.WriteEntity(ent)
-                    net.WriteUInt(contextindex, 8)
-                    net.SendToServer()
-                end
-
-                if contextitem.interacttime then
-                    startinteracttime = CurTime()
-                    interacting_ent = ent
-                    interacting_context = contextitem
-                else
-                    if contextitem.cl_callback then
-                        contextitem.cl_callback(ent, LocalPlayer())
-                    end
-
-                    interacting_ent = nil
-                end
-
-                block = true
-            end
-        end
-    elseif !pressed and bind == "+use" then
-        if interacting_ent then
-            net.Start("arcrp_customusefinish")
-            net.WriteBool(true)
-            net.SendToServer()
-        end
-    end
-
-    return block
-end)
 
 if SERVER then
 

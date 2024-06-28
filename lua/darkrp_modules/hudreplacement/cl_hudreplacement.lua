@@ -588,7 +588,7 @@ local function hudPaint()
         TacRP.DrawCorneredBox(x, y, w, h)
         draw.SimpleText(text, font, x + TacRP.SS(4), y + TacRP.SS(2), textcol, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
-        if longUsing then
+        if longUsing and selected then
             surface.SetDrawColor(255, 255, 255, 150)
             surface.DrawRect(x, y, w * perc, h)
 

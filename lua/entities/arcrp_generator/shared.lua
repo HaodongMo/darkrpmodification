@@ -65,7 +65,6 @@ function ENT:GetContextMenu(player)
     if self:GetSwitchedOn() then
         table.insert(tbl, {
             message = "Switch Off",
-            interacttime = 1,
             callback = function(ent, ply)
                 if ent:GetPos():DistToSqr(ply:GetPos()) > 256 * 256 or ent.NextUse > CurTime() then return end
                 ent:EmitSound("buttons/lever1.wav")
@@ -77,7 +76,6 @@ function ENT:GetContextMenu(player)
     else
         table.insert(tbl, {
             message = "Switch On",
-            interacttime = 1,
             callback = function(ent, ply)
                 if ent:GetPos():DistToSqr(ply:GetPos()) > 256 * 256 or ent.NextUse > CurTime() then return end
                 ent:EmitSound("buttons/lever1.wav")
@@ -94,6 +92,7 @@ function ENT:GetContextMenu(player)
     if self:GetConnectedEntityAmount() > 0 then
         table.insert(tbl, {
             message = "Disconnect",
+            interacttime = 1,
             callback = function(ent, ply)
                 if ent:GetPos():DistToSqr(ply:GetPos()) > 256 * 256 or ent.NextUse > CurTime() then return end
 

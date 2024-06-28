@@ -277,7 +277,7 @@ Free your clients from prison (with or without the police's consent).]],
     salary = GAMEMODE.Config.normalsalary,
     admin = 0,
     category = "Citizens",
-    max = 1,
+    max = 2,
     sortOrder = 103,
     unarrest = true,
     weapons = {}
@@ -294,25 +294,25 @@ Buy autolathes and provide it ingredients to craft weapons, explosives, and upgr
     salary = GAMEMODE.Config.normalsalary,
     admin = 0,
     category = "Citizens",
-    max = 2,
+    max = 3,
     sortOrder = 104,
     weapons = {}
 })
 
-TEAM_COURIER = DarkRP.createJob("Courier", {
-    color = Color(255, 225, 100, 255),
-    model = {"models/player/hostage/hostage_03.mdl"},
-    description =
-[[You can hold a lot of items in your pockets. Make deliveries or sales.]],
-    command = "courier",
-    salary = GAMEMODE.Config.normalsalary,
-    admin = 0,
-    maxpocket  = 15,
-    category = "Citizens",
-    max = 3,
-    sortOrder = 105,
-    weapons = {}
-})
+// TEAM_COURIER = DarkRP.createJob("Courier", {
+//     color = Color(255, 225, 100, 255),
+//     model = {"models/player/hostage/hostage_03.mdl"},
+//     description =
+// [[You can hold a lot of items in your pockets. Make deliveries or sales.]],
+//     command = "courier",
+//     salary = GAMEMODE.Config.normalsalary,
+//     admin = 0,
+//     maxpocket  = 15,
+//     category = "Citizens",
+//     max = 3,
+//     sortOrder = 105,
+//     weapons = {}
+// })
 
 TEAM_SHOPKEEPER = DarkRP.createJob("Shopkeeper", {
     color = Color(150, 255, 75, 255),
@@ -324,7 +324,7 @@ TEAM_SHOPKEEPER = DarkRP.createJob("Shopkeeper", {
     admin = 0,
     maxpocket = 5,
     category = "Citizens",
-    max = 2,
+    max = 3,
     sortOrder = 106,
     weapons = {}
 })

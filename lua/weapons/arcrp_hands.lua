@@ -158,7 +158,6 @@ end
 
 hook.Add("StartCommand", "ArcRP_Hands", function(ply, cmd)
     if cmd:KeyDown(IN_SPEED) and (
-            cmd:GetForwardMove() <= 0 or -- also stops backwards sprinting
             (IsValid(ply:GetActiveWeapon()) and ply:GetActiveWeapon():GetClass() == "arcrp_hands" and ply:GetActiveWeapon():GetDragging())) then
         cmd:RemoveKey(IN_SPEED)
     end

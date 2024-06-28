@@ -96,13 +96,6 @@ function SWEP:PrimaryAttack()
         local distsqr = tr.HitPos:DistToSqr(owner:EyePos())
         if self:CanDrag(ent) and distsqr <= 72 * 72 then
             self:StartDragging(ent, tr.HitPos, tr.PhysicsBone)
-        elseif SERVER then
-            local canPickup, message = hook.Call("canPocket", GAMEMODE, owner, ent)
-            if not canPickup then
-                if message then DarkRP.notify(owner, 1, 4, message) end
-                return
-            end
-            owner:addPocketItem(ent)
         end
     end
 end

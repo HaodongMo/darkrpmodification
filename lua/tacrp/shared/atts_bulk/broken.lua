@@ -5,7 +5,7 @@ ATT = {}
 
 ATT.PrintName = "Broken"
 ATT.Icon = Material("entities/tacrp_att_blocker.png", "mips smooth")
-ATT.Description = "This slot has been permanently damaged."
+ATT.Description = "This slot has been permanently damaged, and cannot be repaired."
 
 ATT.Category = "*"
 
@@ -23,6 +23,8 @@ ATT.Mult_Spread = 1.1
 ATT.Mult_Damage_Max = 0.95
 ATT.Mult_Damage_Min = 0.95
 ATT.Mult_RecoilKick = 1.05
+ATT.Mult_RecoilStability = 0.95
+ATT.Mult_RecoilSpreadPenalty = 1.05
 ATT.Mult_ClipSize = 0.95
 
 ATT.IsBlocker = true
@@ -37,7 +39,7 @@ ATT = {}
 
 ATT.PrintName = "Broken"
 ATT.Icon = Material("entities/tacrp_att_blocker.png", "mips smooth")
-ATT.Description = "This slot has been permanently damaged."
+ATT.Description = "This slot has been permanently damaged, and cannot be repaired."
 
 ATT.Category = "*"
 
@@ -55,6 +57,8 @@ ATT.Mult_Spread = 1.1
 ATT.Mult_Damage_Max = 0.95
 ATT.Mult_Damage_Min = 0.95
 ATT.Mult_RecoilKick = 1.05
+ATT.Mult_RecoilStability = 0.95
+ATT.Mult_RecoilSpreadPenalty = 1.05
 ATT.Mult_ClipSize = 0.95
 
 ATT.Override_ScopeHideWeapon = false

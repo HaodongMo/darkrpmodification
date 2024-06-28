@@ -35,6 +35,9 @@ end
 
 function ArcRP_AddBrokenAttachment(weapon)
     if weapon:IsWeapon() then
+        if !weapon.ArcticTacRP then return end
+        if weapon:GetValue("PrimaryMelee") then return false end
+
         local unbroken_slots = {}
 
         for i, slot in ipairs(weapon.Attachments) do
@@ -66,6 +69,7 @@ function ArcRP_AddBrokenAttachment(weapon)
         local unbroken_slots = {}
 
         local weptbl = weapons.Get(weapon:GetWeaponClass())
+        if weptbl.PrimaryMelee then return false end
 
         weapon.Attachments = weapon.Attachments or {}
 

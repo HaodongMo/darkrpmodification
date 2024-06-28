@@ -3,7 +3,7 @@ AddCSLuaFile()
 SWEP.IconOverride = "materials/entities/weapon_fists.png"
 SWEP.PrintName = "ArcRP Hands"
 SWEP.Purpose = "Multi-functionality SWEP. You're in good hands now."
-SWEP.Instructions = "Left Click: Pickup item / Drag body\nRight Click: Animation menu\nUnlock door\nReload: Open pocket"
+SWEP.Instructions = "Left Click: Pickup item / Drag body\nRight Click: Surrender!\nReload: Animation menu"
 SWEP.Spawnable = true
 SWEP.UseHands = true
 
@@ -85,9 +85,6 @@ function SWEP:Holster()
 end
 
 function SWEP:PrimaryAttack()
-    self:SetNextPrimaryFire(CurTime() + 0.2)
-    self:SetNextSecondaryFire(CurTime() + 0.2)
-
     local owner = self:GetOwner()
 
     if self:GetDragging() then
@@ -111,27 +108,10 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:SecondaryAttack()
-    self:SetNextPrimaryFire(CurTime() + 0.2)
-    self:SetNextSecondaryFire(CurTime() + 0.2)
-
-    if self:GetDragging() then
-        self:StopDragging()
-    end
 end
 
 function SWEP:Reload()
-    local owner = self:GetOwner()
-    if owner:KeyDown(IN_WALK) then
-        if CLIENT and not DarkRP.disabledDefaults["modules"]["animations"] then RunConsoleCommand("_DarkRP_AnimationMenu") end
-    else
-        if CLIENT then
-            DarkRP.openPocketMenu()
-        end
-        if SERVER and game.SinglePlayer() then
-            net.Start("DarkRP_PocketMenu")
-            net.Send(owner)
-        end
-    end
+    if CLIENT and not DarkRP.disabledDefaults["modules"]["animations"] then RunConsoleCommand("_DarkRP_AnimationMenu") end
 end
 
 function SWEP:ApplyForce()

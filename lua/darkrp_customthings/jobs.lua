@@ -218,7 +218,9 @@ TEAM_MEDIC = DarkRP.createJob("Medic", {
     color = Color(200, 200, 200, 255),
     model = {"models/player/kleiner.mdl"},
     description =
-[[With your first aid kit, you can heal other players.]],
+[[With your first aid kit, you can heal other players.
+
+You are capable of resuscitating critically injured players.]],
     command = "medic",
     salary = GAMEMODE.Config.normalsalary,
     admin = 0,
@@ -226,6 +228,7 @@ TEAM_MEDIC = DarkRP.createJob("Medic", {
     max = 3,
     sortOrder = 100,
     weapons = {"tacrp_medkit"},
+    canHelpCritical = true,
 })
 
 TEAM_LOCKSMITH = DarkRP.createJob("Locksmith", {

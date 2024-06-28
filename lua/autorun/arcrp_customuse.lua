@@ -26,17 +26,6 @@ function ArcRP_GetCustomContextHint(ent, ply)
                 if not IsValid(pk) or not pk:IsPlayer() then continue end
                 text = text .. ", " .. pk:Nick()
             end
-
-            // local allowedCoOwn = ent:getKeysAllowedToOwn()
-            // if allowedCoOwn and not fn.Null(allowedCoOwn) then
-            //     table.insert(doorInfo, DarkRP.getPhrase("keys_other_allowed"))
-
-            //     for k in pairs(allowedCoOwn) do
-            //         local pk = Player(k)
-            //         if not IsValid(pk) or not pk:IsPlayer() then continue end
-            //         doorInfo = doorInfo .. ", " .. pk:Nick()
-            //     end
-            // end
         elseif doorGroup then
             text = text .. doorGroup
         elseif doorTeams then
@@ -67,7 +56,11 @@ function ArcRP_GetCustomContextHint(ent, ply)
         if not(IsValid(downed_ply) and downed_ply:IsPlayer()) then return end
         if downed_ply == ply then return end
 
-        return downed_ply:Nick() .. " | " .. downed_ply:Health() .. "HP"
+        if downed_ply:Health() <= 1 then
+            return downed_ply:Nick() .. " | CRITICAL"
+        else
+            return downed_ply:Nick() .. " | " .. downed_ply:Health() .. "HP"
+        end
     end
 end
 
@@ -160,20 +153,23 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                 message = "Disarm"
             })
 
-            if true then
+            if ply:getJobTable().canHelpCritical or downed_ply:Health() > 1 then
+                local msg = "Help Up"
+                if downed_ply:Health() <= 1 then
+                    msg = "Resuscitate"
+                end
                 table.insert(tbl, {
                     callback = function(ent2, attacker)
                         local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
-    
-                        -- victim:IMDE_SetStamina(victim:IMDE_GetMaxStamina())
+
                         victim:IMDE_SetBalance(victim:IMDE_GetMaxBalance() * 0.5)
                         victim:IMDE_MakeConscious()
                         victim:ScreenFade(SCREENFADE.IN, Color(0, 0, 0, 255), 0.5, 0)
-    
+
                         DarkRP.notify(attacker, 0, 5, "You've helped " .. victim:Nick() .. " up!")
                         DarkRP.notify(victim, 0, 5, attacker:Nick() .. " has helped you up!")
                     end,
-                    message = "Help Up"
+                    message = msg
                 })
             end
 

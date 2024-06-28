@@ -435,14 +435,13 @@ local function hudPaintAmmo()
 end
 
 local contextindex = 1
-local lastcontextent = nil
+local lastcontextent = NULL
 local startinteracttime = 0
 local interacting_ent = NULL
 local interacting_context = nil
 local interacting_index = 0
 local lastusetime = 0
-local lastcontexttime = 0
-local lastcontextent = NULL
+local lastcontext = nil
 
 local function cancelUse()
     net.Start("arcrp_customusefinish")
@@ -490,11 +489,8 @@ local function hudPaint()
         local tr = LocalPlayer():GetEyeTrace()
         ent = tr.Entity
 
-        if !IsValid(ent) then
+        if !IsValid(ent) and lastusetime + 1 > CurTime() then
             ent = lastcontextent
-        else
-            lastcontextent = ent
-            lastcontexttime = CurTime()
         end
     end
 
@@ -553,13 +549,20 @@ local function hudPaint()
     local context = ArcRP_GetCustomContextMenu(ent, LocalPlayer())
 
     if !context then
-        contextindex = 1
-        return
+        if lastcontext and lastusetime + 1 > CurTime() then
+            context = lastcontext
+        else
+            contextindex = 1
+            return
+        end
     end
 
     if contextindex > #context then
         contextindex = #context
     end
+
+    lastcontext = context
+    lastcontextent = ent
 
     local x = ScrW() / 2 - TacRP.SS(16)
     local y = ScrH() / 2 + TacRP.SS(32)

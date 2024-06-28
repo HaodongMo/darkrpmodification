@@ -463,10 +463,33 @@ local function hudPaint()
     hudPaintAmmo()
     hudPaintHealth()
 
-    local tr = LocalPlayer():GetEyeTrace()
+    local longUsing = false
+    local time, perc
 
-    local ent = tr.Entity
+    if IsValid(interacting_ent) and contextindex != interacting_index then
+        cancelUse()
+    elseif IsValid(interacting_ent) and contextindex == interacting_index then
+        longUsing = true
+
+        time = CurTime() - startinteracttime
+        perc = math.min(time / interacting_context.interacttime, 1)
+
+        if perc == 1 then
+            finishUse()
+        end
+    end
+
+    local ent
+
+    if longUsing then
+        ent = interacting_ent
+    else
+        local tr = LocalPlayer():GetEyeTrace()
+        ent = tr.Entity
+    end
+
     if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 128 * 128 then
+        interacting_ent = NULL
         return
     end
 
@@ -526,22 +549,6 @@ local function hudPaint()
 
     if contextindex > #context then
         contextindex = #context
-    end
-
-    local longUsing = false
-    local time, perc
-
-    if IsValid(interacting_ent) and contextindex != interacting_index then
-        cancelUse()
-    elseif IsValid(interacting_ent) and contextindex == interacting_index then
-        longUsing = true
-
-        time = CurTime() - startinteracttime
-        perc = math.min(time / interacting_context.interacttime, 1)
-
-        if perc == 1 then
-            finishUse()
-        end
     end
 
     local x = ScrW() / 2 - TacRP.SS(16)

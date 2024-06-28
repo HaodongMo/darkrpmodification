@@ -211,6 +211,26 @@ function ArcRP_GetCustomContextMenu(ent, ply)
             end
 
             return tbl
+        elseif ent:GetNWBool("IMDE_IsRagdoll") then
+            local tbl = {}
+            if ent:GetNW2Int("AGINV_ContainerID", 0) > 0 then
+                table.insert(tbl, {
+                    callback = function(ent2, attacker)
+                        local con = AGINV.GetContainer(ent:GetNW2Int("AGINV_ContainerID", 0))
+                        if con then
+                            con:Sync(attacker)
+                            net.Start("aginv_container_open")
+                                net.WriteUInt(ent:GetNW2Int("AGINV_ContainerID", 0), AGINV_B_CON)
+                                net.WriteBool(true)
+                            net.Send(attacker)
+                        end
+                    end,
+                    interacttime = 1,
+                    message = "Loot Body"
+                })
+            end
+
+            return tbl
         end
     end
 end

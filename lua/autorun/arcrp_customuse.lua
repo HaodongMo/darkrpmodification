@@ -179,8 +179,8 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                         DarkRP.notify(attacker, 3, 5, victim:Nick() .. " has no weapons you can take!")
                     end
                 end,
-                interacttime = 1,
-                message = "Disarm"
+                interacttime = 5,
+                message = "Strip Weapons"
             })
 
             if ply:getJobTable().canHelpCritical or downed_ply:Health() > 1 then
@@ -250,7 +250,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                             net.Send(attacker)
                         end
                     end,
-                    interacttime = 1,
+                    interacttime = 3,
                     message = "Loot Body"
                 })
             end

@@ -124,10 +124,15 @@ hook.Add("PostPlayerDeath", "tacrp_police_arrest", function(victim)
     end
 end)
 
+local jobban_exempt = {
+    [GAMEMODE.DefaultTeam] = true,
+    [TEAM_POLICE_SUPERSOLDIER] = true,
+}
+
 if SERVER then
     // Switching to a new job voluntarily will teamban for a little while, unless jobs are CP
     hook.Add("OnPlayerChangedTeam", "arcrp_jobswitchban", function(ply, old, new)
-        if ply:Alive() and old != GAMEMODE.DefaultTeam and
+        if ply:Alive() and !jobban_exempt[old] and
                 !(GAMEMODE.CivilProtection[old] and GAMEMODE.CivilProtection[new]) then
             ply:teamBan(old, 120)
             // Switching off CP will also jobban rookie

@@ -211,7 +211,9 @@ if CLIENT then
     local visionAmt = 0
     local nextTgtCheck = 0
     local tgts = {}
-    local interactive_entities = {}
+    local interactive_entities = {
+        ["spawned_weapon"] = true
+    }
 
     local color_red = Color(255, 0, 25)
     local color_blue = Color(0, 0, 255)
@@ -284,12 +286,15 @@ if CLIENT then
                 end
             end
             for _, ent in pairs(ents.FindInSphere(EyePos(), 1024)) do
-                if ent.ScopeOutHint then
+                if ent.ScopeOutHint or ent:GetNWInt("arcrp_salescost", 0) > 0 or interactive_entities[ent:GetClass()] then
                     local d = ent:GetPos():DistToSqr(ply:GetPos()) / 1048576
                     if d <= 1 then
                         local toscreen = ent:WorldSpaceCenter():ToScreen()
                         local c = color_gold
-                        local msg = ent.ScopeOutHint
+                        local msg = ent.ScopeOutHint or ""
+                        if ent:GetNWInt("arcrp_salescost", 0) > 0 then
+                            msg = DarkRP.formatMoney(ent:GetNWInt("arcrp_salescost", 0))
+                        end
                         d = Lerp(0.75 - d, 0, 1)
                         surface.SetAlphaMultiplier(visionAmt * d)
                         draw.SimpleTextOutlined(msg, "TacRP_Myriad_Pro_24_Unscaled", toscreen.x, toscreen.y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)

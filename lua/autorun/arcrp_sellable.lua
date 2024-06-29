@@ -27,6 +27,10 @@ if SERVER then
     end)
 
     hook.Add("PlayerUse", "ArcRP_Sellable", function(ply, ent)
-        if ent.IsSellable then return false end
+        if ent.ArcRP_IsSellable then return false end
+    end)
+
+    hook.Add("PlayerCanPickupItem", "ArcRP_Sellable", function(ply, ent)
+        if ent.ArcRP_IsSellable then return false end
     end)
 end

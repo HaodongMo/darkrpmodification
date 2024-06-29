@@ -174,7 +174,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
 
                     if amount > 0 then
                         DarkRP.notify(attacker, 3, 5, "You've taken " .. tostring(amount) .. " weapons from " .. victim:Nick() .. "!")
-                        DarkRP.notify(victim, 1, 5, attacker:Nick() .. " has stolen your weapons")
+                        DarkRP.notify(victim, 1, 5, attacker:Nick() .. " has stolen your weapons!")
                     else
                         DarkRP.notify(attacker, 3, 5, victim:Nick() .. " has no weapons you can take!")
                     end

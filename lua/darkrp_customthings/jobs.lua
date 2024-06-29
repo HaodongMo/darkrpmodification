@@ -350,7 +350,7 @@ TEAM_GANGSTER = DarkRP.createJob("Gangster", {
     description =
 [[You have connections to the criminal underworld.
 
-Check out viable mugging targets, then take money from them by force or threat.
+Hold WALK key to see viable mugging targets, then take money from them by force or threat.
 Accept assassination contracts and kill your target by any means necessary.
 Assemble a crew and rob the bank, if you dare.
 ]],

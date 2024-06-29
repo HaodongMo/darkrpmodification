@@ -212,19 +212,21 @@ if CLIENT then
     local nextTgtCheck = 0
     local tgts = {}
 
-    local color_red = Color(255, 0, 75)
-    local color_grey = Color(50, 50, 50)
+    local color_red = Color(255, 0, 25)
     local color_blue = Color(0, 0, 255)
 
     local mat = Material("white_outline")
 
-    local function drawtgts(color)
+    local function drawtgts(color, highlight)
         for ply, info in pairs(tgts) do
             if not IsValid(ply) then continue end
-            if color then
-                render.SetBlend(visionAmt * 0.5)
+            local f = info[1]
+            if color and info[2] then
+                render.SetBlend(visionAmt * 0.1 * f)
                 render.MaterialOverride(mat)
                 render.SetColorModulation(info[2].r / 255, info[2].g / 255, info[2].b / 255)
+            elseif highlight then
+                render.SetBlend(visionAmt * f)
             end
             ply:DrawModel()
             for _, ent in pairs(ply:GetChildren()) do
@@ -233,7 +235,6 @@ if CLIENT then
                 end
             end
             render.MaterialOverride()
-            cam.IgnoreZ(false)
         end
     end
 
@@ -254,16 +255,24 @@ if CLIENT then
         if visionAmt > 0  then
             tgts = {}
             for _, victim in pairs(player.GetAll()) do
-                if victim:Alive() then
+                if victim ~= ply and victim:Alive() and (not IMDE or not victim:IMDE_IsHidden()) then
                     local d = victim:GetPos():DistToSqr(ply:GetPos()) / 107584
                     if d <= 1 then
-                        local c = color_grey
+                        local toscreen = victim:WorldSpaceCenter():ToScreen()
+                        local c = nil
+                        local msg = "Can't mug"
                         if victim:isCP() then
                             c = color_blue
                         elseif victim:GetNW2Float("NextCanBeMuggedTime", 0) < CurTime() then
                             c = color_red
+                            msg = "Can mug: " .. DarkRP.formatMoney(ArcRP_GetMoneyDropAmount(victim))
                         end
-                        tgts[victim] = {d, c, victim:EyePos():ToScreen()}
+                        d = Lerp(0.75 - d, 0, 1)
+                        local a = surface.GetAlphaMultiplier()
+                        surface.SetAlphaMultiplier(a * visionAmt * d)
+                        draw.SimpleTextOutlined(msg, "TacRP_Myriad_Pro_24_Unscaled", toscreen.x, toscreen.y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
+                        surface.SetAlphaMultiplier(a)
+                        tgts[victim] = {d, c}
                     end
                 end
             end
@@ -276,21 +285,13 @@ if CLIENT then
             ["$pp_colour_addr"] = 0,
             ["$pp_colour_addg"] = 0,
             ["$pp_colour_addb"] = 0,
-            ["$pp_colour_brightness"] = Lerp(visionAmt, 0, -0.1),
-            ["$pp_colour_contrast"] = Lerp(visionAmt, 1, 0.5),
+            ["$pp_colour_brightness"] = 0,
+            ["$pp_colour_contrast"] = Lerp(visionAmt, 1, 0.75),
             ["$pp_colour_colour"] = Lerp(visionAmt, 1, 0),
             ["$pp_colour_mulr"] = 0,
             ["$pp_colour_mulg"] = 0,
             ["$pp_colour_mulb"] = 0
         })
-
-        -- render.SetBlend(visionAmt)
-        -- render.SuppressEngineLighting(true)
-        -- cam.Start3D()
-        --     drawtgts(true)
-        -- cam.End3D()
-        -- render.SetBlend(1)
-        -- render.SuppressEngineLighting(false)
 
         render.ClearStencil()
         render.SetStencilWriteMask( 255 )
@@ -309,6 +310,7 @@ if CLIENT then
         -- Start creating the opening mask
         render.SetStencilPassOperation( STENCILOPERATION_REPLACE )
        
+        render.SetBlend(0)
         cam.Start3D()
             drawtgts()
         cam.End3D()
@@ -319,18 +321,15 @@ if CLIENT then
         -- We now want to only draw where the mask is set (Stencil Buffer values match the Reference Value)
         render.SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_EQUAL )
 
-        -- Clear the Depth Buffer on the masked pixels
-        -- Otherwise, the pixels from the entity and any surface behind it will always be 
-        -- in front of the interior and thus the interior will never draw.
-        -- render.ClearBuffersObeyStencil( 255, 0, 0, 255 * visionAmt, false )
-
-        render.SetBlend(visionAmt)
+        cam.Start3D()
+            drawtgts(false, true)
+        cam.End3D()
+    
         cam.Start3D()
             drawtgts(true)
         cam.End3D()
+
         render.SetBlend(1)
-
         render.SetStencilEnable( false )
-
-    end )
+    end)
 end

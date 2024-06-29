@@ -47,6 +47,7 @@ if SERVER then
 elseif CLIENT then
     function ENT:Initialize()
         // self.contextHint = self.PrintName .. " (Ingredient)"
+        self.ScopeOutHint = self.PrintName
     end
 
     function ENT:contextHint()

@@ -16,3 +16,5 @@ ENT.DisplayAngles = Angle(0, 90, 90)
 
 ENT.DisplayOffset1 = Vector(-12, 0, 17)
 ENT.DisplayOffset2 = Vector(-6, -17, 17)
+
+ENT.ScopeOutHint = "Drug Lab"

@@ -18,3 +18,5 @@ ENT.PowerCablePos = Vector(0, 0, 0)
 
 ENT.SoundLevel = 70
 ENT.Show3D2D = false
+
+ENT.ScopeOutHint = "Compact Generator"

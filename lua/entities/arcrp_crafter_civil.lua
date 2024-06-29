@@ -11,3 +11,5 @@ ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 ENT.Model = "models/props_wasteland/laundry_washer003.mdl"
 ENT.CraftingRecipeType = "civil"
+
+ENT.ScopeOutHint = "Civilian Autolathe"

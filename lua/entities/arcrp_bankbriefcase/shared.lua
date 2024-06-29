@@ -10,6 +10,8 @@ ENT.isBankBriefcase = true
 ENT.amount = 0
 ENT.unPocketAble = true
 
+ENT.ScopeOutHint = "Bank Briefcase"
+
 function ENT:SetupDataTables()
     self:NetworkVar("Float", 0, "Reward")
     self:NetworkVar("Float", 1, "TimeoutEnd")

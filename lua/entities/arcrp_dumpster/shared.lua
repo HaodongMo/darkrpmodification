@@ -9,6 +9,8 @@ ENT.RenderGroup = RENDERGROUP_OPAQUE
 
 ENT.isGunDumpster = true
 
+ENT.ScopeOutHint = "Dumpster"
+
 function ENT:SetupDataTables()
     self:NetworkVar("Float", 0, "NextScavengeTime")
     self:SetNextScavengeTime(0)

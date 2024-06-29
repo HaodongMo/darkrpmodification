@@ -8,6 +8,8 @@ ENT.Category = "ArcRP - Items"
 
 ENT.Model = "models/props_lab/clipboard.mdl"
 
+ENT.ScopeOutHint = "Life Insurance"
+
 if SERVER then
     function ENT:Initialize()
         self:SetModel(self.Model)

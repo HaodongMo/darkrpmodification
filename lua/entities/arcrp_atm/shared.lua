@@ -7,6 +7,8 @@ ENT.Spawnable = true
 
 ENT.RenderGroup = RENDERGROUP_OPAQUE
 
+ENT.ScopeOutHint = "ATM"
+
 function ENT:SetupDataTables()
 end
 

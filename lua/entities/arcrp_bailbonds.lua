@@ -9,6 +9,8 @@ ENT.Spawnable = true
 
 ENT.Model = "models/props_lab/clipboard.mdl"
 
+ENT.ScopeOutHint = "Bail Bonds"
+
 if SERVER then
     function ENT:Initialize()
         self:SetModel(self.Model)

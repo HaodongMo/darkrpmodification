@@ -11,6 +11,8 @@ ENT.Model = "models/props_lab/monitor02.mdl"
 
 ENT.LicenseCost = 15
 
+ENT.ScopeOutHint = "Government PC"
+
 function ENT:GetContextMenu(player)
     local tbl = {}
 
@@ -104,20 +106,6 @@ if SERVER then
 elseif CLIENT then
     function ENT:Draw()
         self:DrawModel()
-
-        local text = self.PrintName
-        local font = "CloseCaption_Bold"
-
-        local ang = self:GetAngles()
-        ang:RotateAroundAxis(ang:Up(), 90)
-        ang:RotateAroundAxis(ang:Forward(), 80)
-
-        surface.SetFont(font)
-        local w = surface.GetTextSize(text)
-
-        cam.Start3D2D(self:GetPos() + ang:Up() * 14 + ang:Forward() * 0 + ang:Right() * -14, ang, 0.11)
-            draw.WordBox(2, -w * 0.5, -30, text, font, Color(50, 50, 50, 150), Color(255,255,255,255))
-        cam.End3D2D()
     end
 
     function ENT:RequestLicense()

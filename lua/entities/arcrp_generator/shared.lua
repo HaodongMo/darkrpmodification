@@ -22,6 +22,8 @@ ENT.MaxConnectionUpgrades = 4
 ENT.SoundLevel = 90
 ENT.Show3D2D = true
 
+ENT.ScopeOutHint = "Generator"
+
 function ENT:SetupDataTables()
     self:NetworkVar("Float", 0, "Fuel")
 

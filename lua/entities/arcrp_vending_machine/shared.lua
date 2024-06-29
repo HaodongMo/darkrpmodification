@@ -9,6 +9,8 @@ ENT.RenderGroup = RENDERGROUP_OPAQUE
 
 ENT.isVendingMachine = true
 
+ENT.ScopeOutHint = "Vending Machine"
+
 function ENT:GetContextMenu(player)
     return {
         {

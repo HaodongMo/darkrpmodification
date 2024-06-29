@@ -16,3 +16,5 @@ function ENT:TakeDrug(ply)
         ply:SetHealth(newhp)
     end
 end
+
+ENT.ScopeOutHint = "Beer"

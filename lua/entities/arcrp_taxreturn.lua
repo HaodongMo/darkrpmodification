@@ -8,6 +8,8 @@ ENT.Category = "ArcRP - Items"
 
 ENT.Model = "models/props_lab/clipboard.mdl"
 
+ENT.ScopeOutHint = "Tax Return Forms"
+
 if SERVER then
     function ENT:Initialize()
         self:SetModel(self.Model)

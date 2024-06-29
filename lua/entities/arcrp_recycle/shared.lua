@@ -7,6 +7,8 @@ ENT.Spawnable = true
 
 ENT.RenderGroup = RENDERGROUP_OPAQUE
 
+ENT.ScopeOutHint = "Recycling Bin"
+
 function ENT:SetupDataTables()
     self:NetworkVar("Int", 0, "Money")
 

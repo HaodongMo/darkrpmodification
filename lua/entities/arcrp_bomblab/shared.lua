@@ -4,6 +4,8 @@ ENT.craftTime = 5
 
 ENT.interactionHint = "Craft random explosive"
 
+ENT.ScopeOutHint = "Bomb Lab"
+
 function ENT:initVars()
     self.model = "models/props_c17/TrapPropeller_Engine.mdl"
     self.initialPrice = GAMEMODE.Config.bomblabbombcost

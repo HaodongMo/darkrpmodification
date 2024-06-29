@@ -9,6 +9,8 @@ ENT.Author = "arctic arc9"
 ENT.Spawnable = true
 ENT.AdminSpawnable = false
 
+ENT.ScopeOutHint = "Microwave"
+
 ENT.CookItems = {
     {
         name = "Popcorn",

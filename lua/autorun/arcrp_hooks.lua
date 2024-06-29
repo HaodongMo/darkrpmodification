@@ -211,9 +211,11 @@ if CLIENT then
     local visionAmt = 0
     local nextTgtCheck = 0
     local tgts = {}
+    local interactive_entities = {}
 
     local color_red = Color(255, 0, 25)
     local color_blue = Color(0, 0, 255)
+    local color_gold = Color(255, 220, 0)
 
     local mat = Material("white_outline")
 
@@ -240,7 +242,7 @@ if CLIENT then
 
     hook.Add("HUDPaint", "ArcRP_MugVision", function()
         local ply = LocalPlayer()
-        if not ply:Alive() or not ply:getJobTable().canMug or (IMDE and ply:IMDE_IsHidden()) then
+        if not ply:Alive() or (IMDE and ply:IMDE_IsHidden()) then
             visionAmt = 0
             return
         end
@@ -254,26 +256,44 @@ if CLIENT then
 
         if visionAmt > 0  then
             surface.SetAlphaMultiplier(visionAmt)
-            draw.SimpleTextOutlined("Scoping out mugging targets", "TacRP_Myriad_Pro_10", ScrW() / 2, ScrH() * 0.2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
+            if ply:getJobTable().canMug then
+                draw.SimpleTextOutlined("Scoping out mugging targets", "TacRP_Myriad_Pro_10", ScrW() / 2, ScrH() * 0.2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
+            end
 
             tgts = {}
-            for _, victim in pairs(player.GetAll()) do
-                if victim ~= ply and victim:Alive() and (not IMDE or not victim:IMDE_IsHidden()) then
-                    local d = victim:GetPos():DistToSqr(ply:GetPos()) / 107584
-                    if d <= 1 then
-                        local toscreen = victim:WorldSpaceCenter():ToScreen()
-                        local c = nil
-                        local msg = "Can't mug"
-                        if victim:isCP() then
-                            c = color_blue
-                        elseif victim:GetNW2Float("NextCanBeMuggedTime", 0) < CurTime() then
-                            c = color_red
-                            msg = "Can mug: " .. DarkRP.formatMoney(ArcRP_GetMoneyDropAmount(victim))
+            if ply:getJobTable().canMug then
+                for _, victim in pairs(player.GetAll()) do
+                    if victim ~= ply and victim:Alive() and (not IMDE or not victim:IMDE_IsHidden()) then
+                        local d = victim:GetPos():DistToSqr(ply:GetPos()) / 107584
+                        if d <= 1 then
+                            local toscreen = victim:WorldSpaceCenter():ToScreen()
+                            local c = nil
+                            local msg = "Can't mug"
+                            if victim:isCP() then
+                                c = color_blue
+                            elseif victim:GetNW2Float("NextCanBeMuggedTime", 0) < CurTime() then
+                                c = color_red
+                                msg = "Can mug: " .. DarkRP.formatMoney(ArcRP_GetMoneyDropAmount(victim))
+                            end
+                            d = Lerp(0.75 - d, 0, 1)
+                            surface.SetAlphaMultiplier(visionAmt * d)
+                            draw.SimpleTextOutlined(msg, "TacRP_Myriad_Pro_24_Unscaled", toscreen.x, toscreen.y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
+                            tgts[victim] = {d, c}
                         end
+                    end
+                end
+            end
+            for _, ent in pairs(ents.FindInSphere(EyePos(), 1024)) do
+                if ent.ScopeOutHint then
+                    local d = ent:GetPos():DistToSqr(ply:GetPos()) / 1048576
+                    if d <= 1 then
+                        local toscreen = ent:WorldSpaceCenter():ToScreen()
+                        local c = color_gold
+                        local msg = ent.ScopeOutHint
                         d = Lerp(0.75 - d, 0, 1)
                         surface.SetAlphaMultiplier(visionAmt * d)
                         draw.SimpleTextOutlined(msg, "TacRP_Myriad_Pro_24_Unscaled", toscreen.x, toscreen.y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
-                        tgts[victim] = {d, c}
+                        tgts[ent] = {d, c}
                     end
                 end
             end

@@ -9,6 +9,8 @@ ENT.Author = "arctic arc9"
 ENT.Spawnable = true
 ENT.AdminSpawnable = false
 
+ENT.ScopeOutHint = "Money Printer"
+
 function ENT:SetupOtherDataTables()
     self:NetworkVar("Int", 0, "Paper")
     self:NetworkVar("Int", 1, "CapacityUpgrades")

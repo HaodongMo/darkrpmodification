@@ -9,6 +9,8 @@ ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
 
 ENT.isBankPallet = true
 
+ENT.ScopeOutHint = "Bank"
+
 function ENT:contextHint()
     if ArcRP_BankRob.IsRobberyActive() then
         return math.Round((1 - self:GetGreedProgress() / ArcRP_BankRob.GreedTime) * 100, 1) .. "% Full - Stay near to steal more!"

@@ -585,14 +585,14 @@ local function hudPaint()
             local sfont = "TacRP_HD44780A00_5x8_4"
             local s = TacRP.SS(8)
             local d = 0
-            local animtime = 1
+            local animtime = 0.5
 
             local utime = math.min(CurTime() - lastusetime, animtime)
 
             if utime < animtime then
                 local prog = utime / animtime
                 local a = prog - 1
-                d = math.sin(24 * a) * (1 - prog)
+                d = math.sin(16 * a) * (1 - (prog * prog))
             end
 
             if d == 0 then

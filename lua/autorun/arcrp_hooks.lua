@@ -1,4 +1,4 @@
-
+AddCSLuaFile()
 
 hook.Add("canVote", "tacrp_police_vote", function(ply, vote)
     if vote.votetype != "job" then return end

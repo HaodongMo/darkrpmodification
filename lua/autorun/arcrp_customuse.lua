@@ -145,29 +145,6 @@ function ArcRP_GetCustomContextMenu(ent, ply)
             message = "Check Health"
         })
 
-        if ply:getJobTable().canMug then
-            table.insert(tbl, {
-                callback = function(victim, attacker)
-                    if attacker:getJobTable().canMug then
-                        local nextMugTime = victim.NextCanBeMuggedTime or 0
-
-                        if nextMugTime > CurTime() or victim:getDarkRPVar("money") <= 0 then
-                            DarkRP.notify(attacker, 1, 3, "Their wallet is empty!")
-                            return
-                        else
-                            local money = ArcRP_GetMoneyDropAmount(victim)
-                            if money <= 0 then
-                                DarkRP.notify(attacker, 1, 3, "They don't have a whole lot of money...")
-                            else
-                                DarkRP.notify(attacker, 1, 3, "They have about " .. DarkRP.formatMoney(money) .. " in their wallet...")
-                            end
-                        end
-                    end
-                end,
-                message = "Frisk for Money"
-            })
-        end
-
         if ent:isArrested() and not ply:isArrested() and ply:getJobTable().unarrest then
             table.insert(tbl,
             {
@@ -255,12 +232,12 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                 })
             end
 
-            if ply:getJobTable().canMug then
+            if ply:getJobTable().canMug and !downed_ply:isCP() and downed_ply:GetNW2Float("NextCanBeMuggedTime", 0) <= CurTime() then
                 table.insert(tbl, {
                     interacttime = 1,
                     callback = function(ent2, attacker)
                         local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
-                        if attacker:getJobTable().canMug then
+                        if attacker:getJobTable().canMug and !victim:isCP() then
                             local nextMugTime = victim:GetNW2Float("NextCanBeMuggedTime", 0)
 
                             if nextMugTime > CurTime() or victim:getDarkRPVar("money") <= 0 then
@@ -279,7 +256,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                             victim:SetNW2Float("NextCanBeMuggedTime", CurTime() + Lerp((player.GetCount() - 5) / 20, 300, 600))
                         end
                     end,
-                    message = "Steal Money"
+                    message = "Mug for Money"
                 })
             end
 

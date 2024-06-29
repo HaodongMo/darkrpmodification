@@ -34,3 +34,19 @@ if SERVER then
         if ent.ArcRP_IsSellable then return false end
     end)
 end
+
+hook.Add("canLockpick", "ArcRP_Sellable", function(ply, ent, trace)
+    if ent.ArcRP_IsSellable then return true end
+end)
+
+hook.Add("onLockpickCompleted", "ArcRP_Sellable", function(ply, succeed, ent)
+    if ent.ArcRP_IsSellable and succeed then
+        ent.ArcRP_IsSellable = false
+        ent.ArcRP_SellOwner = nil
+        ent.ArcRP_SalesCost = nil
+        ent:SetNWInt("arcrp_salescost", 0)
+        ent:SetNWEntity("arcrp_sellowner", NULL)
+
+        return true
+    end
+end)

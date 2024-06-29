@@ -226,7 +226,7 @@ if CLIENT then
             if not IsValid(ply) then continue end
             local f = info[1]
             if color and info[2] then
-                render.SetBlend(visionAmt * 0.1 * f)
+                render.SetBlend(visionAmt * 0.25 * f)
                 render.MaterialOverride(mat)
                 render.SetColorModulation(info[2].r / 255, info[2].g / 255, info[2].b / 255)
             elseif highlight then
@@ -242,7 +242,7 @@ if CLIENT then
         end
     end
 
-    hook.Add("HUDPaint", "ArcRP_MugVision", function()
+    hook.Add("HUDPaint", "ArcRP_MugVision_HudPaint", function()
         local ply = LocalPlayer()
         if not ply:Alive() or (IMDE and ply:IMDE_IsHidden()) then
             visionAmt = 0
@@ -306,7 +306,7 @@ if CLIENT then
         end
     end)
 
-    hook.Add( "RenderScreenspaceEffects", "ArcRP_MugVision", function()
+    hook.Add( "RenderScreenspaceEffects", "ArcRP_MugVision_RSE", function()
         if visionAmt <= 0 then return end
         DrawColorModify({
             ["$pp_colour_addr"] = 0,
@@ -333,18 +333,18 @@ if CLIENT then
 
         -- We only care about the Tepth Test right now, so don't bother with the compare function
         render.SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_ALWAYS )
-        
+
         -- Start creating the opening mask
         render.SetStencilPassOperation( STENCILOPERATION_REPLACE )
-        
+
         render.SetBlend(0)
         cam.Start3D()
             drawtgts()
         cam.End3D()
-        
+
         -- Don't modify the mask now that it's created
         render.SetStencilFailOperation( STENCILOPERATION_KEEP )
-        
+
         -- We now want to only draw where the mask is set (Stencil Buffer values match the Reference Value)
         render.SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_EQUAL )
 

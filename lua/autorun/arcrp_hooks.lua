@@ -253,6 +253,9 @@ if CLIENT then
         end
 
         if visionAmt > 0  then
+            surface.SetAlphaMultiplier(visionAmt)
+            draw.SimpleTextOutlined("Scoping out mugging targets", "TacRP_Myriad_Pro_10", ScrW() / 2, ScrH() * 0.2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
+
             tgts = {}
             for _, victim in pairs(player.GetAll()) do
                 if victim ~= ply and victim:Alive() and (not IMDE or not victim:IMDE_IsHidden()) then
@@ -268,14 +271,13 @@ if CLIENT then
                             msg = "Can mug: " .. DarkRP.formatMoney(ArcRP_GetMoneyDropAmount(victim))
                         end
                         d = Lerp(0.75 - d, 0, 1)
-                        local a = surface.GetAlphaMultiplier()
-                        surface.SetAlphaMultiplier(a * visionAmt * d)
+                        surface.SetAlphaMultiplier(visionAmt * d)
                         draw.SimpleTextOutlined(msg, "TacRP_Myriad_Pro_24_Unscaled", toscreen.x, toscreen.y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
-                        surface.SetAlphaMultiplier(a)
                         tgts[victim] = {d, c}
                     end
                 end
             end
+            surface.SetAlphaMultiplier(1)
         end
     end)
 

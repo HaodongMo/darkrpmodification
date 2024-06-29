@@ -108,6 +108,41 @@ function ArcRP_GetCustomContextMenu(ent, ply)
     elseif ent:IsPlayer() then
         local tbl = {}
 
+        table.insert(tbl, {
+            interacttime = 1,
+            callback = function(victim, attacker)
+                local msg = "fine"
+                local perc = victim:Health() / victim:GetMaxHealth()
+
+                if perc >= 1.0 then
+                    msg = "perfectly fine"
+                elseif perc >= 0.9 then
+                    msg = "mostly fine"
+                elseif perc >= 0.8 then
+                    msg = "hurt"
+                elseif perc >= 0.7 then
+                    msg = "slightly injured"
+                elseif perc >= 0.6 then
+                    msg = "somewhat injured"
+                elseif perc >= 0.5 then
+                    msg = "injured"
+                elseif perc >= 0.4 then
+                    msg = "badly injured"
+                elseif perc >= 0.3 then
+                    msg = "very badly injured"
+                elseif perc >= 0.2 then
+                    msg = "severely injured"
+                elseif perc >= 0.1 then
+                    msg = "critically injured"
+                else
+                    msg = "near death"
+                end
+
+                DarkRP.notify(attacker, 0, 3, victim:Nick() .. " is " .. msg .. ".")
+            end,
+            message = "Check Health"
+        })
+
         if ply:getJobTable().canMug then
             table.insert(tbl, {
                 callback = function(victim, attacker)

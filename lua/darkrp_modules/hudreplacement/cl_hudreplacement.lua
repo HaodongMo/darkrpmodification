@@ -465,6 +465,8 @@ local function hudPaint()
     hudPaintAmmo()
     hudPaintHealth()
 
+    -- Context menu
+
     local longUsing = false
     local time, perc
 
@@ -641,6 +643,102 @@ local function hudPaint()
 end
 
 hook.Add("HUDPaint", "DarkRP_Mod_HUDPaint", hudPaint)
+
+
+hook.Add("HUDDrawTargetID", "DarkRP_Mod_HUDPaint", function()
+    -- Names above heads
+
+    local players = player.GetAll()
+
+    cam.Start3D()
+    for _, ply in ipairs(players) do
+        if ply == LocalPlayer() then continue end
+        if ply:GetNoDraw() then ply.NamePercentage = 0 continue end
+        local targetnamepercentage = 1
+
+        if ply:GetPos():DistToSqr(LocalPlayer():GetPos()) > 512 * 512 then
+            targetnamepercentage = 0
+        end
+
+        if targetnamepercentage > 0 then
+            local dot = ply:EyeAngles():Forward():Dot(LocalPlayer():EyeAngles():Forward())
+            if dot > 0.5 then
+                targetnamepercentage = 0
+            end
+        end
+
+        if targetnamepercentage > 0 then
+            local etr = util.TraceLine({
+                start = EyePos(),
+                endpos = ply:EyePos(),
+                mask = MASK_OPAQUE,
+                filter = {
+                    LocalPlayer(),
+                    ply
+                }
+            })
+
+            if etr.Hit then
+                targetnamepercentage = 0
+            end
+        end
+
+        ply.NamePercentage = ply.NamePercentage or 0
+
+        ply.NamePercentage = math.Approach(ply.NamePercentage, targetnamepercentage, FrameTime() / 0.75)
+
+        if ply.NamePercentage <= 0 then continue end
+
+        local pos = ply:GetPos() + Vector(0, 0, 76)
+        local ToScreen = pos:ToScreen()
+
+        ply.nameToScreenPos = ToScreen
+    end
+    cam.End3D()
+
+    for _, ply in ipairs(players) do
+        if ply == LocalPlayer() then continue end
+        if !ply.nameToScreenPos then continue end
+
+        local x = ply.nameToScreenPos.x
+        local y = ply.nameToScreenPos.y - TacRP.SS(12)
+        local nameperc = ply.NamePercentage
+
+        if nameperc <= 0 then
+            ply.JunkName = nil
+            continue
+        end
+
+        local text = ply:GetName()
+        local namelen = string.len(text)
+
+        if !ply.JunkName then
+            ply.JunkName = ""
+            for i = 1, namelen do
+                ply.JunkName = ply.JunkName .. string.char(math.random(32, 126))
+            end
+        end
+
+        local resolved_chars = math.ceil(namelen * nameperc)
+
+        text = string.sub(text, 1, resolved_chars)
+        for i = resolved_chars, namelen - 1 do
+            text = text .. ply.JunkName[i]
+        end
+
+        local font = "TacRP_HD44780A00_5x8_4"
+        surface.SetFont(font)
+        local w, h = surface.GetTextSize(text)
+        w = w + TacRP.SS(8)
+        h = h + TacRP.SS(4)
+
+        local textcol = Color(255, 255, 255, nameperc * 255)
+        surface.SetDrawColor(0, 0, 0, nameperc * 100)
+
+        TacRP.DrawCorneredBox(x - w / 2, y, w, h)
+        draw.SimpleText(text, font, x, y + h / 2, textcol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    end
+end)
 
 local function contextScroll(val)
     local tr = LocalPlayer():GetEyeTrace()

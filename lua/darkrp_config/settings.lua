@@ -100,7 +100,7 @@ GM.Config.globalshow                    = false
 -- ironshoot - Enable/disable whether people need iron sights to shoot.
 GM.Config.ironshoot                     = true
 -- showjob - Whether or not to display a player's job above their head in-game.
-GM.Config.showjob                       = true
+GM.Config.showjob                       = false
 -- letters - Enable/disable letter writing / typing.
 GM.Config.letters                       = true
 -- license - Enable/disable People need a license to be able to pick up guns.
@@ -114,7 +114,7 @@ GM.Config.logging                       = true
 -- lottery - Enable/disable creating lotteries for mayors.
 GM.Config.lottery                       = false
 -- showname - Whether or not to display a player's name above their head in-game.
-GM.Config.showname                      = true
+GM.Config.showname                      = false
 -- showhealth - Whether or not to display a player's health above their head in-game.
 GM.Config.showhealth                    = false
 -- needwantedforarrest - Enable/disable Cops can only arrest wanted people.

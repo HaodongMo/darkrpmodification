@@ -465,6 +465,35 @@ local function hudPaint()
     hudPaintAmmo()
     hudPaintHealth()
 
+    -- hitman hud
+
+    if LocalPlayer():hasHit() then
+        local victim = LocalPlayer():getHitTarget()
+
+        local text = "Assassination Target:"
+        local text2 = victim:GetName()
+
+        local font = "TacRP_HD44780A00_5x8_4"
+        local font2 = "TacRP_HD44780A00_5x8_6"
+
+        surface.SetFont(font2)
+        local w = surface.GetTextSize(text2)
+        w = math.max(w, ScreenScale(72))
+        local h = ScreenScale(16)
+        local x = ScrW() / 2 - (w / 2)
+        local y = ScrH() - h - ScreenScale(4)
+
+        surface.SetFont(font)
+
+        surface.SetDrawColor(0, 0, 0, 200)
+        TacRP.DrawCorneredBox(x, y, w, h)
+
+        local textcol = Color(255, 255, 255)
+        draw.SimpleText(text, font, x + TacRP.SS(4), y + TacRP.SS(2), textcol, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+
+        draw.SimpleText(text2, font2, x + TacRP.SS(4), y + TacRP.SS(2 + 6), textcol, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+    end
+
     -- Context menu
 
     local longUsing = false
@@ -654,6 +683,7 @@ hook.Add("HUDDrawTargetID", "DarkRP_Mod_HUDPaint", function()
     for _, ply in ipairs(players) do
         if ply == LocalPlayer() then continue end
         if ply:GetNoDraw() then ply.NamePercentage = 0 continue end
+        if !ply:Alive() then ply.NamePercentage = 0 continue end
         local targetnamepercentage = 1
 
         if ply:GetPos():DistToSqr(LocalPlayer():GetPos()) > 512 * 512 then

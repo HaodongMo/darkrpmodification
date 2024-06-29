@@ -360,3 +360,7 @@ if CLIENT then
         render.SetStencilEnable( false )
     end)
 end
+
+hook.Add("PlayerChangedTeam", "ArcRP_HitMan", function(ply, oldteam, newteam)
+    ply:SetNWBool("arcrp_hitman", false)
+end)

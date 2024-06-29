@@ -1,7 +1,7 @@
 AddCSLuaFile()
 
 SWEP.IconOverride = "materials/entities/weapon_fists.png"
-SWEP.PrintName = "Label Printer"
+SWEP.PrintName = "Label Gun"
 SWEP.Purpose = "Create sellable entities by affixing labels to them."
 SWEP.Instructions = "Left Click: Make Sellable"
 SWEP.Spawnable = true

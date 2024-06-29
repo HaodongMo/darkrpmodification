@@ -102,8 +102,23 @@ function ArcRP_GetCustomContextMenu(ent, ply)
     if not ply:Alive() then return end
 
     if ent:GetNWInt("arcrp_salescost", 0) > 0 then
-        tbl = {
-            {
+        tbl = {}
+
+        if ent:GetNWEntity("arcrp_sellowner") == ply then
+            table.insert(tbl, {
+                message = "Remove from Sale",
+                callback = function(item, buyer)
+                    DarkRP.notify(buyer, 2, 3, "Item removed from sale!")
+                    item.ArcRP_IsSellable = false
+                    item.ArcRP_SellOwner = nil
+                    item.ArcRP_SalesCost = nil
+                    item:SetNWInt("arcrp_salescost", 0)
+                    item:SetNWEntity("arcrp_sellowner", NULL)
+                end,
+                interacttime = 0.5
+            })
+        else
+            table.insert(tbl, {
                 message = "Buy (" .. DarkRP.formatMoney(ent:GetNWInt("arcrp_salescost", 0)) .. ")",
                 callback = function(item, buyer)
                     if IsValid(item.ArcRP_SellOwner) then
@@ -126,21 +141,6 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                     if item.Setowning_ent then
                         item:Setowning_ent(buyer)
                     end
-                end,
-                interacttime = 0.5
-            }
-        }
-
-        if ent:GetNWEntity("arcrp_sellowner") == ply then
-            table.insert(tbl, {
-                message = "Remove from Sale",
-                callback = function(item, buyer)
-                    DarkRP.notify(buyer, 2, 3, "Item removed from sale!")
-                    item.ArcRP_IsSellable = false
-                    item.ArcRP_SellOwner = nil
-                    item.ArcRP_SalesCost = nil
-                    item:SetNWInt("arcrp_salescost", 0)
-                    item:SetNWEntity("arcrp_sellowner", NULL)
                 end,
                 interacttime = 0.5
             })

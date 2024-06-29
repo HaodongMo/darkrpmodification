@@ -202,6 +202,30 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                 }
             )
 
+            if ply:getJobTable().canHelpCritical or downed_ply:Health() > 1 then
+                local msg = "Help Up"
+                local time = 5
+                if downed_ply:Health() <= 1 then
+                    msg = "Resuscitate"
+                elseif ply:getJobTable().canHelpCritical then
+                    time = 1
+                end
+                table.insert(tbl, {
+                    callback = function(ent2, attacker)
+                        local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
+
+                        victim:IMDE_SetBalance(victim:IMDE_GetMaxBalance() * 0.5)
+                        victim:IMDE_MakeConscious()
+                        victim:ScreenFade(SCREENFADE.IN, Color(0, 0, 0, 255), 0.5, 0)
+
+                        DarkRP.notify(attacker, 0, 5, "You've helped " .. victim:Nick() .. " up!")
+                        DarkRP.notify(victim, 0, 5, attacker:Nick() .. " has helped you up!")
+                    end,
+                    interacttime = time,
+                    message = msg
+                })
+            end
+
             if ply:isCP() then
                 table.insert(tbl, {
                     callback = function(ent2, attacker)
@@ -230,30 +254,6 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                 interacttime = 5,
                 message = "Strip Weapons"
             })
-
-            if ply:getJobTable().canHelpCritical or downed_ply:Health() > 1 then
-                local msg = "Help Up"
-                local time = 5
-                if downed_ply:Health() <= 1 then
-                    msg = "Resuscitate"
-                elseif ply:getJobTable().canHelpCritical then
-                    time = 1
-                end
-                table.insert(tbl, {
-                    callback = function(ent2, attacker)
-                        local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
-
-                        victim:IMDE_SetBalance(victim:IMDE_GetMaxBalance() * 0.5)
-                        victim:IMDE_MakeConscious()
-                        victim:ScreenFade(SCREENFADE.IN, Color(0, 0, 0, 255), 0.5, 0)
-
-                        DarkRP.notify(attacker, 0, 5, "You've helped " .. victim:Nick() .. " up!")
-                        DarkRP.notify(victim, 0, 5, attacker:Nick() .. " has helped you up!")
-                    end,
-                    interacttime = time,
-                    message = msg
-                })
-            end
 
             if ply:getJobTable().canMug then
                 table.insert(tbl, {

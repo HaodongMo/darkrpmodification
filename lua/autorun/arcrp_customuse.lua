@@ -290,6 +290,23 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                 })
             end
 
+            table.insert(tbl, {
+                callback = function(body, investigator)
+                    local roll = math.random(2, 2)
+
+                    if roll == 1 then
+                        -- Name
+                        DarkRP.notify(investigator, 0, 3, "The body belonged to a person named " .. body.DeathInfo.name .. ".")
+                    elseif roll == 2 then
+                        DarkRP.notify(investigator, 0, 3, "The fatal blow was dealt by a " .. body.DeathInfo.inflictor.PrintName .. ".")
+                    else
+                        DarkRP.notify(investigator, 1, 3, "You failed to find any meaningful clues...")
+                    end
+                end,
+                interacttime = 1,
+                message = "Investigate"
+            })
+
             return tbl
         end
     end

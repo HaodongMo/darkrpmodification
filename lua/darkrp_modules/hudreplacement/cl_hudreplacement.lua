@@ -518,7 +518,7 @@ local function hudPaint()
             end
         end
 
-        if ent.interactionHint then
+        if ent.interactionHint and ent:GetNWInt("arcrp_salescost", 0) == 0 then
             local interactionText
             if isfunction(ent.interactionHint) then
                 interactionText = ent:interactionHint()

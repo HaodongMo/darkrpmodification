@@ -9,6 +9,7 @@ ENT.Category = "ArcRP - Items"
 ENT.Model = "models/props_lab/clipboard.mdl"
 
 ENT.ScopeOutHint = "Life Insurance"
+ENT.CanBeSold = true
 
 if SERVER then
     function ENT:Initialize()

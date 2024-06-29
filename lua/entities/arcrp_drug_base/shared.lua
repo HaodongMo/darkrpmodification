@@ -9,3 +9,5 @@ ENT.RenderGroup = RENDERGROUP_OPAQUE
 function ENT:interactionHint()
     return self.PrintName
 end
+
+ENT.CanBeSold = true

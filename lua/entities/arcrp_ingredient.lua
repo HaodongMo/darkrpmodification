@@ -9,6 +9,7 @@ ENT.isCraftingIngredient = true
 
 ENT.craftingIngredient = ""
 ENT.Model = ""
+ENT.CanBeSold = true
 
 if SERVER then
     function ENT:Initialize()

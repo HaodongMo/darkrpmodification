@@ -11,6 +11,8 @@ ENT.Model = "models/props_lab/clipboard.mdl"
 
 ENT.ScopeOutHint = "Bail Bonds"
 
+ENT.CanBeSold = true
+
 if SERVER then
     function ENT:Initialize()
         self:SetModel(self.Model)

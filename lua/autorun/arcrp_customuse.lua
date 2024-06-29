@@ -2,7 +2,10 @@
 -- ply = custom user
 
 function ArcRP_GetCustomContextHint(ent, ply)
-    if ent:isKeysOwnable() then
+    if ent.IsSpawnedWeapon then
+        local wep = weapons.Get(ent:GetWeaponClass())
+        return wep.PrintName
+    elseif ent:isKeysOwnable() then
         local blocked = ent:getKeysNonOwnable()
         local doorTeams = ent:getKeysDoorTeams()
         local doorGroup = ent:getKeysDoorGroup()
@@ -97,6 +100,54 @@ end
 
 function ArcRP_GetCustomContextMenu(ent, ply)
     if not ply:Alive() then return end
+
+    if ent:GetNWInt("arcrp_salescost", 0) > 0 then
+        tbl = {
+            {
+                message = "Buy (" .. DarkRP.formatMoney(ent:GetNWInt("arcrp_salescost", 0)) .. ")",
+                callback = function(item, buyer)
+                    if IsValid(item.ArcRP_SellOwner) then
+                        if buyer:getDarkRPVar("money") < item.ArcRP_SalesCost then
+                            DarkRP.notify(buyer, 1, 3, "You can't afford this!")
+                            return
+                        end
+
+                        buyer:addMoney(-item.ArcRP_SalesCost)
+                        item.ArcRP_SellOwner:addMoney(item.ArcRP_SalesCost)
+                    end
+
+                    DarkRP.notify(buyer, 0, 3, "Item purchased successfully!")
+                    item.ArcRP_IsSellable = false
+                    item.ArcRP_SellOwner = nil
+                    item.ArcRP_SalesCost = nil
+                    item:SetNWInt("arcrp_salescost", 0)
+                    item:SetNWEntity("arcrp_sellowner", NULL)
+                    item:SetOwner(buyer)
+                    if item.Setowning_ent then
+                        item:Setowning_ent(buyer)
+                    end
+                end,
+                interacttime = 0.5
+            }
+        }
+
+        if ent:GetNWEntity("arcrp_sellowner") == ply then
+            table.insert(tbl, {
+                message = "Remove from Sale",
+                callback = function(item, buyer)
+                    DarkRP.notify(buyer, 2, 3, "Item removed from sale!")
+                    item.ArcRP_IsSellable = false
+                    item.ArcRP_SellOwner = nil
+                    item.ArcRP_SalesCost = nil
+                    item:SetNWInt("arcrp_salescost", 0)
+                    item:SetNWEntity("arcrp_sellowner", NULL)
+                end,
+                interacttime = 0.5
+            })
+        end
+
+        return tbl
+    end
 
     if isfunction(ent.GetContextMenu) then
         return ent:GetContextMenu(ply)

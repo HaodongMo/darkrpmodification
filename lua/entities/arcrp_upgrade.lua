@@ -7,6 +7,8 @@ ENT.PrintName		= "Upgrade"
 ENT.isUpgrade = true
 ENT.upgradeType = ""
 
+ENT.CanBeSold = true
+
 if SERVER then
     function ENT:Initialize()
         self:SetModel(self.Model)

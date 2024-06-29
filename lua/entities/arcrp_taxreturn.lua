@@ -9,6 +9,7 @@ ENT.Category = "ArcRP - Items"
 ENT.Model = "models/props_lab/clipboard.mdl"
 
 ENT.ScopeOutHint = "Tax Return Forms"
+ENT.CanBeSold = true
 
 if SERVER then
     function ENT:Initialize()

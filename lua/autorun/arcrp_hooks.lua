@@ -216,11 +216,16 @@ if CLIENT then
     local color_grey = Color(50, 50, 50)
     local color_blue = Color(0, 0, 255)
 
+    local mat = Material("white_outline")
+
     local function drawtgts(color)
         for ply, info in pairs(tgts) do
             if not IsValid(ply) then continue end
             if color then
                 -- render.SetColorMaterialIgnoreZ()
+                // cam.IgnoreZ(true)
+                render.SetBlend(visionAmt * 0.5)
+                render.MaterialOverride(mat)
                 render.SetColorModulation(info[2].r / 255, info[2].g / 255, info[2].b / 255)
             end
             ply:DrawModel()
@@ -229,6 +234,8 @@ if CLIENT then
                     ent:DrawModel()
                 end
             end
+            render.MaterialOverride()
+            cam.IgnoreZ(false)
         end
     end
 

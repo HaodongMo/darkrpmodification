@@ -59,9 +59,40 @@ function ArcRP_GetCustomContextHint(ent, ply)
         if downed_ply:Health() <= 1 then
             return downed_ply:Nick() .. " | CRITICAL"
         else
-            return downed_ply:Nick() .. " | " .. downed_ply:Health() .. "HP"
+            return downed_ply:Nick()
         end
     end
+end
+
+local function checkhealth(victim, attacker)
+    local msg = "fine"
+    local perc = victim:Health() / victim:GetMaxHealth()
+
+    if perc >= 1.0 then
+        msg = "perfectly fine"
+    elseif perc >= 0.9 then
+        msg = "mostly fine"
+    elseif perc >= 0.8 then
+        msg = "hurt"
+    elseif perc >= 0.7 then
+        msg = "slightly injured"
+    elseif perc >= 0.6 then
+        msg = "somewhat injured"
+    elseif perc >= 0.5 then
+        msg = "injured"
+    elseif perc >= 0.4 then
+        msg = "badly injured"
+    elseif perc >= 0.3 then
+        msg = "very badly injured"
+    elseif perc >= 0.2 then
+        msg = "severely injured"
+    elseif perc >= 0.1 then
+        msg = "critically injured"
+    else
+        msg = "near death"
+    end
+
+    DarkRP.notify(attacker, 0, 3, victim:Nick() .. " is " .. msg .. ".")
 end
 
 function ArcRP_GetCustomContextMenu(ent, ply)
@@ -110,36 +141,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
 
         table.insert(tbl, {
             interacttime = 1,
-            callback = function(victim, attacker)
-                local msg = "fine"
-                local perc = victim:Health() / victim:GetMaxHealth()
-
-                if perc >= 1.0 then
-                    msg = "perfectly fine"
-                elseif perc >= 0.9 then
-                    msg = "mostly fine"
-                elseif perc >= 0.8 then
-                    msg = "hurt"
-                elseif perc >= 0.7 then
-                    msg = "slightly injured"
-                elseif perc >= 0.6 then
-                    msg = "somewhat injured"
-                elseif perc >= 0.5 then
-                    msg = "injured"
-                elseif perc >= 0.4 then
-                    msg = "badly injured"
-                elseif perc >= 0.3 then
-                    msg = "very badly injured"
-                elseif perc >= 0.2 then
-                    msg = "severely injured"
-                elseif perc >= 0.1 then
-                    msg = "critically injured"
-                else
-                    msg = "near death"
-                end
-
-                DarkRP.notify(attacker, 0, 3, victim:Nick() .. " is " .. msg .. ".")
-            end,
+            callback = checkhealth,
             message = "Check Health"
         })
 
@@ -188,6 +190,17 @@ function ArcRP_GetCustomContextMenu(ent, ply)
         if IsValid(downed_ply) and downed_ply:IsPlayer() then
             if downed_ply == ply then return end
             local tbl = {}
+
+            table.insert(tbl,
+                {
+                    interacttime = 1,
+                    callback = function(ent2, attacker)
+                        local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
+                        checkhealth(victim, attacker)
+                    end,
+                    message = "Check Health"
+                }
+            )
 
             if ply:isCP() then
                 table.insert(tbl, {
@@ -292,16 +305,48 @@ function ArcRP_GetCustomContextMenu(ent, ply)
 
             table.insert(tbl, {
                 callback = function(body, investigator)
-                    local roll = math.random(2, 2)
+                    local hintnum = 6
+                    local roll = body.DeathRoll or math.random(1, hintnum)
 
                     if roll == 1 then
                         -- Name
-                        DarkRP.notify(investigator, 0, 3, "The body belonged to a person named " .. body.DeathInfo.name .. ".")
+                        DarkRP.notify(investigator, 0, 3, "The victim was named " .. body.DeathInfo.name .. ".")
                     elseif roll == 2 then
-                        DarkRP.notify(investigator, 0, 3, "The fatal blow was dealt by a " .. body.DeathInfo.inflictor.PrintName .. ".")
-                    else
-                        DarkRP.notify(investigator, 1, 3, "You failed to find any meaningful clues...")
+                        DarkRP.notify(investigator, 0, 3, "The fatal blow was dealt by a " .. body.DeathInfo.weaponname .. ".")
+                    elseif roll == 3 then
+                        local killer =  body.DeathInfo.killer
+                        local killer_has_license = IsValid(killer) and killer:getDarkRPVar("HasGunlicense")
+
+                        if killer_has_license then
+                            DarkRP.notify(investigator, 0, 3, "It is clear that the killer was " .. killer:Nick() .. ".")
+                        elseif !IsValid(killer) then
+                            DarkRP.notify(investigator, 0, 3, "It is clear that the killer was " .. body.DeathInfo.killername .. ".")
+                        else
+                            DarkRP.notify(investigator, 0, 3, "The killer was not licensed to carry.")
+                        end
+                    elseif roll == 4 then
+                        local dist = math.Round(body.DeathInfo.dist * 0.0254)
+
+                        DarkRP.notify(investigator, 0, 3, "The killer was about " .. tostring(dist) .. " meters away from the victim.")
+                    elseif roll == 5 then
+                        local time = math.Round(CurTime() - body.DeathInfo.dietime, 0)
+
+                        if time > 60 then
+                            time = math.Round(time / 60)
+                            DarkRP.notify(investigator, 0, 3, "The victim died " .. tostring(time) .. " minute(s) ago.")
+                        else
+                            DarkRP.notify(investigator, 0, 3, "The victim died " .. tostring(time) .. " seconds ago.")
+                        end
+                    elseif roll == 6 then
+                        DarkRP.notify(investigator, 0, 3, "The victim was killed by a " .. body.DeathInfo.killerjob .. ".")
                     end
+
+                    roll = roll + 1
+                    if roll > hintnum then
+                        roll = 1
+                    end
+
+                    body.DeathRoll = roll
                 end,
                 interacttime = 1,
                 message = "Investigate"

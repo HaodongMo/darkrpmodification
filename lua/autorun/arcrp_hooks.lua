@@ -222,8 +222,6 @@ if CLIENT then
         for ply, info in pairs(tgts) do
             if not IsValid(ply) then continue end
             if color then
-                -- render.SetColorMaterialIgnoreZ()
-                // cam.IgnoreZ(true)
                 render.SetBlend(visionAmt * 0.5)
                 render.MaterialOverride(mat)
                 render.SetColorModulation(info[2].r / 255, info[2].g / 255, info[2].b / 255)

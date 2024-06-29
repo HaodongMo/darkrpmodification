@@ -104,9 +104,29 @@ function ArcRP_GetCustomContextMenu(ent, ply)
     if ent:GetNWInt("arcrp_salescost", 0) > 0 then
         tbl = {}
 
-        if ent:GetNWEntity("arcrp_sellowner") == ply then
+        local owner = ent:GetNWEntity("arcrp_sellowner")
+
+        if not IsValid(owner) then
+            return {
+                {
+                    message = "Check Owner",
+                    callback = function(item, buyer)
+                        local owner = player.GetBySteamID64(item.ArcRP_OwnerSteamID)
+
+                        if IsValid(owner) then
+                            DarkRP.notify(buyer, 0, 3, "Owner is back!")
+                            item:SetNWEntity("arcrp_sellowner", owner)
+                        else
+                            DarkRP.notify(buyer, 1, 3, "Owner is not around! Cannot buy.")
+                        end
+                    end
+                }
+            }
+        end
+
+        if owner == ply then
             table.insert(tbl, {
-                message = "Remove from Sale",
+                message = "Remove from Sale (" .. DarkRP.formatMoney(ent:GetNWInt("arcrp_salescost", 0)) .. ")",
                 callback = function(item, buyer)
                     DarkRP.notify(buyer, 2, 3, "Item removed from sale!")
                     item.ArcRP_IsSellable = false
@@ -119,7 +139,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
             })
         else
             table.insert(tbl, {
-                message = "Buy (" .. DarkRP.formatMoney(ent:GetNWInt("arcrp_salescost", 0)) .. ")",
+                message = "Buy (" .. DarkRP.formatMoney(ent:GetNWInt("arcrp_salescost", 0)) .. ") from " .. owner:GetName(),
                 callback = function(item, buyer)
                     if IsValid(item.ArcRP_SellOwner) then
                         if buyer:getDarkRPVar("money") < item.ArcRP_SalesCost then

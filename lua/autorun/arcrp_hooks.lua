@@ -331,7 +331,7 @@ if CLIENT then
         
         -- Start creating the opening mask
         render.SetStencilPassOperation( STENCILOPERATION_REPLACE )
-       
+        
         render.SetBlend(0)
         cam.Start3D()
             drawtgts()
@@ -346,7 +346,7 @@ if CLIENT then
         cam.Start3D()
             drawtgts(false, true)
         cam.End3D()
-    
+
         cam.Start3D()
             drawtgts(true)
         cam.End3D()

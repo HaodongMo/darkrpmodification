@@ -18,6 +18,7 @@ if SERVER then
         ent.ArcRP_IsSellable = true
         ent.ArcRP_SalesCost = cost
         ent.ArcRP_SellOwner = ply
+        ent.ArcRP_OwnerSteamID = ply:SteamID64()
 
         ent:SetNWInt("arcrp_salescost", cost)
         ent:SetNWEntity("arcrp_sellowner", ply)

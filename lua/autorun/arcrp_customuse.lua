@@ -248,7 +248,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                     callback = function(ent2, attacker)
                         local victim = ent2:GetNWBool("IMDE_IsRagdoll", false) and ent2:GetOwner() or ent2
                         if attacker:getJobTable().canMug then
-                            local nextMugTime = victim.NextCanBeMuggedTime or 0
+                            local nextMugTime = victim:GetNW2Float("NextCanBeMuggedTime", 0)
 
                             if nextMugTime > CurTime() or victim:getDarkRPVar("money") <= 0 then
                                 DarkRP.notify(attacker, 1, 3, "The victim's wallet is empty!")
@@ -263,7 +263,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                             DarkRP.notify(attacker, 3, 5, "You've stolen " .. DarkRP.formatMoney(money) .. " from " .. victim:Nick() .. "!")
                             DarkRP.notify(victim, 1, 5, attacker:Nick() .. " has stolen " .. DarkRP.formatMoney(money) .. " from you!")
 
-                            victim.NextCanBeMuggedTime = CurTime() + 300
+                            victim:SetNW2Float("NextCanBeMuggedTime", CurTime() + Lerp((player.GetCount() - 5) / 20, 300, 600))
                         end
                     end,
                     message = "Steal Money"

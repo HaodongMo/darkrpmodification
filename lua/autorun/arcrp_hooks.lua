@@ -1,4 +1,4 @@
-
+AddCSLuaFile()
 
 hook.Add("canVote", "tacrp_police_vote", function(ply, vote)
     if vote.votetype != "job" then return end
@@ -206,3 +206,126 @@ hook.Add("EntityTakeDamage", "arcrp_destroyspawnedweapon", function(ent, dmg)
         end
     end
 end)
+
+if CLIENT then
+    local visionAmt = 0
+    local nextTgtCheck = 0
+    local tgts = {}
+
+    local color_red = Color(255, 0, 75)
+    local color_grey = Color(50, 50, 50)
+    local color_blue = Color(0, 0, 255)
+
+    local function drawtgts(color)
+        for ply, info in pairs(tgts) do
+            if not IsValid(ply) then continue end
+            if color then
+                -- render.SetColorMaterialIgnoreZ()
+                render.SetColorModulation(info[2].r / 255, info[2].g / 255, info[2].b / 255)
+            end
+            ply:DrawModel()
+            for _, ent in pairs(ply:GetChildren()) do
+                if ent:GetClass() == "fcs_cloth" then
+                    ent:DrawModel()
+                end
+            end
+        end
+    end
+
+    hook.Add("HUDPaint", "ArcRP_MugVision", function()
+        local ply = LocalPlayer()
+        if not ply:Alive() or not ply:getJobTable().canMug or (IMDE and ply:IMDE_IsHidden()) then
+            visionAmt = 0
+            return
+        end
+
+        local ft = RealFrameTime()
+        if ply:KeyDown(IN_WALK) then
+            visionAmt = math.Approach(visionAmt, 1, ft * 3)
+        else
+            visionAmt = math.Approach(visionAmt, 0, ft * 10)
+        end
+
+        if visionAmt > 0  then
+            tgts = {}
+            for _, victim in pairs(player.GetAll()) do
+                if victim:Alive() then
+                    local d = victim:GetPos():DistToSqr(ply:GetPos()) / 107584
+                    if d <= 1 then
+                        local c = color_grey
+                        if victim:isCP() then
+                            c = color_blue
+                        elseif victim:GetNW2Float("NextCanBeMuggedTime", 0) < CurTime() then
+                            c = color_red
+                        end
+                        tgts[victim] = {d, c, victim:EyePos():ToScreen()}
+                    end
+                end
+            end
+        end
+    end)
+
+    hook.Add( "RenderScreenspaceEffects", "ArcRP_MugVision", function()
+        if visionAmt <= 0 then return end
+        DrawColorModify({
+            ["$pp_colour_addr"] = 0,
+            ["$pp_colour_addg"] = 0,
+            ["$pp_colour_addb"] = 0,
+            ["$pp_colour_brightness"] = Lerp(visionAmt, 0, -0.1),
+            ["$pp_colour_contrast"] = Lerp(visionAmt, 1, 0.5),
+            ["$pp_colour_colour"] = Lerp(visionAmt, 1, 0),
+            ["$pp_colour_mulr"] = 0,
+            ["$pp_colour_mulg"] = 0,
+            ["$pp_colour_mulb"] = 0
+        })
+
+        -- render.SetBlend(visionAmt)
+        -- render.SuppressEngineLighting(true)
+        -- cam.Start3D()
+        --     drawtgts(true)
+        -- cam.End3D()
+        -- render.SetBlend(1)
+        -- render.SuppressEngineLighting(false)
+
+        render.ClearStencil()
+        render.SetStencilWriteMask( 255 )
+        render.SetStencilTestMask( 255 )
+        render.SetStencilPassOperation( STENCILOPERATION_KEEP )
+        render.SetStencilZFailOperation( STENCILOPERATION_KEEP )
+
+        render.SetStencilEnable( true )
+
+        -- We'll use Stencil Buffer value 1 as the value representing the opening mask
+        render.SetStencilReferenceValue( 1 )
+
+        -- We only care about the Tepth Test right now, so don't bother with the compare function
+        render.SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_ALWAYS )
+        
+        -- Start creating the opening mask
+        render.SetStencilPassOperation( STENCILOPERATION_REPLACE )
+       
+        cam.Start3D()
+            drawtgts()
+        cam.End3D()
+        
+        -- Don't modify the mask now that it's created
+        render.SetStencilFailOperation( STENCILOPERATION_KEEP )
+        
+        -- We now want to only draw where the mask is set (Stencil Buffer values match the Reference Value)
+        render.SetStencilCompareFunction( STENCILCOMPARISONFUNCTION_EQUAL )
+
+        -- Clear the Depth Buffer on the masked pixels
+        -- Otherwise, the pixels from the entity and any surface behind it will always be 
+        -- in front of the interior and thus the interior will never draw.
+        -- render.ClearBuffersObeyStencil( 255, 0, 0, 255 * visionAmt, false )
+
+        render.SetBlend(visionAmt)
+        cam.Start3D()
+            drawtgts(true)
+        cam.End3D()
+        render.SetBlend(1)
+
+        render.SetStencilEnable( false )
+
+    end )
+end

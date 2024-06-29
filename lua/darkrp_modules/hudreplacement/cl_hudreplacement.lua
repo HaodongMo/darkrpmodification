@@ -9,7 +9,7 @@ local hideHUDElements = {
 
     -- DarkRP_EntityDisplay is the text that is drawn above a player when you look at them.
     -- This also draws the information on doors and vehicles
-    ["DarkRP_EntityDisplay"] = false,
+    ["DarkRP_EntityDisplay"] = true,
 
     -- This is the one you're most likely to replace first
     -- DarkRP_LocalPlayerHUD is the default HUD you see on the bottom left of the screen
@@ -726,7 +726,7 @@ hook.Add("HUDDrawTargetID", "DarkRP_Mod_HUDPaint", function()
             text = text .. ply.JunkName[i]
         end
 
-        local font = "TacRP_HD44780A00_5x8_4"
+        local font = "TacRP_HD44780A00_5x8_6"
         surface.SetFont(font)
         local w, h = surface.GetTextSize(text)
         w = w + TacRP.SS(8)
@@ -737,6 +737,30 @@ hook.Add("HUDDrawTargetID", "DarkRP_Mod_HUDPaint", function()
 
         TacRP.DrawCorneredBox(x - w / 2, y, w, h)
         draw.SimpleText(text, font, x, y + h / 2, textcol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+        local text2 = ""
+
+        if ply:getDarkRPVar("wanted") then
+            text2 = "WANTED"
+        elseif ply:getDarkRPVar("HasGunlicense") then
+            text2 = "Licensed"
+        end
+
+        if text2 != "" then
+            local y2 = y + TacRP.SS(12)
+            local x2 = x
+            local font2 = "TacRP_HD44780A00_5x8_4"
+            surface.SetFont(font2)
+            local w2, h2 = surface.GetTextSize(text2)
+            w2 = w2 + TacRP.SS(8)
+            h2 = h2 + TacRP.SS(4)
+
+            local textcol2 = Color(255, 255, 255, nameperc * 255)
+            surface.SetDrawColor(0, 0, 0, nameperc * 100)
+
+            TacRP.DrawCorneredBox(x2 - w2 / 2, y2, w2, h2)
+            draw.SimpleText(text2, font2, x2, y2 + h2 / 2, textcol2, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
     end
 end)
 

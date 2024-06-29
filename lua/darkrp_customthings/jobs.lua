@@ -345,10 +345,15 @@ TEAM_MARTIAL_ARTIST = DarkRP.createJob("Martial Artist", {
 })
 
 TEAM_GANGSTER = DarkRP.createJob("Gangster", {
-    color = Color(255, 50, 50, 255),
+    color = Color(75, 75, 75, 255),
     model = {"models/player/arctic.mdl"},
     description =
-[[You are able to commit crimes, such as robbery, mugging, and raids.]],
+[[You have connections to the criminal underworld.
+
+Check out viable mugging targets, then take money from them by force or threat.
+Accept assassination contracts and kill your target by any means necessary.
+Assemble a crew and rob the bank, if you dare.
+]],
     command = "gangster",
     salary = 0,
     admin = 0,

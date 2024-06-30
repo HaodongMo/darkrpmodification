@@ -34,6 +34,15 @@ SWEP.HitDistance = 60
 
 SWEP.DoNotDrop = true
 
+function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
+    y = y + 10
+    x = x + 10
+    wide = wide - 20
+
+    self:PrintWeaponInfo( x + wide + 20, y + tall * 0.95, alpha )
+    return
+end
+
 function SWEP:SetupDataTables()
     self:NetworkVar("Bool", 0, "Dragging")
 end

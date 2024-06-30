@@ -18,7 +18,7 @@ SWEP.Primary.Automatic = false
 SWEP.Primary.Ammo = "none"
 SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
-SWEP.Secondary.Automatic = false
+SWEP.Secondary.Automatic = true
 SWEP.Secondary.Ammo = "none"
 SWEP.ViewModelFlip = false
 SWEP.AutoSwitchTo = true
@@ -31,6 +31,8 @@ SWEP.DisableDuplicator = true
 SWEP.BounceWeaponIcon = false
 SWEP.m_bPlayPickupSound = false
 SWEP.HitDistance = 60
+
+SWEP.SurrenderDuration = 10
 
 SWEP.DoNotDrop = true
 
@@ -45,6 +47,8 @@ end
 
 function SWEP:SetupDataTables()
     self:NetworkVar("Bool", 0, "Dragging")
+    self:NetworkVar("Bool", 1, "Surrendered")
+    self:NetworkVar("Float", 0, "SurrenderTime")
 end
 
 function SWEP:GetDraggingEnt()
@@ -77,23 +81,73 @@ function SWEP:CanDrag(ent)
 end
 
 function SWEP:Initialize()
-    self:SetHoldType("normal")
+    self:SetShouldHoldType()
 end
 
 function SWEP:Deploy()
+    self:SetShouldHoldType()
     return true
 end
 
 function SWEP:OnDrop()
     self:Remove() -- You can't drop fists
+    self:SetShouldHoldType()
 end
 
 function SWEP:Holster()
+    self:SetShouldHoldType()
     self:StopDragging()
+
+    if self:GetSurrendered() then return false end
+
     return true
 end
 
+function SWEP:ShouldBeSurrendered()
+    return self:GetSurrenderTime() + self.SurrenderDuration > CurTime()
+end
+
+local bonemods = {
+    ["ValveBiped.Bip01_L_UpperArm"] = {
+        Pos = Vector(0, 0, 0),
+        Ang = Angle(-25, -90, 0)
+    },
+    ["ValveBiped.Bip01_R_UpperArm"] = {
+        Pos = Vector(0, 0, 0),
+        Ang = Angle(25, -90, 0)
+    },
+}
+
+function SWEP:SetShouldHoldType()
+    local holdtype = "normal"
+    local shouldbonemods = false
+
+    if self:GetSurrendered() then
+        holdtype = "duel"
+        shouldbonemods = true
+    end
+
+    local owner = self:GetOwner()
+
+    if !IsValid(owner) then return end
+
+    for bone, k in pairs(bonemods) do
+        local index = owner:LookupBone(bone)
+        if shouldbonemods then
+            owner:ManipulateBoneAngles(index, k.Ang, true)
+        else
+            owner:ManipulateBoneAngles(index, Angle(0, 0, 0), true)
+        end
+    end
+
+    if holdtype != self:GetHoldType() then
+        self:SetHoldType(holdtype)
+    end
+end
+
 function SWEP:PrimaryAttack()
+    if self:GetSurrendered() then return end
+
     local owner = self:GetOwner()
 
     if self:GetDragging() then
@@ -110,6 +164,8 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:SecondaryAttack()
+    self:SetSurrenderTime(CurTime())
+    self:SetShouldHoldType()
 end
 
 function SWEP:Reload()
@@ -157,12 +213,48 @@ end
 
 function SWEP:Think()
     if SERVER and self:GetDragging() then
-        if not IsValid(self:GetDraggingEnt()) then
+        if not IsValid(self:GetDraggingEnt()) or self:GetSurrendered() then
             self:StopDragging()
         else
             self:ApplyForce()
         end
     end
+
+    if self:ShouldBeSurrendered() and not self:GetSurrendered() then
+        self:StartSurrender()
+    elseif not self:ShouldBeSurrendered() and self:GetSurrendered() then
+        self:StopSurrender()
+    end
+end
+
+function SWEP:StartSurrender()
+    self:SetSurrendered(true)
+    self:SetShouldHoldType()
+end
+
+function SWEP:StopSurrender()
+    self:SetSurrendered(false)
+    self:SetShouldHoldType()
+end
+
+local colorBackground = Color(10, 10, 10, 120)
+
+function SWEP:DrawHUD()
+    if not self:GetSurrendered() then return end
+
+    local w = ScrW()
+    local h = ScrH()
+    local x, y, width, height = w / 2 - w / 10, h / 2 - 60, w / 5, h / 15
+    draw.RoundedBox(8, x, y, width, height, colorBackground)
+
+    local time = self.SurrenderDuration
+    local curtime = CurTime() - self:GetSurrenderTime()
+    local status = 1 - math.Clamp(curtime / time, 0, 1)
+    local BarWidth = status * (width - 16)
+    local cornerRadius = math.Min(8, BarWidth / 3 * 2 - BarWidth / 3 * 2 % 2)
+    draw.RoundedBox(cornerRadius, x + 8, y + 8, BarWidth, height - 16, Color(0 + (status * 255), 255 - (status * 255), 0, 255))
+
+    draw.DrawNonParsedSimpleText("Surrendered! Cannot change weapons...", "Trebuchet24", w / 2, y + height / 2, color_white, 1, 1)
 end
 
 hook.Add("StartCommand", "ArcRP_Hands", function(ply, cmd)
@@ -171,111 +263,3 @@ hook.Add("StartCommand", "ArcRP_Hands", function(ply, cmd)
         cmd:RemoveKey(IN_SPEED)
     end
 end)
-
-if SERVER then return end
-
-local function hack()
-    local pocket = pocket or {}
-    local frame
-
-    local function reload()
-        if not IsValid(frame) or not frame:IsVisible() then return end
-        if not pocket or next(pocket) == nil then frame:Close() return end
-    
-        local itemCount = table.Count(pocket)
-    
-        frame.List:Clear()
-        local items = {}
-    
-        for k, v in pairs(pocket) do
-            local ListItem = frame.List:Add("DPanel")
-            ListItem:SetSize(64, 64)
-    
-            local icon = vgui.Create("SpawnIcon", ListItem)
-            icon:SetModel(v.model)
-            icon:SetSize(64, 64)
-            icon:SetTooltip()
-            icon.DoClick = function(self)
-                icon:SetTooltip()
-    
-                net.Start("DarkRP_spawnPocket")
-                    net.WriteFloat(k)
-                net.SendToServer()
-                pocket[k] = nil
-    
-                itemCount = itemCount - 1
-    
-                if itemCount == 0 then
-                    frame:Close()
-                    return
-                end
-    
-                fn.Map(self.Remove, items)
-                items = {}
-    
-                local wep = LocalPlayer():GetActiveWeapon()
-    
-                wep:SetHoldType("pistol")
-                timer.Simple(0.2, function()
-                    if wep:IsValid() then
-                        wep:SetHoldType("normal")
-                    end
-                end)
-            end
-    
-            table.insert(items, icon)
-        end
-        if itemCount < GAMEMODE.Config.pocketitems then
-            for _ = 1, GAMEMODE.Config.pocketitems - itemCount do
-                local ListItem = frame.List:Add("DPanel")
-                ListItem:SetSize(64, 64)
-            end
-        end
-    end
-    function DarkRP.openPocketMenu()
-        if IsValid(frame) and frame:IsVisible() then return end
-        local wep = LocalPlayer():GetActiveWeapon()
-        if not wep:IsValid() or (wep:GetClass() ~= "pocket" and wep:GetClass() ~= "arcrp_hands") then return end
-    
-        if not pocket then
-            pocket = {}
-            return
-        end
-    
-        if table.IsEmpty(pocket) then return end
-        frame = vgui.Create("DFrame")
-    
-        local count = LocalPlayer():getJobTable().maxpocket or GAMEMODE.Config.pocketitems
-        frame:SetSize(345, 32 + (67 * math.ceil(count / 5)))
-        frame:SetTitle(DarkRP.getPhrase("drop_item"))
-        frame.btnMaxim:SetVisible(false)
-        frame.btnMinim:SetVisible(false)
-        frame:SetDraggable(false)
-        frame:MakePopup()
-        frame:Center()
-    
-        local Scroll = vgui.Create("DScrollPanel", frame)
-        Scroll:Dock(FILL)
-    
-        local sbar = Scroll:GetVBar()
-        sbar:SetWide(3)
-        frame.List = vgui.Create("DIconLayout", Scroll)
-        frame.List:Dock(FILL)
-        frame.List:SetSpaceY(3)
-        frame.List:SetSpaceX(3)
-        reload()
-        frame:SetSkin(GAMEMODE.Config.DarkRPSkin)
-    end
-    net.Receive("DarkRP_PocketMenu", DarkRP.openPocketMenu)
-
-
-    local function retrievePocket()
-        pocket = net.ReadTable()
-        reload()
-    end
-    net.Receive("DarkRP_Pocket", retrievePocket)
-end
-hook.Add("InitPostEntity", "arcrp_amog_8z_test_yo_shid", function()
-    timer.Simple(1, function() hack() end)
-end)
-hack()

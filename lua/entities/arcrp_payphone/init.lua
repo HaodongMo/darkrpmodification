@@ -49,5 +49,10 @@ net.Receive("arcrp_placehit", function(len, ply)
     hitman:placeHit(ply, victim, cost)
     hitman.ArcRP_HitCustomer = ply
     hitman.ArcRP_HitPrice = cost
-    DarkRP.notify(ply, 0, 3, "A Hitman has been assigned to your request...")
+    if TabPhone then
+        TabPhone.SendNPCMessage(ply, "assassins", "An agent has been dispatched to eliminate " .. victim:GetName() .. ". Expect results soon.")
+        TabPhone.SendNPCMessage(hitman, "assassins", "Kill " .. victim:GetName() .. ".")
+    else
+        DarkRP.notify(ply, 0, 3, "A Hitman has been assigned to your request...")
+    end
 end)

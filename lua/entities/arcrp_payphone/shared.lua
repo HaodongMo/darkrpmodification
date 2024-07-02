@@ -32,7 +32,11 @@ function ENT:GetContextMenu(player)
             table.insert(tbl, {
                 callback = function(ent, ply)
                     ply:SetNWBool("arcrp_hitman", false)
-                    DarkRP.notify(ply, 0, 3, "You have quit accepting Hit contracts.")
+                    if TabPhone then
+                        TabPhone.SendNPCMessage(ply, "assassins", "We are sorry to see you go, but we understand that circumstances change. We hope you will work with us again soon.")
+                    else
+                        DarkRP.notify(ply, 0, 3, "You have quit accepting Hit contracts.")
+                    end
                 end,
                 message = "Quit accepting Hits"
             })
@@ -40,7 +44,11 @@ function ENT:GetContextMenu(player)
             table.insert(tbl, {
                 callback = function(ent, ply)
                     ply:SetNWBool("arcrp_hitman", true)
-                    DarkRP.notify(ply, 0, 3, "You have registered as a Hitman! Expect a contract soon...")
+                    if TabPhone then
+                        TabPhone.SendNPCMessage(ply, "assassins", "Welcome to our Network. Expect your first contract soon. We will be in touch, Agent.")
+                    else
+                        DarkRP.notify(ply, 0, 3, "You have registered as a Hitman! Expect a contract soon...")
+                    end
                 end,
                 message = "Register as Hitman"
             })

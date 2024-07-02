@@ -467,7 +467,7 @@ local function hudPaint()
 
     -- hitman hud
 
-    if LocalPlayer():hasHit() then
+    if false and LocalPlayer():hasHit() then
         local victim = LocalPlayer():getHitTarget()
 
         local text = "Assassination Target:"

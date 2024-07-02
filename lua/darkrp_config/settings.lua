@@ -373,7 +373,8 @@ GM.Config.DisallowDrop = {
 GM.Config.DefaultWeapons = {
     -- "keys",
     "weapon_physcannon",
-    "gmod_camera",
+    // "gmod_camera",
+    "testphone",
     "gmod_tool",
     -- "pocket",
     "arcrp_hands",

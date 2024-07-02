@@ -353,6 +353,10 @@ function ArcRP_GetCustomContextMenu(ent, ply)
 
             table.insert(tbl, {
                 callback = function(body, investigator)
+                    if !body.DeathInfo then
+                        DarkRP.notify(investigator, 1, 3, "You can find no useful information from this body.")
+                    end
+
                     local hintnum = 6
                     local roll = body.DeathRoll or math.random(1, hintnum)
 
@@ -366,9 +370,9 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                         local killer_has_license = IsValid(killer) and killer:getDarkRPVar("HasGunlicense")
 
                         if killer_has_license then
-                            DarkRP.notify(investigator, 0, 3, "It is clear that the killer was " .. killer:Nick() .. ".")
+                            DarkRP.notify(investigator, 0, 3, "License records suggest that the killer was " .. killer:Nick() .. ".")
                         elseif !IsValid(killer) then
-                            DarkRP.notify(investigator, 0, 3, "It is clear that the killer was " .. body.DeathInfo.killername .. ".")
+                            DarkRP.notify(investigator, 0, 3, "License records suggest that the killer was " .. body.DeathInfo.killername .. ".")
                         else
                             DarkRP.notify(investigator, 0, 3, "The killer was not licensed to carry.")
                         end

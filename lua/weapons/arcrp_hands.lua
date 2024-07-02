@@ -95,8 +95,9 @@ function SWEP:OnDrop()
 end
 
 function SWEP:Holster()
-    self:SetShouldHoldType()
     self:StopDragging()
+
+    self:SetShouldHoldType()
 
     if self:GetSurrendered() then return false end
 
@@ -140,9 +141,7 @@ function SWEP:SetShouldHoldType()
         end
     end
 
-    if holdtype != self:GetHoldType() then
-        self:SetHoldType(holdtype)
-    end
+    self:SetHoldType(holdtype)
 end
 
 function SWEP:PrimaryAttack()

@@ -27,8 +27,8 @@ hook.Add("onHitCompleted", "ArcRP_HitMan", function(hitman, target, customer)
     hitman:addMoney(hitman.ArcRP_HitPrice or ArcRP_GetHitCost(target))
 
     if TabPhone then
-        TabPhone.SendNPCMessage(hitman, "assassins", "Well done. Your payment has already been sent.")
-        TabPhone.SendNPCMessage(customer, "assassins", target:GetName() .. " will trouble you no more.")
+        TabPhone.SendNPCMessage(hitman, "assassins", "Well done, valued Delivery Agent. " .. target:GetName() .. " is now enjoying their pizza. Your payment has already been sent.")
+        TabPhone.SendNPCMessage(customer, "assassins", target:GetName() .. " has confirmed their pizza Delivery. The payment has been wired to your Delivery Agent.")
     end
 end)
 
@@ -37,11 +37,11 @@ hook.Add("onHitFailed", "ArcRP_HitMan", function(hitman, target, reason)
 
     if IsValid(hitman.ArcRP_HitCustomer) then
         hitman.ArcRP_HitCustomer:addMoney(hitman.ArcRP_HitPrice or ArcRP_GetHitCost(target))
-        TabPhone.SendNPCMessage(hitman.ArcRP_HitCustomer, "assassins", "The Agent assigned to complete your task has failed. Your money has been refunded. We humbly ask for your forgiveness.")
+        TabPhone.SendNPCMessage(hitman.ArcRP_HitCustomer, "assassins", "Unfortunately, " .. target:GetName() .. "'s pizza was lost in transit. We have refunded your order and humbly seek your forgiveness for the failure of our Delivery Agent.")
     end
 
     if TabPhone then
-        TabPhone.SendNPCMessage(hitman, "assassins", "You have been compromised. Cease your mission to eliminate " .. target:GetName() .. ".")
+        TabPhone.SendNPCMessage(hitman, "assassins", "The pizza has gone cold; cease attempting to deliver to " .. target:GetName() .. ".")
     end
 end)
 

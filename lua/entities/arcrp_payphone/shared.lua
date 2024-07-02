@@ -45,7 +45,7 @@ function ENT:GetContextMenu(player)
                 callback = function(ent, ply)
                     ply:SetNWBool("arcrp_hitman", true)
                     if TabPhone then
-                        TabPhone.SendNPCMessage(ply, "assassins", "Welcome to our Network. Expect your first contract soon. We will be in touch, Agent.")
+                        TabPhone.SendNPCMessage(ply, "assassins", "Welcome to our Delivery Network. Expect your first pizza delivery contract soon. We will be in touch, valued Agent.")
                     else
                         DarkRP.notify(ply, 0, 3, "You have registered as a Hitman! Expect a contract soon...")
                     end

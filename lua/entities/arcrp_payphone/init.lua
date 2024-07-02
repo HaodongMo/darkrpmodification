@@ -50,8 +50,8 @@ net.Receive("arcrp_placehit", function(len, ply)
     hitman.ArcRP_HitCustomer = ply
     hitman.ArcRP_HitPrice = cost
     if TabPhone then
-        TabPhone.SendNPCMessage(ply, "assassins", "An agent has been dispatched to eliminate " .. victim:GetName() .. ". Expect results soon.")
-        TabPhone.SendNPCMessage(hitman, "assassins", "Kill " .. victim:GetName() .. ".")
+        TabPhone.SendNPCMessage(ply, "assassins", "" .. victim:GetName() .. "'s pizza has already been handed to Deliveries'. Expect results soon.")
+        TabPhone.SendNPCMessage(hitman, "assassins", "Get " .. victim:GetName() .. " their delivery. They will expect it ASAP.")
     else
         DarkRP.notify(ply, 0, 3, "A Hitman has been assigned to your request...")
     end

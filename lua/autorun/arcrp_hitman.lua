@@ -24,9 +24,12 @@ end
 hook.Add("onHitCompleted", "ArcRP_HitMan", function(hitman, target, customer)
     if CLIENT then return end
 
-    print(hitman)
-
     hitman:addMoney(hitman.ArcRP_HitPrice or ArcRP_GetHitCost(target))
+
+    if TabPhone then
+        TabPhone.SendNPCMessage(hitman, "assassins", "Well done. Your payment has already been sent.")
+        TabPhone.SendNPCMessage(customer, "assassins", target:GetName() .. " will trouble you no more.")
+    end
 end)
 
 hook.Add("onHitFailed", "ArcRP_HitMan", function(hitman, target, reason)
@@ -34,6 +37,11 @@ hook.Add("onHitFailed", "ArcRP_HitMan", function(hitman, target, reason)
 
     if IsValid(hitman.ArcRP_HitCustomer) then
         hitman.ArcRP_HitCustomer:addMoney(hitman.ArcRP_HitPrice or ArcRP_GetHitCost(target))
+        TabPhone.SendNPCMessage(hitman.ArcRP_HitCustomer, "assassins", "The Agent assigned to complete your task has failed. Your money has been refunded. We humbly ask for your forgiveness.")
+    end
+
+    if TabPhone then
+        TabPhone.SendNPCMessage(hitman, "assassins", "You have been compromised. Cease your mission to eliminate " .. target:GetName() .. ".")
     end
 end)
 

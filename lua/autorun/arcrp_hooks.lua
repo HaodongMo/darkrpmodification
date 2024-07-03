@@ -126,12 +126,12 @@ end)
 
 
 if SERVER then
-    local jobban_exempt = {
-        [TEAM_CITIZEN] = true,
-        [TEAM_POLICE_SUPERSOLDIER] = true,
-    }
     // Switching to a new job voluntarily will teamban for a little while, unless jobs are CP
     hook.Add("OnPlayerChangedTeam", "arcrp_jobswitchban", function(ply, old, new)
+        local jobban_exempt = {
+            [TEAM_CITIZEN] = true,
+            [TEAM_POLICE_SUPERSOLDIER] = true,
+        }
         if ply:Alive() and !jobban_exempt[old] and
                 !(GAMEMODE.CivilProtection[old] and GAMEMODE.CivilProtection[new]) then
             ply:teamBan(old, 120)

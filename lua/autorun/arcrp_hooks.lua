@@ -125,7 +125,7 @@ hook.Add("PostPlayerDeath", "tacrp_police_arrest", function(victim)
 end)
 
 local jobban_exempt = {
-    [GAMEMODE.DefaultTeam] = true,
+    [TEAM_CITIZEN] = true,
     [TEAM_POLICE_SUPERSOLDIER] = true,
 }
 

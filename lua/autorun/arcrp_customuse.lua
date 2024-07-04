@@ -1,3 +1,17 @@
+function ArcRP_GetContextEntity()
+    local v1 = Vector(1, 1, 1)
+    local tr = util.TraceHull({
+        start = LocalPlayer():EyePos(),
+        endpos = LocalPlayer():EyePos() + (EyeAngles():Forward() * 96),
+        filter = LocalPlayer(),
+        mins = v1 * -2,
+        maxs = v1 * 2,
+        mask = MASK_SOLID + CONTENTS_DEBRIS + CONTENTS_PLAYERCLIP
+    })
+
+    return tr.Entity
+end
+
 -- ent = entity you are trying to customUse
 -- ply = custom user
 

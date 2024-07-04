@@ -517,12 +517,7 @@ local function hudPaint()
     if longUsing then
         ent = interacting_ent
     else
-        local tr = LocalPlayer():GetEyeTrace()
-        ent = tr.Entity
-
-        if !IsValid(ent) and lastusetime + 1 > CurTime() then
-            ent = lastcontextent
-        end
+        ent = ArcRP_GetContextEntity()
     end
 
     if !IsValid(ent) or ent:GetPos():DistToSqr(EyePos()) >= 128 * 128 then

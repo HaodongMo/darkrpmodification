@@ -37,25 +37,37 @@ local function cploadout(ply, armor)
     end
 end
 
+local fcs_models = {
+    "models/fgut/male_01_01.mdl",
+    "models/fgut/male_02_01.mdl",
+    "models/fgut/male_03_01.mdl",
+    "models/fgut/male_04_01.mdl",
+    "models/fgut/male_05_01.mdl",
+    "models/fgut/male_06_01.mdl",
+    "models/fgut/male_07_01.mdl",
+    "models/fgut/male_08_01.mdl",
+    "models/fgut/male_09_01.mdl",
+    "models/fgut/female_01_01.mdl",
+    "models/fgut/female_02_01.mdl",
+    "models/fgut/female_03_01.mdl",
+    "models/fgut/female_04_01.mdl",
+    "models/fgut/female_06_01.mdl",
+    "models/fgut/female_07_01.mdl",
+}
+
+local keepmodelfunc = function(ply)
+    local mdl = ply:GetModel()
+
+    if mdl == "models/player.mdl" then
+        return
+    else
+        return mdl
+    end
+end
+
 TEAM_CITIZEN = DarkRP.createJob("Citizen", {
     color = Color(20, 150, 20, 255),
-    model = {
-        "models/fgut/male_01_01.mdl",
-        "models/fgut/male_02_01.mdl",
-        "models/fgut/male_03_01.mdl",
-        "models/fgut/male_04_01.mdl",
-        "models/fgut/male_05_01.mdl",
-        "models/fgut/male_06_01.mdl",
-        "models/fgut/male_07_01.mdl",
-        "models/fgut/male_08_01.mdl",
-        "models/fgut/male_09_01.mdl",
-        "models/fgut/female_01_01.mdl",
-        "models/fgut/female_02_01.mdl",
-        "models/fgut/female_03_01.mdl",
-        "models/fgut/female_04_01.mdl",
-        "models/fgut/female_06_01.mdl",
-        "models/fgut/female_07_01.mdl",
-    },
+    model = fcs_models,
     description = [[The Citizen is the most basic level of society you can hold besides being a hobo. You have no specific role in city life.]],
     weapons = {},
     command = "citizen",
@@ -66,11 +78,12 @@ TEAM_CITIZEN = DarkRP.createJob("Citizen", {
     hasLicense = false,
     candemote = false,
     category = "Citizens",
+    PlayerSetModel = keepmodelfunc,
 })
 
 TEAM_PRESIDENT = DarkRP.createJob("President", {
     color = Color(0, 0, 255, 255),
-    model = {"models/player/breen.mdl"},
+    model = fcs_models,
     description =
 [[Hail to the Chief, baby!
 
@@ -88,13 +101,14 @@ Police are required to enforce the laws you set.]],
     warrant = true,
     ban_max_time = 60,
     unarrest = true,
-    weapons = {}
+    weapons = {},
+    PlayerSetModel = keepmodelfunc,
 })
 
 
 TEAM_POLICE_ROOKIE = DarkRP.createJob("Rookie", {
     color = Color(150, 150, 255, 255),
-    model = {"models/player/phoenix.mdl"},
+    model = fcs_models,
     description =
 [[The lowest rung of law enforcement. Has few real powers, and no gun.
 
@@ -110,11 +124,12 @@ Use the police baton to knock criminals out, and then beat them until they compl
     PlayerLoadout = function(ply)
         cploadout(ply, 0)
     end,
+    PlayerSetModel = keepmodelfunc,
 })
 
 TEAM_POLICE_DEPUTY = DarkRP.createJob("Deputy", {
     color = Color(50, 50, 200, 255),
-    model = {"models/player/riot.mdl"},
+    model = fcs_models,
     description =
 [[Deputies are the backbone of the police force.
 
@@ -138,11 +153,12 @@ You are issued with a service pistol (and license) and have the authority to fre
     PlayerLoadout = function(ply)
         cploadout(ply, 50)
     end,
+    PlayerSetModel = keepmodelfunc,
 })
 
 TEAM_POLICE_SERGEANT = DarkRP.createJob("Sergeant", {
     color = Color(25, 25, 170, 255),
-    model = {"models/player/gasmask.mdl"},
+    model = fcs_models,
     description =
 [[Sergeants are high-ranking members of the police force.
 
@@ -174,6 +190,7 @@ Use /givelicense {name} and /revokelicense {name} to give or revoke gun licenses
     PlayerLoadout = function(ply)
         cploadout(ply, 50)
     end,
+    PlayerSetModel = keepmodelfunc,
 })
 
 TEAM_POLICE_SUPERSOLDIER = DarkRP.createJob("SuperCop", {
@@ -216,7 +233,7 @@ Admin only role. Hilariously overpowered.]],
 
 TEAM_MEDIC = DarkRP.createJob("Medic", {
     color = Color(200, 200, 200, 255),
-    model = {"models/player/kleiner.mdl"},
+    model = fcs_models,
     description =
 [[With your first aid kit, you can heal other players.
 
@@ -229,11 +246,12 @@ You are capable of resuscitating critically injured players.]],
     sortOrder = 100,
     weapons = {"tacrp_medkit"},
     canHelpCritical = true,
+    PlayerSetModel = keepmodelfunc,
 })
 
 TEAM_LOCKSMITH = DarkRP.createJob("Locksmith", {
     color = Color(200, 25, 25, 255),
-    model = {"models/player/leet.mdl"},
+    model = fcs_models,
     description =
 [[Your lockpick can be used to break into buildings.]],
     command = "locksmith",
@@ -243,11 +261,12 @@ TEAM_LOCKSMITH = DarkRP.createJob("Locksmith", {
     max = 2,
     sortOrder = 101,
     weapons = {"lockpick"},
+    PlayerSetModel = keepmodelfunc,
 })
 
 TEAM_GUNSMITH = DarkRP.createJob("Gunsmith", {
     color = Color(25, 155, 200, 255),
-    model = {"models/player/eli.mdl"},
+    model = fcs_models,
     description =
 [[You are an expert in creating and adjusting firearms.
 
@@ -260,12 +279,13 @@ Freely customize weapon attachments for yourself, or provide customization servi
     max = 2,
     sortOrder = 102,
     gunsmith = true,
-    weapons = {}
+    weapons = {},
+    PlayerSetModel = keepmodelfunc,
 })
 
 TEAM_LAWYER = DarkRP.createJob("Lawyer", {
     color = Color(100, 100, 100, 255),
-    model = {"models/player/gman_high.mdl"},
+    model = fcs_models,
     description =
 [[You are well versed in legal stuff that nobody else cares about.
 
@@ -280,12 +300,13 @@ Free your clients from prison (with or without the police's consent).]],
     max = 2,
     sortOrder = 103,
     unarrest = true,
-    weapons = {}
+    weapons = {},
+    PlayerSetModel = keepmodelfunc,
 })
 
 TEAM_CRAFTSMAN = DarkRP.createJob("Craftsman", {
     color = Color(255, 175, 0, 255),
-    model = {"models/player/hostage/hostage_04.mdl"},
+    model = fcs_models,
     description =
 [[You are an expert in industrial production.
 
@@ -296,7 +317,8 @@ Buy autolathes and provide it ingredients to craft weapons, explosives, and upgr
     category = "Citizens",
     max = 3,
     sortOrder = 104,
-    weapons = {}
+    weapons = {},
+    PlayerSetModel = keepmodelfunc,
 })
 
 // TEAM_COURIER = DarkRP.createJob("Courier", {
@@ -316,7 +338,7 @@ Buy autolathes and provide it ingredients to craft weapons, explosives, and upgr
 
 TEAM_SHOPKEEPER = DarkRP.createJob("Shopkeeper", {
     color = Color(150, 255, 75, 255),
-    model = {"models/player/hostage/hostage_01.mdl"},
+    model = fcs_models,
     description =
 [[You sell a variety of common goods.]],
     command = "shopkeeper",
@@ -326,12 +348,13 @@ TEAM_SHOPKEEPER = DarkRP.createJob("Shopkeeper", {
     category = "Citizens",
     max = 3,
     sortOrder = 106,
-    weapons = {}
+    weapons = {},
+    PlayerSetModel = keepmodelfunc,
 })
 
 TEAM_MARTIAL_ARTIST = DarkRP.createJob("Martial Artist", {
     color = Color(255, 125, 175, 255),
-    model = {"models/player/alyx.mdl"},
+    model = fcs_models,
     description =
 [[You can equip special ability and boosts on melee weapons for yourself or others.]],
     command = "martial_artist",
@@ -341,12 +364,13 @@ TEAM_MARTIAL_ARTIST = DarkRP.createJob("Martial Artist", {
     max = 1,
     sortOrder = 107,
     martialArtist = true,
-    weapons = {}
+    weapons = {},
+    PlayerSetModel = keepmodelfunc,
 })
 
 TEAM_GANGSTER = DarkRP.createJob("Gangster", {
     color = Color(75, 75, 75, 255),
-    model = {"models/player/arctic.mdl"},
+    model = fcs_models,
     description =
 [[You have connections to the criminal underworld.
 
@@ -363,7 +387,8 @@ Assemble a crew and rob the bank, if you dare.
     canRob = true,
     canMug = true,
     canHitman = true,
-    weapons = {}
+    weapons = {},
+    PlayerSetModel = keepmodelfunc,
 })
 
 --[[---------------------------------------------------------------------------

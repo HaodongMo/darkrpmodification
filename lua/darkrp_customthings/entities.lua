@@ -23,7 +23,8 @@ DarkRP.createEntity("Weapon Autolathe", {
     price = 1000,
     max = 1,
     cmd = "buygunlab",
-    allowed = {TEAM_GUNSMITH, TEAM_CRAFTSMAN}
+    allowed = {TEAM_GUNSMITH, TEAM_CRAFTSMAN},
+    category = "Industrial Equipment"
 })
 
 DarkRP.createEntity("Civilian Autolathe", {
@@ -32,7 +33,8 @@ DarkRP.createEntity("Civilian Autolathe", {
     price = 500,
     max = 1,
     cmd = "buycivilianlab",
-    allowed = TEAM_CRAFTSMAN
+    allowed = TEAM_CRAFTSMAN,
+    category = "Industrial Equipment"
 })
 
 DarkRP.createEntity("Explosives Autolathe", {
@@ -41,7 +43,8 @@ DarkRP.createEntity("Explosives Autolathe", {
     price = 800,
     max = 1,
     cmd = "buybomblab",
-    allowed = TEAM_CRAFTSMAN
+    allowed = TEAM_CRAFTSMAN,
+    category = "Industrial Equipment"
 })
 
 DarkRP.createEntity("The Instrument", {
@@ -50,6 +53,7 @@ DarkRP.createEntity("The Instrument", {
     price = 125,
     max = 1,
     cmd = "buytheinstrument",
+    category = "Hobby"
 })
 
 DarkRP.createEntity("Insurance", {
@@ -58,7 +62,8 @@ DarkRP.createEntity("Insurance", {
     price = 100,
     max = 3,
     cmd = "buyinsurance",
-    allowed = TEAM_LAWYER
+    allowed = TEAM_LAWYER,
+    category = "Legal Documents"
 })
 
 DarkRP.createEntity("Tax Return Forms", {
@@ -67,7 +72,8 @@ DarkRP.createEntity("Tax Return Forms", {
     price = 100,
     max = 3,
     cmd = "buytaxreturn",
-    allowed = TEAM_LAWYER
+    allowed = TEAM_LAWYER,
+    category = "Legal Documents"
 })
 
 DarkRP.createEntity("Bail Bonds", {
@@ -76,7 +82,8 @@ DarkRP.createEntity("Bail Bonds", {
     price = 100,
     max = 3,
     cmd = "buybail",
-    allowed = TEAM_LAWYER
+    allowed = TEAM_LAWYER,
+    category = "Legal Documents"
 })
 
 DarkRP.createEntity("Money Printer", {
@@ -84,7 +91,8 @@ DarkRP.createEntity("Money Printer", {
     model = "models/props_c17/consolebox05a.mdl",
     price = 600,
     max = 4,
-    cmd = "buyprinter"
+    cmd = "buyprinter",
+    category = "Appliances"
 })
 
 DarkRP.createEntity("Compact Generator", {
@@ -92,7 +100,8 @@ DarkRP.createEntity("Compact Generator", {
     model = "models/props_c17/TrapPropeller_Engine.mdl",
     price = 600,
     max = 1,
-    cmd = "buycompactgen"
+    cmd = "buycompactgen",
+    category = "Electrical Equipment"
 })
 
 
@@ -101,7 +110,8 @@ DarkRP.createEntity("Generator", {
     model = "models/props_vehicles/generatortrailer01.mdl",
     price = 950,
     max = 1,
-    cmd = "buygen"
+    cmd = "buygen",
+    category = "Electrical Equipment"
 })
 
 DarkRP.createEntity("Microwave", {
@@ -109,5 +119,6 @@ DarkRP.createEntity("Microwave", {
     model = "models/props/cs_office/microwave.mdl",
     price = 80,
     max = 1,
-    cmd = "buymicrowave"
+    cmd = "buymicrowave",
+    category = "Appliances"
 })

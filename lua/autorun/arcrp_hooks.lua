@@ -364,3 +364,41 @@ end
 hook.Add("PlayerChangedTeam", "ArcRP_HitMan", function(ply, oldteam, newteam)
     ply:SetNWBool("arcrp_hitman", false)
 end)
+
+local fcs_tops = {
+    "s_refugee1",
+    "s_refugee2",
+    "s_citizen1",
+    "s_citizen2",
+    "s_hostage1",
+    "s_hostage2",
+    "s_wintercoat1",
+    "s_wintercoat2",
+    "s_beta1",
+    "s_beta2"
+}
+
+local fcs_pants = {
+    "p_citizen1",
+    "p_citizen2",
+    "p_sec",
+    "p_medic",
+    "p_eli",
+    "p_eli2",
+    "p_eli3",
+    "p_eli4",
+    "p_beta1",
+    "p_beta2",
+    "p_blacksuit",
+    "p_admin",
+    "p_admin2",
+    "p_admin3",
+}
+
+hook.Add("PlayerSpawn", "ArcRPEquipFCS", function(ply, transition)
+    local top = table.Random(fcs_tops)
+    local pants = table.Random(fcs_pants)
+
+    ply:FCSEquip(top, true)
+    ply:FCSEquip(pants, true)
+end)

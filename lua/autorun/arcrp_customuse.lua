@@ -116,7 +116,7 @@ function ArcRP_GetCustomContextMenu(ent, ply)
     if not ply:Alive() then return end
 
     if ent:GetNWInt("arcrp_salescost", 0) > 0 then
-        tbl = {}
+        local tbl = {}
 
         local owner = ent:GetNWEntity("arcrp_sellowner")
 
@@ -243,6 +243,19 @@ function ArcRP_GetCustomContextMenu(ent, ply)
                 interacttime = 1,
                 message = "Unarrest"
             })
+        elseif ply:isCP() then
+            local wep = ent:GetActiveWeapon()
+            if IsValid(wep) and wep:GetClass() == "arcrp_hands" and wep:GetSurrendered() then
+                table.insert(tbl, {
+                    callback = function(victim, attacker)
+                        if attacker:isCP() then
+                            victim:arrest(GAMEMODE.Config.jailtimer, attacker)
+                        end
+                    end,
+                    interacttime = 1,
+                    message = "Arrest"
+                })
+            end
         end
 
         return tbl

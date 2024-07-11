@@ -35,6 +35,10 @@ local function cploadout(ply, armor)
         end
         if installed then timer.Simple(0.5, function() if IsValid(wep) then wep:NetworkWeapon() end end) end
     end
+
+    ply:FCSEquip("gtaiv_cop_jacket", true)
+    ply:FCSEquip("gtaiv_cop_pants", true)
+    ply:FCSEquip("gtaiv_cop_hat", true)
 end
 
 local fcs_models = {

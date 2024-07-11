@@ -56,6 +56,15 @@ DarkRP.createEntity("The Instrument", {
     category = "Hobby"
 })
 
+DarkRP.createEntity("Label Gun", {
+    ent = "arcrp_label_gun",
+    model = "models/weapons/w_pistol.mdl",
+    price = 50,
+    max = 1,
+    cmd = "buylabelgun",
+    category = "Appliances"
+})
+
 DarkRP.createEntity("Insurance", {
     ent = "arcrp_insurance",
     model = "models/props_lab/clipboard.mdl",

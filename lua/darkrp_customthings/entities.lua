@@ -131,3 +131,402 @@ DarkRP.createEntity("Microwave", {
     cmd = "buymicrowave",
     category = "Appliances"
 })
+
+// Clothes
+
+DarkRP.createEntity("Beanie (Black)", {
+    ent = "fcs_item_p_beanie_black",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 20,
+    max = 1,
+    cmd = "buyfcsbeanieblack",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Beanie (Blue)", {
+    ent = "fcs_item_p_beanie_blue",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 20,
+    max = 1,
+    cmd = "buyfcsbeanieblue",
+    category = "Clothes"
+})
+
+
+DarkRP.createEntity("Beanie (Gray)", {
+    ent = "fcs_item_p_beanie_gray",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 20,
+    max = 1,
+    cmd = "buyfcsbeaniegray",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Beanie (Green)", {
+    ent = "fcs_item_p_beanie_green",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 20,
+    max = 1,
+    cmd = "buyfcsbeaniegreen",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Jeans (Blue)", {
+    ent = "fcs_item_p_citizen1",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 60,
+    max = 1,
+    cmd = "buyfcscitizen1",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Jeans (Gray)", {
+    ent = "fcs_item_p_citizen2",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 60,
+    max = 1,
+    cmd = "buyfcscitizen2",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Jeans (Tan)", {
+    ent = "fcs_item_p_medic",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 60,
+    max = 1,
+    cmd = "buyfcsmedic",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Thick Jeans (Brown)", {
+    ent = "fcs_item_p_beta1",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 50,
+    max = 1,
+    cmd = "buyfcsbeta1",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Thick Jeans (Gray)", {
+    ent = "fcs_item_p_beta2",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 50,
+    max = 1,
+    cmd = "buyfcsbeta2",
+    category = "Clothes"
+})  
+
+DarkRP.createEntity("Cargo Pants (Khaki)", {
+    ent = "fcs_item_p_eli",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 70,
+    max = 1,
+    cmd = "buyfcseli",
+    category = "Clothes"
+})  
+
+DarkRP.createEntity("Cargo Pants (Blue)", {
+    ent = "fcs_item_p_eli4",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 70,
+    max = 1,
+    cmd = "buyfcseli4",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Cargo Pants (Gray)", {
+    ent = "fcs_item_p_eli3",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 70,
+    max = 1,
+    cmd = "buyfcseli3",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Cargo Pants (Green)", {
+    ent = "fcs_item_p_eli2",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 70,
+    max = 1,
+    cmd = "buyfcseli2",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Overalls (Black)", {
+    ent = "fcs_item_p_overalls2",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 100,
+    max = 1,
+    cmd = "buyfcsoveralls2",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Overalls (Blue)", {
+    ent = "fcs_item_p_overalls1",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 100,
+    max = 1,
+    cmd = "buyfcsoveralls1",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Plated Jeans (Dark Blue)", {
+    ent = "fcs_item_p_rebel2",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 80,
+    max = 1,
+    cmd = "buyfcsrebel2",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Plated Jeans (Blue)", {
+    ent = "fcs_item_p_rebel1",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 80,
+    max = 1,
+    cmd = "buyfcsrebel1",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Security Pants", {
+    ent = "fcs_item_p_sec",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 60,
+    max = 1,
+    cmd = "buyfcssec",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Suit Pants (Black)", {
+    ent = "fcs_item_p_blacksuit",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 150,
+    max = 1,
+    cmd = "buyfcsblacksuit",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Suit Pants (Blue)", {
+    ent = "fcs_item_p_admin3",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 150,
+    max = 1,
+    cmd = "buyfcsadmin3",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Suit Pants (Brown)", {
+    ent = "fcs_item_p_admin",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 150,
+    max = 1,
+    cmd = "buyfcsadmin",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Suit Pants (Purple)", {
+    ent = "fcs_item_p_admin2",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 150,
+    max = 1,
+    cmd = "buyfcsadmin2",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Surplus Pants", {
+    ent = "fcs_item_p_surplus",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 40,
+    max = 1,
+    cmd = "buyfcssurplus",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Bomber Jacket", {
+    ent = "fcs_item_s_security_bomber",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 200,
+    max = 1,
+    cmd = "buyfcssbomber",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Buttoned Shirt (Olive)", {
+    ent = "fcs_item_s_refugee2",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 20,
+    max = 1,
+    cmd = "buyfcssrefugee2",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Buttoned Shirt (Tan)", {
+    ent = "fcs_item_s_refugee1",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 20,
+    max = 1,
+    cmd = "buyfcssrefugee1",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Denim Jacket", {
+    ent = "fcs_item_s_citizen1",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 40,
+    max = 1,
+    cmd = "buyfcsscitizen1",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Longsleeve Jacket", {
+    ent = "fcs_item_s_citizen2",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 30,
+    max = 1,
+    cmd = "buyfcsscitizen2",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Dress Shirt (Blue)", {
+    ent = "fcs_item_s_hostage1",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 20,
+    max = 1,
+    cmd = "buyfcsshostage1",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Dress Shirt (White)", {
+    ent = "fcs_item_s_hostage2",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 20,
+    max = 1,
+    cmd = "buyfcsshostage2",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Medic Shirt", {
+    ent = "fcs_item_s_medic3",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 20,
+    max = 1,
+    cmd = "buyfcssmedic3",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Ragged Shirt (Green)", {
+    ent = "fcs_item_s_beta2",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 20,
+    max = 1,
+    cmd = "buyfcssbeta2",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Ragged Shirt (Pale)", {
+    ent = "fcs_item_s_beta1",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 20,
+    max = 1,
+    cmd = "buyfcssbeta1",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Security Jacket", {
+    ent = "fcs_item_s_security",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 90,
+    max = 1,
+    cmd = "buyfcsssecurity",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Security Shirt", {
+    ent = "fcs_item_s_sec",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 30,
+    max = 1,
+    cmd = "buyfcsssecurityshirt",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Suit Jacket (Black)", {
+    ent = "fcs_item_s_blacksuit",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 300,
+    max = 1,
+    cmd = "buyfcssblacksuit",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Suit Jacket (Blue)", {
+    ent = "fcs_item_s_admin3",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 300,
+    max = 1,
+    cmd = "buyfcssadmin3",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Suit Jacket (Brown)", {
+    ent = "fcs_item_s_admin",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 300,
+    max = 1,
+    cmd = "buyfcssadmin",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Suit Jacket (Purple)", {
+    ent = "fcs_item_s_admin2",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 300,
+    max = 1,
+    cmd = "buyfcssadmin2",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Surplus Jacket", {
+    ent = "fcs_item_s_surplus",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 50,
+    max = 1,
+    cmd = "buyfcsssurplus",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Trenchcoat (Black)", {
+    ent = "fcs_item_s_trenchcoat_black",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 120,
+    max = 1,
+    cmd = "buyfcsstrenchcoat",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Trenchcoat (Brown)", {
+    ent = "fcs_item_s_trenchcoat_brown",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 120,
+    max = 1,
+    cmd = "buyfcsstrenchcoat2",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Winter Coat (Brown)", {
+    ent = "fcs_item_s_wintercoat2",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 110,
+    max = 1,
+    cmd = "buyfcsswintercoat2",
+    category = "Clothes"
+})
+
+DarkRP.createEntity("Winter Coat (Green)", {
+    ent = "fcs_item_s_wintercoat1",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 110,
+    max = 1,
+    cmd = "buyfcsswintercoat1",
+    category = "Clothes"
+})

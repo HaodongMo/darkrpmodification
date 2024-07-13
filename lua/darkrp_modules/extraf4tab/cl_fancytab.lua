@@ -11,11 +11,12 @@ local function createF4MenuTab()
         font-family: sans-serif;
     }
 </style>
+
 <h1 id="the-rules">The Rules</h1>
 <p>All interpretation and enforcement of rules are at the discretion of admins.
 Server rules are not in-game laws - what is acceptable gameplay can also be illegal.</p>
-<h2 id="1-conduct-rules">1. Conduct Rules</h2>
 <ol>
+<li>Conduct Rules<ol>
 <li>Be excellent to each other.<ol>
 <li>Don’t harass or abuse other players.</li>
 <li>Do not target the same player repeatedly.</li>
@@ -27,8 +28,8 @@ Server rules are not in-game laws - what is acceptable gameplay can also be ille
 <li>Do not use cheats or exploits to gain an unfair advantage or to disrupt/crash the server.</li>
 <li>Do not use multiple accounts to avoid bans or to gain an unfair advantage.</li>
 </ol>
-<h2 id="2-in-character-rules">2. In-Character Rules</h2>
-<ol>
+</li>
+<li>In-Character Rules<ol>
 <li>Do not use OOC chat for in-character communication.</li>
 <li>Your character name should be a believable, pronounceable name.</li>
 <li>Your job name must be reasonable and cannot be misleading.</li>
@@ -48,8 +49,8 @@ Server rules are not in-game laws - what is acceptable gameplay can also be ille
 </li>
 <li>It is acceptable to act on information gained via looking at a player’s name or job.</li>
 </ol>
-<h2 id="3-gameplay-rules">3. Gameplay Rules</h2>
-<ol>
+</li>
+<li>Gameplay Rules<ol>
 <li>A property is any building whose doors are bought by someone.</li>
 <li>Do not place down props outdoors without purpose.<ol>
 <li>Street stands, hobo homes, or setting up cover for a raid/robbery are acceptable examples of prop use.</li>
@@ -61,8 +62,8 @@ Server rules are not in-game laws - what is acceptable gameplay can also be ille
 </ol>
 </li>
 </ol>
-<h2 id="4-job-rules">4. Job Rules</h2>
-<ol>
+</li>
+<li>Job Rules<ol>
 <li>Police must enforce and obey the law.<ol>
 <li>Police cannot collude with criminals or accept bribes unless the law permits.</li>
 <li>Police must try to arrest someone if possible without killing them.</li>
@@ -78,8 +79,8 @@ Server rules are not in-game laws - what is acceptable gameplay can also be ille
 </ol>
 </li>
 </ol>
-<h2 id="5-raid-rules">5. Raid Rules</h2>
-<ol>
+</li>
+<li>Raid Rules<ol>
 <li>A raid is an attempt to break and enter a property by a group of police or gangsters.<ol>
 <li>Only gangsters or the police can be the attacker of a raid. Any job can defend a raid lethally.</li>
 <li>A property cannot be raided by the same group twice in 30 minutes.</li>
@@ -103,22 +104,22 @@ Server rules are not in-game laws - what is acceptable gameplay can also be ille
 </ol>
 </li>
 </ol>
-<h2 id="6-crime-rules">6. Crime Rules</h2>
-<ol>
+</li>
+<li>Crime Rules<ol>
 <li>There is no honor among thieves. Gangsters can sell one another out, cooperate with the authorities, etc. without restraint.</li>
-<li>Violent crimes as defined below can only be committed by the Gangster job.<ol>
-<li>Petty crime, which can be committed by anyone, can escalate into violence, but the criminal cannot proactively attack the victim or the police.</li>
+<li>Gang crimes as defined below can only be committed by the Gangster job.<ol>
+<li>Other crimes can be committed by any job even if it escalates into violence, but the criminal cannot proactively attack the victim or the police.</li>
 <li>Civilians can solicit, assist or enable violent crimes, but cannot be directly involved in combat or fight the police together with gangsters.</li>
 </ol>
 </li>
-<li>A robbery or mugging is the violent crime of taking someone’s belongings through threat of violence.<ol>
+<li>A robbery or mugging is the gang crime of taking someone’s belongings through threat of violence.<ol>
 <li>Players not shown as viable robbery targets cannot be robbed of their belongings. If they are carrying objects in the world, that object can still be robbed.</li>
 <li>The robber must announce the robbery to the victim and give them a chance to surrender. After any reaction or 5 seconds of no response, they are allowed to attack the victim.</li>
 <li>The robber can only take what the robbery system lets them, as well as any objects already in the world.</li>
 <li>The robber can not kill the victim, or attack the victim if they surrender.</li>
 </ol>
 </li>
-<li>A gang raid is considered a violent crime (see section 5.3).</li>
+<li>A gang raid is considered a gang crime (see section 5.3).</li>
 <li>A bank robbery is the violent crime of taking money from the bank pallet.</li>
 <li>A murder is the violent crime of killing someone.<ol>
 <li>Gangsters can kill their hit target after requested through the hit system.</li>
@@ -133,7 +134,8 @@ Server rules are not in-game laws - what is acceptable gameplay can also be ille
 </ol>
 </li>
 </ol>
-
+</li>
+</ol>
 
 ]] )
 

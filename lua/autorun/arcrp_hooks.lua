@@ -72,7 +72,7 @@ end
 
 // drop moolah on death
 hook.Add("PlayerDeath", "tacrp_drop_money", function(victim, inflictor, attacker)
-    if !IsValid(attacker) or attacker:isCP() then return end
+    if !IsValid(attacker) or !attacker:IsPlayer() or attacker:isCP() then return end
 
     local money = ArcRP_GetMoneyDropAmount(victim)
 
@@ -401,4 +401,9 @@ hook.Add("PlayerSpawn", "ArcRPEquipFCS", function(ply, transition)
 
     ply:FCSEquip(top, true)
     ply:FCSEquip(pants, true)
+
+    timer.Simple(0.1, function()
+        if !IsValid(ply) then return end
+        ply:SelectWeapon("arcrp_hands")
+    end)
 end)

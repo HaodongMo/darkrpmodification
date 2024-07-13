@@ -140,5 +140,9 @@ Server rules are not in-game laws - what is acceptable gameplay can also be ille
 ]] )
 
     DarkRP.addF4MenuTab("Rules", HTML)
+
+    DarkRP.removeF4MenuTab("Jobs")
+    DarkRP.removeF4MenuTab("Miscellaneous")
+    DarkRP.removeF4MenuTab("Shipments")
 end
 hook.Add("F4MenuTabs", "MyCustomF4MenuTab", createF4MenuTab)

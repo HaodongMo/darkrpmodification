@@ -279,7 +279,7 @@ if CLIENT then
                             end
                             d = Lerp(0.75 - d, 0, 1)
                             surface.SetAlphaMultiplier(visionAmt * d)
-                            draw.SimpleTextOutlined(msg, "TacRP_Myriad_Pro_24_Unscaled", toscreen.x, toscreen.y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
+                            // draw.SimpleTextOutlined(msg, "TacRP_Myriad_Pro_24_Unscaled", toscreen.x, toscreen.y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
                             tgts[victim] = {d, c}
                         end
                     end
@@ -297,7 +297,7 @@ if CLIENT then
                         end
                         d = Lerp(0.75 - d, 0, 1)
                         surface.SetAlphaMultiplier(visionAmt * d)
-                        draw.SimpleTextOutlined(msg, "TacRP_Myriad_Pro_24_Unscaled", toscreen.x, toscreen.y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
+                        // draw.SimpleTextOutlined(msg, "TacRP_Myriad_Pro_24_Unscaled", toscreen.x, toscreen.y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
                         tgts[ent] = {d, c}
                     end
                 end

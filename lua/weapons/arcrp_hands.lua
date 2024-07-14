@@ -134,6 +134,7 @@ function SWEP:SetShouldHoldType()
 
     for bone, k in pairs(bonemods) do
         local index = owner:LookupBone(bone)
+        if not index then continue end
         if shouldbonemods then
             owner:ManipulateBoneAngles(index, k.Ang, true)
         else

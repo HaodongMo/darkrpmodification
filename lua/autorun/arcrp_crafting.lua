@@ -601,6 +601,7 @@ ArcRP_Craft.Recipes = {
             output_rare = {
                 "tacrp_ar15",
                 "tacrp_civ_g36k",
+                "tacrp_civ_amd65"
             },
             rare_chance = 0.2,
         },

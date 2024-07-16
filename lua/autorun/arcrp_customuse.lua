@@ -18,7 +18,10 @@ end
 function ArcRP_GetCustomContextHint(ent, ply)
     if ent.IsSpawnedWeapon then
         local wep = weapons.Get(ent:GetWeaponClass())
-        return wep.PrintName
+
+        if IsValid(wep) then
+            return wep.PrintName
+        end
     elseif ent:isKeysOwnable() then
         local blocked = ent:getKeysNonOwnable()
         local doorTeams = ent:getKeysDoorTeams()

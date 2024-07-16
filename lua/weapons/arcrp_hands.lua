@@ -149,12 +149,17 @@ function SWEP:PrimaryAttack()
     if self:GetSurrendered() then return end
 
     local owner = self:GetOwner()
+    local tr = owner:GetEyeTrace()
+    local ent = tr.Entity
+
+    if IsValid(ent) and ent:GetPos():DistToSqr(owner:EyePos()) <= 40000 then
+        self:GetOwner():AGINV_Pickup(ent)
+        return
+    end
 
     if self:GetDragging() then
         self:StopDragging()
     else
-        local tr = owner:GetEyeTrace()
-        local ent = tr.Entity
         if not IsValid(ent) then return end
         local distsqr = tr.HitPos:DistToSqr(owner:EyePos())
         if self:CanDrag(ent) and distsqr <= 72 * 72 then

@@ -77,3 +77,11 @@ DarkRP.createCategory{
     color = Color(0, 107, 0, 255), -- The color of the category header.
     canSee = function(ply) return true end, -- OPTIONAL: whether the player can see this category AND EVERYTHING IN IT.
 }
+
+DarkRP.createCategory{
+    name = "Storage", -- The name of the category.
+    categorises = "entities", -- What it categorises. MUST be one of "jobs", "entities", "shipments", "weapons", "vehicles", "ammo".
+    startExpanded = true, -- Whether the category is expanded when you open the F4 menu.
+    color = Color(0, 107, 0, 255), -- The color of the category header.
+    canSee = function(ply) return true end, -- OPTIONAL: whether the player can see this category AND EVERYTHING IN IT.
+}

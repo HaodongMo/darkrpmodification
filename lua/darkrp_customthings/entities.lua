@@ -530,3 +530,12 @@ DarkRP.createEntity("Winter Coat (Green)", {
     cmd = "buyfcsswintercoat1",
     category = "Clothes"
 })
+
+DarkRP.createEntity("Backpack", {
+    ent = "aginv_equip_bp_basic",
+    model = "models/props_c17/SuitCase001a.mdl",
+    price = 100,
+    max = 1,
+    cmd = "buybackpack",
+    category = "Storage"
+})

@@ -496,3 +496,8 @@ net.Receive("arcrp_customuse", function(len, ply)
 end)
 
 end
+
+
+hook.Add("AGINV_AllowOperation", "ArcRP_Hands", function(ply, world)
+    if ArcRP_PlayerSurrendered(ply) then return false end
+end)

@@ -112,8 +112,12 @@ local function checkhealth(victim, attacker)
     DarkRP.notify(attacker, 0, 3, victim:Nick() .. " is " .. msg .. ".")
 end
 
+function ArcRP_PlayerSurrendered(ply)
+    return ply:Alive() and IsValid(ply:GetActiveWeapon()) and ply:GetActiveWeapon():GetClass() == "arcrp_hands" and ply:GetActiveWeapon():GetSurrendered()
+end
+
 function ArcRP_GetCustomContextMenu(ent, ply)
-    if not ply:Alive() then return end
+    if not ply:Alive() or ArcRP_PlayerSurrendered(ply) then return end
 
     if ent:GetNWInt("arcrp_salescost", 0) > 0 then
         local tbl = {}
@@ -472,7 +476,7 @@ net.Receive("arcrp_customuse", function(len, ply)
     if !IsValid(ent) then return end
 
     if ent:GetPos():DistToSqr(ply:GetPos()) > 128 * 128 then return end
-    if !ply:Alive() then return end
+    if !ply:Alive() or ArcRP_PlayerSurrendered(ply) then return end
 
     local context = ArcRP_GetCustomContextMenu(ent, ply)
 

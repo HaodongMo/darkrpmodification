@@ -32,7 +32,8 @@ SWEP.BounceWeaponIcon = false
 SWEP.m_bPlayPickupSound = false
 SWEP.HitDistance = 60
 
-SWEP.SurrenderDuration = 10
+SWEP.SurrenderHold = 1.5
+SWEP.SurrenderDuration = 30
 
 SWEP.DoNotDrop = true
 
@@ -105,7 +106,7 @@ function SWEP:Holster()
 end
 
 function SWEP:ShouldBeSurrendered()
-    return self:GetSurrenderTime() + self.SurrenderDuration > CurTime()
+    return self:GetSurrenderTime() > CurTime()
 end
 
 local bonemods = {
@@ -169,8 +170,8 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:SecondaryAttack()
-    self:SetSurrenderTime(CurTime())
-    self:SetShouldHoldType()
+    -- self:SetSurrenderTime(CurTime())
+    -- self:SetShouldHoldType()
 end
 
 function SWEP:Reload()
@@ -217,6 +218,8 @@ function SWEP:ApplyForce()
 end
 
 function SWEP:Think()
+    local owner = self:GetOwner()
+
     if SERVER and self:GetDragging() then
         if not IsValid(self:GetDraggingEnt()) or self:GetSurrendered() then
             self:StopDragging()
@@ -225,15 +228,25 @@ function SWEP:Think()
         end
     end
 
-    if self:ShouldBeSurrendered() and not self:GetSurrendered() then
-        self:StartSurrender()
-    elseif not self:ShouldBeSurrendered() and self:GetSurrendered() then
+    if not self:GetSurrendered() then
+        if owner:KeyDown(IN_ATTACK2) then
+            if self:GetSurrenderTime() <= 0 then
+                self:SetSurrenderTime(CurTime() + self.SurrenderHold)
+            elseif self:GetSurrenderTime() <= CurTime() then
+                -- Held for long enough, trigger surrender
+                self:StartSurrender()
+            end
+        elseif self:GetSurrenderTime() > 0 then
+            self:SetSurrenderTime(-math.huge)
+        end
+    elseif not self:ShouldBeSurrendered() then
         self:StopSurrender()
     end
 end
 
-function SWEP:StartSurrender()
+function SWEP:StartSurrender(t)
     self:SetSurrendered(true)
+    self:SetSurrenderTime(CurTime() + (t or self.SurrenderDuration))
     self:SetShouldHoldType()
 end
 
@@ -245,26 +258,35 @@ end
 local colorBackground = Color(10, 10, 10, 120)
 
 function SWEP:DrawHUD()
-    if not self:GetSurrendered() then return end
+    if not self:GetSurrendered() and not self:GetOwner():KeyDown(IN_ATTACK2) then return end
 
     local w = ScrW()
     local h = ScrH()
     local x, y, width, height = w / 2 - w / 10, h / 2 - 60, w / 5, h / 15
     draw.RoundedBox(8, x, y, width, height, colorBackground)
 
-    local time = self.SurrenderDuration
-    local curtime = CurTime() - self:GetSurrenderTime()
-    local status = 1 - math.Clamp(curtime / time, 0, 1)
+    local time = self:GetSurrendered() and self.SurrenderDuration or self.SurrenderHold
+    local curtime = self:GetSurrenderTime() - CurTime()
+    local status = math.Clamp(curtime / time, 0, 1)
+
+    local text = "Hold +ATTACK2 to surrender"
+    if self:GetSurrendered() then
+        -- status = 1 - status
+        text = "Surrendered! Cannot change weapons or interact."
+    end
     local BarWidth = status * (width - 16)
     local cornerRadius = math.Min(8, BarWidth / 3 * 2 - BarWidth / 3 * 2 % 2)
     draw.RoundedBox(cornerRadius, x + 8, y + 8, BarWidth, height - 16, Color(0 + (status * 255), 255 - (status * 255), 0, 255))
 
-    draw.DrawNonParsedSimpleText("Surrendered! Cannot change weapons...", "Trebuchet24", w / 2, y + height / 2, color_white, 1, 1)
+    draw.DrawNonParsedSimpleText(text, "Trebuchet24", w / 2, y + height / 2, color_white, 1, 1)
 end
 
 hook.Add("StartCommand", "ArcRP_Hands", function(ply, cmd)
-    if cmd:KeyDown(IN_SPEED) and (
-            (IsValid(ply:GetActiveWeapon()) and ply:GetActiveWeapon():GetClass() == "arcrp_hands" and ply:GetActiveWeapon():GetDragging())) then
+    if not IsValid(ply:GetActiveWeapon()) or ply:GetActiveWeapon():GetClass() ~= "arcrp_hands" then return end
+    if cmd:KeyDown(IN_SPEED) and (ply:GetActiveWeapon():GetSurrendered() or ply:GetActiveWeapon():GetDragging()) then
         cmd:RemoveKey(IN_SPEED)
+    end
+    if cmd:KeyDown(IN_USE) and ply:GetActiveWeapon():GetSurrendered() then
+        cmd:RemoveKey(IN_USE)
     end
 end)

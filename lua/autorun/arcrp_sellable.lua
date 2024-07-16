@@ -50,3 +50,7 @@ hook.Add("onLockpickCompleted", "ArcRP_Sellable", function(ply, succeed, ent)
         return true
     end
 end)
+
+hook.Add("AGINV_PlayerPickup", "ArcRP_Sellable", function(ply, ent, item_class)
+    if ent.ArcRP_IsSellable then return false, "Cannot pick up a labelled item!" end
+end)

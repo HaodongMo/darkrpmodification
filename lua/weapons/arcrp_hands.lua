@@ -154,7 +154,9 @@ function SWEP:PrimaryAttack()
     local ent = tr.Entity
 
     if IsValid(ent) and ent:GetPos():DistToSqr(owner:EyePos()) <= 40000 then
-        self:GetOwner():AGINV_Pickup(ent)
+        if SERVER then
+            owner:AGINV_Pickup(ent)
+        end
         return
     end
 

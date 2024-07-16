@@ -7,28 +7,37 @@ ArcRP_Craft.Items = {
         description = "",
         model = "models/mechanics/solid_steel/plank_4.mdl",
         price = 10,
-        recyclable = true
+        recyclable = true,
+        width = 2,
+        camorigin = Vector(0, 0, 0)
     },
     ["chemicals"] = {
         name = "Chemicals",
         description = "",
         model = "models/props_junk/garbage_plasticbottle002a.mdl",
         price = 15,
-        recyclable = true
+        recyclable = true,
+        height = 2,
+        camorigin = Vector(0, 0, 0)
     },
     ["electronics"] = {
         name = "Electronics",
         description = "",
         model = "models/props_lab/reciever01d.mdl",
         price = 40,
-        recyclable = true
+        recyclable = true,
+        width = 2,
+        camorigin = Vector(0, 0, 0)
     },
     ["fuel"] = {
         name = "Fuel",
         description = "",
         model = "models/props_junk/metalgascan.mdl",
         price = 40,
-        recyclable = true
+        recyclable = true,
+        width = 2,
+        height = 3,
+        camorigin = Vector(0, 0, 0)
     },
     ["gear"] = {
         name = "Gear",
@@ -49,44 +58,60 @@ ArcRP_Craft.Items = {
         description = "",
         model = "models/props/cs_office/Paper_towels.mdl",
         price = 6,
-        recyclable = true
+        recyclable = true,
+        width = 2,
+        renderangles = Angle(0, 45, 0),
+        camorigin = Vector(0, 0, 4)
     },
     ["pipe"] = {
         name = "Pipe",
         description = "",
         model = "models/props_pipes/pipe01_straight01_short.mdl",
         price = 11,
-        recyclable = true
+        recyclable = true,
+        height = 2,
+        renderangles = Angle(0, 0, 90),
+        camorigin = Vector(0, 0, 0)
     },
     ["wood"] = {
         name = "Wood",
         description = "",
         model = "models/props_junk/wood_pallet001a_chunkb2.mdl",
         price = 5,
-        recyclable = true
+        recyclable = true,
+        width = 2,
+        camorigin = Vector(-40, 0, 0)
     },
 
     // Crafted ingredients
     ["component"] = {
         name = "Component",
+        shortname = "Comp.",
         description = "",
         model = "models/xqm/pistontype1.mdl",
         price = 40,
-        recyclable = true
+        recyclable = true,
+        height = 2,
+        camorigin = Vector(0, 0, 4)
     },
     ["adv_electronics"] = {
         name = "Advanced Electronics",
+        shortname = "Adv. Electronics",
         description = "",
         model = "models/props_lab/reciever01a.mdl",
         price = 100,
-        recyclable = true
+        recyclable = true,
+        width = 2,
+        camorigin = Vector(0, 0, 0)
     },
     ["explosive"] = {
         name = "Explosives",
         description = "",
         model = "models/props_junk/metal_paintcan001a.mdl",
         price = 55,
-        recyclable = true
+        recyclable = true,
+        height = 2,
+        width = 2,
     },
     ["fuze"] = {
         name = "Fuze",
@@ -100,7 +125,10 @@ ArcRP_Craft.Items = {
         description = "",
         model = "models/maxofs2d/button_slider.mdl",
         price = 55,
-        recyclable = true
+        recyclable = true,
+        width = 2,
+        renderangles = Angle(0, 90, 90),
+        camorigin = Vector(0, 0, 0.5)
     },
 
     // Drugs
@@ -192,6 +220,23 @@ local function generate_ents()
             tbl.recyclable = v.recyclable
             tbl.Model = v.model
             scripted_ents.Register(tbl, "arcrp_in_" .. k)
+
+            if AGINV then
+                // Register as AGINV item
+
+                local item = {}
+                item.Name = v.name
+                item.ShortName = v.shortname or v.name
+                item.Model = v.model
+                item.Width = v.width or 1
+                item.Height = v.height or 1
+                item.RenderFOV = v.renderfov
+                item.RenderAngles = v.renderangles
+                item.CamOffset = v.camoffset
+                item.CamOrigin = v.camorigin
+
+                AGINV.LoadItem(item, "arcrp_in_" .. k)
+            end
         end
     end
     ArcRP_Craft.ItemsBit = math.min(math.ceil(math.log(i + 1, 2)), 32)
@@ -211,6 +256,23 @@ local function generate_ents()
         tbl.recyclable = v.recyclable
         tbl.Model = v.model
         scripted_ents.Register(tbl, "arcrp_up_" .. k)
+
+        if AGINV then
+            // Register as AGINV item
+
+            local item = {}
+            item.Name = v.name
+            item.ShortName = v.shortname or v.name
+            item.Model = v.model
+            item.Width = v.width or 1
+            item.Height = v.height or 1
+            item.RenderFOV = v.renderfov
+            item.RenderAngles = v.renderangles
+            item.CamOffset = v.camoffset
+            item.CamOrigin = v.camorigin
+
+            AGINV.LoadItem(item, "arcrp_up_" .. k)
+        end
     end
 end
 

@@ -2,9 +2,9 @@ local RealGetConVar = GetConVar
 
 local ForcedConVars = {
     ["imde_hud"] = "0",
-    ["cl_new_impact_effects"] = "1",
     ["imde_hud_notooltip"] = "1",
-    ["tacrp_pickuphint"] = "0"
+    ["tacrp_pickuphint"] = "0",
+    ["tacrp_autosave"] = "0"
 }
 
 local ProxyConVar = {

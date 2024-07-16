@@ -539,3 +539,48 @@ DarkRP.createEntity("Backpack", {
     cmd = "buybackpack",
     category = "Storage"
 })
+
+DarkRP.createEntity("Military Crate", {
+    ent = "aginv_container_ammo_crate",
+    model = "models/weapons/tacint/ammoboxes/ammo_box-2b.mdl",
+    price = 1000,
+    max = 1,
+    cmd = "buymilcrate",
+    category = "Storage"
+})
+
+DarkRP.createEntity("Cardboard Box (S)", {
+    ent = "aginv_container_cardboard_small",
+    model = "models/weapons/tacint/ammoboxes/ammo_box-2b.mdl",
+    price = 10,
+    max = 2,
+    cmd = "buycardbox_s",
+    category = "Storage"
+})
+
+DarkRP.createEntity("Cardboard Box (L)", {
+    ent = "aginv_container_cardboard_large",
+    model = "models/weapons/tacint/ammoboxes/ammo_box-2b.mdl",
+    price = 50,
+    max = 2,
+    cmd = "buycardbox_l",
+    category = "Storage"
+})
+
+DarkRP.createEntity("Footlocker", {
+    ent = "aginv_container_footlocker",
+    model = "models/weapons/tacint/ammoboxes/ammo_box-2b.mdl",
+    price = 150,
+    max = 1,
+    cmd = "buyfootlocker",
+    category = "Storage"
+})
+
+DarkRP.createEntity("Office Cabinet", {
+    ent = "aginv_container_office_cabinet",
+    model = "models/weapons/tacint/ammoboxes/ammo_box-2b.mdl",
+    price = 120,
+    max = 1,
+    cmd = "buyofficecabinet",
+    category = "Storage"
+})
